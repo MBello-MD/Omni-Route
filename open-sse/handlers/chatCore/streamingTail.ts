@@ -1,6 +1,7 @@
 import { inheritEmptyTurnPolicy } from "../../utils/emptyTurnPolicy.ts";
 import { getCodexClientSessionId } from "../../config/codexIdentity.ts";
 import { modelAfterFamilyFallback } from "../../services/modelFamilyFallbackPolicy.ts";
+import { resolveConnectionCostModel } from "../../services/connectionModelMap.ts";
 import {
   noteCodexTurnStateProvenance,
   readCodexTurnStateHeader,
@@ -142,6 +143,7 @@ export async function runStreamingTail(deps: StreamingTailDeps) {
     releaseTurnExecution,
     reqLogger,
     requestToolIdentityMap,
+    requestedModel,
     resolveReportedServiceTier,
     semanticCacheEnabled,
     skillRequestId,
@@ -523,6 +525,8 @@ export async function runStreamingTail(deps: StreamingTailDeps) {
     recordStreamingUsageStats(streamUsage, {
       provider,
       model,
+      requestedModel: modelInfo?.model || requestedModel || model,
+      actualModel: currentModel || effectiveModel || model,
       streamStatus: normalizedStreamStatus,
       startTime,
       ttft,
@@ -583,10 +587,15 @@ export async function runStreamingTail(deps: StreamingTailDeps) {
       reasoningMeta: streamReasoningMeta ?? null,
     });
 
+    const costModel = resolveConnectionCostModel(
+      model,
+      currentModel || effectiveModel,
+      credentials
+    );
     recordStreamingCost({
       apiKeyId: apiKeyInfo?.id,
       provider,
-      model,
+      model: costModel,
       streamUsage,
       serviceTier: effectiveServiceTier,
       calculateCost: calculateCostDetailed,
@@ -598,7 +607,7 @@ export async function runStreamingTail(deps: StreamingTailDeps) {
       // A metered model with no price must not pass the dollar budget as $0.
       recordUnpricedCost: (apiKeyId, cost) => {
         if (isUnpricedMeteredCost(provider, cost)) {
-          recordUnpricedBudgetUsage(apiKeyId, { provider, model });
+          recordUnpricedBudgetUsage(apiKeyId, { provider, model: costModel });
         }
       },
       ledger: buildStreamLedgerDetails(effectiveServiceTier, normalizedStreamStatus < 400, traceId),
@@ -612,7 +621,7 @@ export async function runStreamingTail(deps: StreamingTailDeps) {
       apiKeyId: apiKeyInfo?.id,
       connectionId: credentials?.connectionId,
       provider,
-      model,
+      model: costModel,
       streamUsage,
       streamStatus: normalizedStreamStatus,
       serviceTier: effectiveServiceTier,
