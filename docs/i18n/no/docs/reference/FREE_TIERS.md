@@ -99,10 +99,10 @@ Tellingen kan forbedres når en feed er tilgjengelig. Avgjørelsen forblir baser
 ## Metodikk og forbehold
 
 - Tall er** øvre grense estimater** fra hver leverandørs dokumenterte free-tier-grenser pr** 2026-06-17** , samlet inn av nettundersøkelser. Gratis nivåer endres konstant — re-verifisere før du stoler på en figur.
-- **Hva en oppføring faktisk garanterer for.** Ingen oppføringer har en konfidensvurdering per rad, og API tjener ingen — behandler alle tall ovenfor som et estimat av samme, uoppgitte kvalitet. To fakta er forskjellige, fordi de er kurert for hånd i stedet for utledet: 44 oppføringer har en uavhengig dokumentert hard stop (39 av dem xKiro radene, som alle deler én dagpenger), og 21 oppføringer har en umiddelbar opplæringsavsløring. `hardStopGuaranteed` settes kun når leverandørens egne vilkår sier at overskridelse av gratisgodtgjørelsen avslår forespørselen i stedet for å stille i gang å fakturere deg, med kilden i en kommentar ved siden av oppføringen; den er aldri standard til `true`, og en oppføring ingen har bekreftet forblir uaktivert. Så et manglende hard-stop-flagg betyr "ikke etablert", ikke "kjent for å fakturere deg".**STRICT -modus** (opt-in `freeAccessPolicy=strict` routing guard) stoler kun på oppføringer som bærer flagget; annenhver gratis tier er ekskludert som `no-hard-stop` (se `open-sse/services/autoCombo/strictZeroCostFilter.ts`). Når vakten filtrerer en pool, rapporterer den operatørsynlige loggen både ekskluderingsantallet og `no-hard-stop` andelen.
+- **Hva en oppføring faktisk garanterer for.** Ingen oppføringer har en konfidensvurdering per rad, og API tjener ingen — behandler alle tall ovenfor som et estimat av samme, uoppgitte kvalitet. To fakta er forskjellige, fordi de er kuratert for hånd i stedet for utledet: 44 oppføringer har en uavhengig dokumentert hard stop (39 av dem xKiro radene, som alle deler én dagpenger), og 22 oppføringer har en umiddelbar opplæringsavsløring. `hardStopGuaranteed` settes kun når leverandørens egne vilkår sier at overskridelse av gratisgodtgjørelsen avslår forespørselen i stedet for å stille i gang å fakturere deg, med kilden i en kommentar ved siden av oppføringen; den er aldri standard til `true`, og en oppføring ingen har bekreftet forblir uaktivert. Så et manglende hard-stop-flagg betyr "ikke etablert", ikke "kjent for å fakturere deg".**STRICT -modus** (opt-in `freeAccessPolicy=strict` routing guard) stoler kun på oppføringer som bærer flagget; annenhver gratis tier er ekskludert som `no-hard-stop` (se `open-sse/services/autoCombo/strictZeroCostFilter.ts`). Når vakten filtrerer en pool, rapporterer den operatørsynlige loggen både ekskluderingsantallet og `no-hard-stop` andelen.
 - `estMonthlyFreeTokens` = kun gjentakende månedlige tokens.** Engangsregistreringskreditter gjentar seg ikke** og teller som 0. Avviklede nivåer er også 0.
 - Daglig token cap → `monthly = daily × 30`. Bare RPD dokumenterte → `RPD × ~800 output tokens × 30`. Bare RPM/TPM (ingen daglig tak) →** uten lokk** (se nedenfor).
-- **Permanent gratis, men ingen publisert token cap** (`glm-cn`, `tencent`, `baidu`, `kilo-gateway`, `opencode-zen`, `gemini`, `ollama-cloud`): disse er ekte tilbakevendende gratis tilgang, rate/concurrency-limited. Vi klassifiserer dem `recurring-uncapped` og** aldri summere dem** — multiplisere `RPM × 24/7 × 30d` ville produsere et fantasitak (inflasjonen vi avviser). De er oppført slik at du vet at de eksisterer.
+- **Gratis tilgang, men ingen publisert token cap** (`glm-cn`, `tencent`, `baidu`, `kilo-gateway`, `opencode-zen`, `gemini`, `ollama-cloud`, `nvidia`): disse er rate/concurrency-limited. Vi klassifiserer dem `recurring-uncapped` og** aldri summere dem** — multiplisere `RPM × 24/7 × 30d` ville produsere et fantasitak (inflasjonen vi avviser). NVIDIA sin API er kun prøvebruk; se ToS påminnelsen nedenfor.
 - **Boost for å låse opp innskudd:** en engangs liten påfylling som permanent øker en gratis kvote (OpenRouter: $10 → 1000 req/day ≈ +24M/mo). Rapportert som en egen figur, holdt utenfor den jevne overskriften.
 - **Kvalifikasjonsbaserte kvoter** (`eligibilityGate: "regional-identity"`): en reell tilbakevendende kvote som bare åpner etter en regionbundet identitetssjekk (fastlands-Kina-verifisering av ekte navn i dag). Telles med samme pool-dedupe-regel til en egen figur (`gatedRecurringTokens`), aldri i den jevne overskriften. Regimet (`freeType`) er uendret, så ruting er uendret.
 - **Bevisklasser.** Regelen: et tall i katalogen siterer kilden i en `// evidence:` -kommentar ved siden av oppføringen — `public-page` (en leverandørside alle kan lese), `api-public` (et uautentisert endepunkt for leverandøren, f.eks. NaraRouter offentlige planers endepunkt på router.bynara.id), eller `console-verified <date> por <who>` (figuren er bare synlig i en kommentar, som har sett den offentlige siden, og som står offentlig). Staten i dag: de fem blokkene som ble revidert 2026-09-02 bærer den (`gemini`, `groq`, `mistral`, `ollama-cloud`, `nara`); oppføringer som er før re-revisjonen 2026-09-02, arver den tidligere forskningen til de blir berørt; noen** ny eller endret** nummer uten beviskommentar er en feil. I dag er det bare `mistral` som er konsollverifisert.
@@ -227,75 +227,75 @@ De fleste tall for «gratis tokens per måned» på dette området er summer av 
 
 ---
 
-## Gratisnivå per leverandør (Bytez/Nous kontrollert 2026-10-15; rader kontrollert på nytt 2026-09-02; øvrige 2026-06-17)
+## Gratis-nivå per leverandør (Bytez/Nous sjekket 2026-10-15; revidert rader 2026-09-02; andre 2026-06-17)
 
-> Generert på nytt fra modellkatalogen per modell (`open-sse/config/freeModelCatalog.ts`), med duplikater fjernet på tvers av pooler. Sortert etter tilbakevendende, stabile tokens/måned. `uncapped*` = permanent gratis, men uten publisert tokenbegrensning (begrenset av hastighet/kon­kurranse) — reell tilgang, **ikke inkludert i totalsummen i overskriften**. `—` = kun kreditt / uten nøkkel / kan ikke kvantifiseres i tokens.
+> Regenerert fra katalogen per modell (`open-sse/config/freeModelCatalog.ts`), pool-deduped. Sortert etter gjentakende jevn tokens/mo. `uncapped*` = permanent gratis, men ingen publisert token cap (rate/concurrency-limited) — reell tilgang,** ikke** oppsummert i overskriften. `—` = kun kreditt / nøkkelfri / ikke kvantifiserbar token.
 
-| Leverandør       | Gratisordning        | Stabile tokens/mnd. | Første måneds kreditt | Vilkår        | Modeller |
-| ---------------- | -------------------- | ------------------- | --------------------- | ------------- | -------- |
-| `mistral`        | gjentakende          | ~1.00B              | —                     | vær forsiktig | 5        |
-| `nara`           | gjentakende          | ~210M               | —                     | vær forsiktig | 8        |
-| `llm7`           | gjentakende          | ~150M               | —                     | vær forsiktig | 4        |
-| `xkiro`          | gjentakende          | ~150M               | —                     | vær forsiktig | 39       |
-| `longcat`        | engangs              | —                   | 10M                   | vær forsiktig | 1        |
-| `cerebras`       | engangs              | —                   | $5 kreditt            | vær forsiktig | 2        |
-| `cloudflare-ai`  | gjentakende          | ~30M                | —                     | vær forsiktig | 9        |
-| `groq`           | gjentakende          | ~30M                | —                     | vær forsiktig | 5        |
-| `api-airforce`   | gjentakende          | ~24M                | —                     | vær forsiktig | 7        |
-| `bluesminds`     | gjentakende          | ~7M                 | —                     | uklar         | 22       |
-| `sambanova`      | gjentakende          | ~6M                 | —                     | vær forsiktig | 5        |
-| `arcee-ai`       | gjentakende          | ~5M                 | —                     | vær forsiktig | 1        |
-| `bazaarlink`     | gjentakende          | ~4M                 | —                     | vær forsiktig | 32       |
-| `openrouter`     | gjentakende          | ~1M                 | —                     | vær forsiktig | 1        |
-| `cohere`         | gjentakende          | ~800K               | —                     | vær forsiktig | 6        |
-| `huggingchat`    | gjentakende          | ~500K               | —                     | vær forsiktig | 4        |
-| `morph`          | gjentakende          | ~400K               | —                     | ok            | 2        |
-| `huggingface`    | gjentakende          | ~200K               | —                     | vær forsiktig | 6        |
-| `kiro`           | gjentakende          | ~25K                | —                     | unngå         | 12       |
-| `glm-cn`         | ubegrenset           | ubegrenset\*        | ~20M                  | ok            | 4        |
-| `baidu`          | ubegrenset           | ubegrenset\*        | —                     | vær forsiktig | 1        |
-| `gemini`         | ubegrenset           | ubegrenset\*        | —                     | vær forsiktig | 4        |
-| `kilo-gateway`   | ubegrenset           | ubegrenset\*        | —                     | vær forsiktig | 7        |
-| `ollama-cloud`   | ubegrenset           | ubegrenset\*        | —                     | uklar         | 8        |
-| `opencode-zen`   | ubegrenset           | ubegrenset\*        | —                     | vær forsiktig | 10       |
-| `tencent`        | ubegrenset           | ubegrenset\*        | —                     | vær forsiktig | 1        |
-| `vertex`         | registreringskreditt | —                   | ~300M                 | vær forsiktig | 10       |
-| `agentrouter`    | registreringskreditt | —                   | ~200M                 | vær forsiktig | 4        |
-| `predibase`      | registreringskreditt | —                   | ~25M                  | vær forsiktig | 1        |
-| `doubao`         | registreringskreditt | —                   | ~15M                  | uklar         | 1        |
-| `ai21`           | registreringskreditt | —                   | ~10M                  | unngå         | 2        |
-| `deepseek`       | registreringskreditt | —                   | ~5M                   | ok            | 2        |
-| `hyperbolic`     | registreringskreditt | —                   | ~5M                   | ok            | 8        |
-| `nscale`         | registreringskreditt | —                   | ~5M                   | vær forsiktig | 6        |
-| `bytez`          | kreditt (gjent.)     | —                   | ukjent                | uklar         | 1        |
-| `deepinfra`      | registreringskreditt | —                   | ~1M                   | vær forsiktig | 22       |
-| `fireworks`      | registreringskreditt | —                   | ~1M                   | unngå         | 10       |
-| `nebius`         | registreringskreditt | —                   | ~1M                   | vær forsiktig | 1        |
-| `qoder`          | registreringskreditt | —                   | ~1M                   | vær forsiktig | 14       |
-| `scaleway`       | registreringskreditt | —                   | ~1M                   | ok            | 6        |
-| `novita`         | registreringskreditt | —                   | ~500K                 | vær forsiktig | 1        |
-| `agy`            | uten nøkkel          | —                   | —                     | unngå         | 16       |
-| `baichuan`       | uten nøkkel          | —                   | —                     | uklar         | 1        |
-| `blackbox`       | uten nøkkel          | —                   | —                     | unngå         | 6        |
-| `coze`           | uten nøkkel          | —                   | —                     | unngå         | 1        |
-| `duckduckgo-web` | uten nøkkel          | —                   | —                     | unngå         | 6        |
-| `freemodel-dev`  | uten nøkkel          | —                   | —                     | ukjent        | 4        |
-| `friendliai`     | uten nøkkel          | —                   | —                     | unngå         | 2        |
-| `iflytek`        | uten nøkkel          | —                   | —                     | unngå         | 1        |
-| `inference-net`  | uten nøkkel          | —                   | —                     | vær forsiktig | 3        |
-| `liquid`         | uten nøkkel          | —                   | —                     | ukjent        | 1        |
-| `monsterapi`     | uten nøkkel          | —                   | —                     | uklar         | 1        |
-| `muse-spark-web` | uten nøkkel          | —                   | —                     | unngå         | 3        |
-| `nlpcloud`       | uten nøkkel          | —                   | —                     | unngå         | 1        |
-| `nvidia`         | ubegrenset           | ubegrenset\*        | —                     | vær forsiktig | 2        |
-| `pollinations`   | uten nøkkel          | —                   | —                     | vær forsiktig | 31       |
-| `publicai`       | uten nøkkel          | —                   | —                     | vær forsiktig | 3        |
-| `reka`           | uten nøkkel          | —                   | —                     | vær forsiktig | 2        |
-| `sensenova`      | uten nøkkel          | —                   | —                     | vær forsiktig | 1        |
-| `sparkdesk`      | nøkkelløs            | —                   | —                     | forsiktig     | 1        |
-| `stepfun`        | nøkkelløs            | —                   | —                     | ok            | 1        |
-| `t3-web`         | nøkkelløs            | —                   | —                     | unngå         | 23       |
-| `uncloseai`      | nøkkelløs            | —                   | —                     | forsiktig     | 3        |
+| Leverandør       | Gratis type          | Stødig tokens/mo | Første måneds kreditt | ToS          | Modeller |
+| ---------------- | -------------------- | ---------------- | --------------------- | ------------ | -------- |
+| `mistral`        | tilbakevendende      | ~ 1.00B          | —                     | forsiktighet | 5        |
+| `nara`           | tilbakevendende      | ~ 210M           | —                     | forsiktighet | 8        |
+| `llm7`           | tilbakevendende      | ~ 150M           | —                     | forsiktighet | 4        |
+| `xkiro`          | tilbakevendende      | ~ 150M           | —                     | forsiktighet | 39       |
+| `longcat`        | engangs              | —                | 10M                   | forsiktighet | 1        |
+| `cerebras`       | engangs              | —                | $5 kreditt            | forsiktighet | 2        |
+| `cloudflare-ai`  | tilbakevendende      | ~ 30M            | —                     | forsiktighet | 9        |
+| `groq`           | tilbakevendende      | ~ 30M            | —                     | forsiktighet | 5        |
+| `api-airforce`   | tilbakevendende      | ~ 24M            | —                     | forsiktighet | 7        |
+| `bluesminds`     | tilbakevendende      | ~ 7M             | —                     | tvetydig     | 22       |
+| `sambanova`      | tilbakevendende      | ~ 6M             | —                     | forsiktighet | 5        |
+| `arcee-ai`       | tilbakevendende      | ~ 5M             | —                     | forsiktighet | 1        |
+| `bazaarlink`     | tilbakevendende      | ~ 4M             | —                     | forsiktighet | 32       |
+| `openrouter`     | tilbakevendende      | ~ 1M             | —                     | forsiktighet | 1        |
+| `cohere`         | tilbakevendende      | ~ 800K           | —                     | forsiktighet | 6        |
+| `huggingchat`    | tilbakevendende      | ~ 500K           | —                     | forsiktighet | 4        |
+| `morph`          | tilbakevendende      | ~ 400K           | —                     | ok           | 2        |
+| `huggingface`    | tilbakevendende      | ~ 200K           | —                     | forsiktighet | 6        |
+| `kiro`           | tilbakevendende      | ~ 25K            | —                     | unngå        | 12       |
+| `glm-cn`         | uten lokk            | uavkortet\*      | ~ 20M                 | ok           | 4        |
+| `baidu`          | uten lokk            | uavkortet\*      | —                     | forsiktighet | 1        |
+| `gemini`         | uten lokk            | uavkortet\*      | —                     | forsiktighet | 4        |
+| `kilo-gateway`   | uten lokk            | uavkortet\*      | —                     | forsiktighet | 7        |
+| `ollama-cloud`   | uten lokk            | uavkortet\*      | —                     | tvetydig     | 8        |
+| `opencode-zen`   | uten lokk            | uavkortet\*      | —                     | forsiktighet | 10       |
+| `tencent`        | uten lokk            | uavkortet\*      | —                     | forsiktighet | 1        |
+| `vertex`         | registreringskreditt | —                | ~ 300M                | forsiktighet | 10       |
+| `agentrouter`    | registreringskreditt | —                | ~ 200M                | forsiktighet | 4        |
+| `predibase`      | registreringskreditt | —                | ~ 25M                 | forsiktighet | 1        |
+| `doubao`         | registreringskreditt | —                | ~ 15M                 | tvetydig     | 1        |
+| `ai21`           | registreringskreditt | —                | ~ 10M                 | unngå        | 2        |
+| `deepseek`       | registreringskreditt | —                | ~ 5M                  | ok           | 2        |
+| `hyperbolic`     | registreringskreditt | —                | ~ 5M                  | ok           | 8        |
+| `nscale`         | registreringskreditt | —                | ~ 5M                  | forsiktighet | 6        |
+| `bytez`          | kreditt (rek.)       | —                | ukjent                | tvetydig     | 1        |
+| `deepinfra`      | registreringskreditt | —                | ~ 1M                  | forsiktighet | 22       |
+| `fireworks`      | registreringskreditt | —                | ~ 1M                  | unngå        | 10       |
+| `nebius`         | registreringskreditt | —                | ~ 1M                  | forsiktighet | 1        |
+| `qoder`          | registreringskreditt | —                | ~ 1M                  | forsiktighet | 14       |
+| `scaleway`       | registreringskreditt | —                | ~ 1M                  | ok           | 6        |
+| `novita`         | registreringskreditt | —                | ~ 500K                | forsiktighet | 1        |
+| `agy`            | nøkkelfri            | —                | —                     | unngå        | 16       |
+| `baichuan`       | nøkkelfri            | —                | —                     | tvetydig     | 1        |
+| `blackbox`       | nøkkelfri            | —                | —                     | unngå        | 6        |
+| `coze`           | nøkkelfri            | —                | —                     | unngå        | 1        |
+| `duckduckgo-web` | nøkkelfri            | —                | —                     | unngå        | 6        |
+| `freemodel-dev`  | nøkkelfri            | —                | —                     | ukjent       | 4        |
+| `friendliai`     | nøkkelfri            | —                | —                     | unngå        | 2        |
+| `iflytek`        | nøkkelfri            | —                | —                     | unngå        | 1        |
+| `inference-net`  | nøkkelfri            | —                | —                     | forsiktighet | 3        |
+| `liquid`         | nøkkelfri            | —                | —                     | ukjent       | 1        |
+| `monsterapi`     | nøkkelfri            | —                | —                     | tvetydig     | 1        |
+| `muse-spark-web` | nøkkelfri            | —                | —                     | unngå        | 3        |
+| `nlpcloud`       | nøkkelfri            | —                | —                     | unngå        | 1        |
+| `nvidia`         | uten lokk            | uavkortet\*      | —                     | forsiktighet | 3        |
+| `pollinations`   | nøkkelfri            | —                | —                     | forsiktighet | 31       |
+| `publicai`       | nøkkelfri            | —                | —                     | forsiktighet | 3        |
+| `reka`           | nøkkelfri            | —                | —                     | forsiktighet | 2        |
+| `sensenova`      | nøkkelfri            | —                | —                     | forsiktighet | 1        |
+| `sparkdesk`      | nøkkelfri            | —                | —                     | forsiktighet | 1        |
+| `stepfun`        | nøkkelfri            | —                | —                     | ok           | 1        |
+| `t3-web`         | nøkkelfri            | —                | —                     | unngå        | 23       |
+| `uncloseai`      | nøkkelfri            | —                | —                     | forsiktighet | 3        |
 
 ---
 

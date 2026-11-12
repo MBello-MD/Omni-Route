@@ -99,10 +99,10 @@ có chủ đích.
 ## Phương pháp & lưu ý
 
 - Các số là** ước tính giới hạn trên** từ các giới hạn cấp miễn phí được ghi lại của mỗi nhà cung cấp kể từ** 2026-06-17** , được thu thập bởi nghiên cứu web. Bậc miễn phí thay đổi liên tục — xác minh lại trước khi dựa vào một con số.
-- **Thật là một mục thực sự chứng minh cho.** Không có mục nào mang xếp hạng độ tin cậy trên mỗi hàng và API không phục vụ — nào coi mọi con số ở trên là ước tính có cùng chất lượng, không nêu rõ. Hai sự kiện khác nhau, bởi vì chúng được sắp xếp bằng tay chứ không phải được suy luận: 44 mục nhập có điểm dừng cứng được ghi chép độc lập (39 trong số đó là các hàng xKiro, tất cả đều có chung một khoản trợ cấp hàng ngày) và 21 mục nhập mang thông tin tiết lộ về đào tạo kịp thời. `hardStopGuaranteed` chỉ được đặt khi các điều khoản riêng của nhà cung cấp nói rằng việc vượt quá mức cho phép miễn phí sẽ từ chối yêu cầu thay vì âm thầm bắt đầu lập hóa đơn cho bạn, với nguồn trong nhận xét bên cạnh mục nhập; nó không bao giờ được đặt mặc định là `true` và mục nhập chưa có ai xác minh vẫn không được đặt. Vì vậy, thiếu cờ dừng cứng có nghĩa là "không được thiết lập", không phải "đã biết gửi hóa đơn cho bạn".** chế độ STRICT** (bộ bảo vệ định tuyến `freeAccessPolicy=strict` chọn tham gia) chỉ tin cậy các mục mang cờ; mọi bậc miễn phí khác đều bị loại trừ dưới dạng `no-hard-stop` (xem `open-sse/services/autoCombo/strictZeroCostFilter.ts`). Khi bộ bảo vệ lọc một nhóm, nhật ký mà người vận hành có thể nhìn thấy sẽ báo cáo cả số lượng loại trừ và phần chia sẻ `no-hard-stop` của nó.
+- **Thật là một mục thực sự chứng minh cho.** Không có mục nào mang xếp hạng độ tin cậy trên mỗi hàng và API không phục vụ — nào coi mọi con số ở trên là ước tính có cùng chất lượng, không nêu rõ. Hai sự kiện khác nhau, bởi vì chúng được sắp xếp bằng tay chứ không phải được suy luận: 44 mục nhập có điểm dừng cứng được ghi chép độc lập (39 trong số đó là các hàng xKiro, tất cả đều có chung một khoản trợ cấp hàng ngày) và 22 mục nhập mang thông tin tiết lộ về đào tạo kịp thời. `hardStopGuaranteed` chỉ được đặt khi các điều khoản riêng của nhà cung cấp nói rằng việc vượt quá mức cho phép miễn phí sẽ từ chối yêu cầu thay vì âm thầm bắt đầu lập hóa đơn cho bạn, với nguồn trong nhận xét bên cạnh mục nhập; nó không bao giờ được đặt mặc định là `true` và mục nhập chưa có ai xác minh vẫn không được đặt. Vì vậy, thiếu cờ dừng cứng có nghĩa là "không được thiết lập", không phải "đã biết gửi hóa đơn cho bạn".** chế độ STRICT** (bộ bảo vệ định tuyến `freeAccessPolicy=strict` chọn tham gia) chỉ tin cậy các mục mang cờ; mọi bậc miễn phí khác đều bị loại trừ dưới dạng `no-hard-stop` (xem `open-sse/services/autoCombo/strictZeroCostFilter.ts`). Khi bộ bảo vệ lọc một nhóm, nhật ký mà người vận hành có thể nhìn thấy sẽ báo cáo cả số lượng loại trừ và phần chia sẻ `no-hard-stop` của nó.
 - `estMonthlyFreeTokens` = chỉ có mã thông báo định kỳ hàng tháng.** Tín dụng đăng ký một lần không tái diễn** và được tính là 0. Các bậc không tiếp tục cũng là 0.
 - Giới hạn mã thông báo hàng ngày → `monthly = daily × 30`. Chỉ RPD ghi lại → `RPD × ~800 output tokens × 30`. Chỉ RPM/TPM (không có giới hạn hàng ngày) →** chưa mở nắp** (xem bên dưới).
-- **Miễn phí vĩnh viễn nhưng không có giới hạn mã thông báo được công bố** (`glm-cn`, `tencent`, `baidu`, `kilo-gateway`, `opencode-zen`, `gemini`, `ollama-cloud`): đây là những quyền truy cập miễn phí định kỳ thực sự, rate/concurrency-limited. Chúng tôi phân loại chúng `recurring-uncapped` và** không bao giờ tính tổng chúng** — nhân `RPM × 24/7 × 30d` sẽ tạo ra một mức trần tưởng tượng (lạm phát mà chúng ta bác bỏ). Chúng được liệt kê để bạn biết chúng tồn tại.
+- **Truy cập miễn phí, nhưng không có giới hạn mã thông báo được công bố** (`glm-cn`, `tencent`, `baidu`, `kilo-gateway`, `opencode-zen`, `gemini`, `ollama-cloud`, `nvidia`): đây là rate/concurrency-limited. Chúng tôi phân loại chúng `recurring-uncapped` và** không bao giờ tính tổng chúng** — nhân `RPM × 24/7 × 30d` sẽ tạo ra một mức trần tưởng tượng (lạm phát mà chúng ta bác bỏ). NVIDIA's API chỉ dùng thử; xem cảnh báo ToS của nó bên dưới.
 - **Tăng cường mở khóa tiền gửi:** khoản nạp tiền nhỏ một lần sẽ tăng vĩnh viễn hạn ngạch miễn phí (OpenRouter: $10 → 1000 req/day ≈ +24M/mo). Được báo cáo dưới dạng một số liệu riêng biệt, nằm ngoài tiêu đề thông thường.
 - **Hạn ngạch đủ điều kiện** (`eligibilityGate: "regional-identity"`): hạn ngạch định kỳ thực sự chỉ mở sau khi kiểm tra danh tính trong phạm vi khu vực (xác minh tên thật ở Trung Quốc đại lục hiện nay). Được tính theo cùng một quy tắc trừ chung thành một số riêng biệt (`gatedRecurringTokens`), không bao giờ được tính vào dòng tiêu đề thông thường. Chế độ (`freeType`) không thay đổi nên việc định tuyến không thay đổi.
 - **Các lớp bằng chứng** Quy tắc: một số trong danh mục trích dẫn nguồn của nó trong nhận xét `// evidence:` bên cạnh mục nhập — `public-page` (trang nhà cung cấp mà bất kỳ ai cũng có thể đọc), `api-public` (điểm cuối không được xác thực của nhà cung cấp, ví dụ: điểm cuối kế hoạch công khai của NaraRouter tại router.bynara.id) hoặc `console-verified <date> por <who>` (hình này chỉ hiển thị bên trong bảng điều khiển tài khoản; nhận xét ghi lại ai đã nhìn thấy nó và khi nào cũng như trang công khai cho biết giới hạn tồn tại). Trạng thái ngày nay: năm khối được kiểm toán lại vào ngày 2026-09-02 mang nó (`gemini`, `groq`, `mistral`, `ollama-cloud`, `nara`); các mục nhập trước đợt kiểm tra lại ngày 2026-09-02 kế thừa nghiên cứu trước đó cho đến khi chúng được chạm tới; bất kì** mới hoặc thay đổi** số không có bình luận bằng chứng là một lỗi. Hôm nay chỉ có `mistral` được xác minh bằng bảng điều khiển.
@@ -227,75 +227,75 @@ Hầu hết các số liệu về "token miễn phí mỗi tháng" trong lĩnh v
 
 ---
 
-## Gói miễn phí theo từng nhà cung cấp (Bytez/Nous được kiểm tra vào 2026-10-15; các dòng được kiểm tra lại vào 2026-09-02; các dòng khác vào 2026-06-17)
+## Bậc miễn phí cho mỗi nhà cung cấp (Bytez/Nous đã kiểm tra 2026-10-15; các hàng được kiểm tra lại 2026-09-02; các hàng khác 2026-06-17)
 
-> Được tạo lại từ danh mục theo từng mô hình (`open-sse/config/freeModelCatalog.ts`), đã loại trùng theo nhóm. Được sắp xếp theo số token định kỳ ổn định mỗi tháng. `uncapped*` = miễn phí vĩnh viễn nhưng không có giới hạn token được công bố (bị giới hạn bởi tốc độ/số lượng đồng thời) — quyền truy cập thực tế, **không được cộng vào tổng số chính**. `—` = chỉ dùng tín dụng / không cần khóa / không thể định lượng theo token.
+> Được tạo lại từ danh mục trên mỗi mô hình (`open-sse/config/freeModelCatalog.ts`), được loại bỏ nhóm. Được sắp xếp theo định kỳ tokens/mo. `uncapped*` = ổn định miễn phí vĩnh viễn nhưng không có giới hạn mã thông báo được xuất bản (rate/concurrency-limited) — truy cập thực sự,** không** tóm tắt vào tiêu đề. `—` = chỉ tín dụng/không cần chìa khóa/không thể định lượng mã thông báo.
 
-| Nhà cung cấp     | Loại miễn phí        | Token ổn định/tháng | Tín dụng tháng đầu tiên | Điều khoản dịch vụ | Mô hình |
-| ---------------- | -------------------- | ------------------- | ----------------------- | ------------------ | ------- |
-| `mistral`        | định kỳ              | ~1.00B              | —                       | thận trọng         | 5       |
-| `nara`           | định kỳ              | ~210M               | —                       | thận trọng         | 8       |
-| `llm7`           | định kỳ              | ~150M               | —                       | thận trọng         | 4       |
-| `xkiro`          | định kỳ              | ~150M               | —                       | thận trọng         | 39      |
-| `longcat`        | một lần              | —                   | 10M                     | thận trọng         | 1       |
-| `cerebras`       | một lần              | —                   | tín dụng $5             | thận trọng         | 2       |
-| `cloudflare-ai`  | định kỳ              | ~30M                | —                       | thận trọng         | 9       |
-| `groq`           | định kỳ              | ~30M                | —                       | thận trọng         | 5       |
-| `api-airforce`   | định kỳ              | ~24M                | —                       | thận trọng         | 7       |
-| `bluesminds`     | định kỳ              | ~7M                 | —                       | không rõ ràng      | 22      |
-| `sambanova`      | định kỳ              | ~6M                 | —                       | thận trọng         | 5       |
-| `arcee-ai`       | định kỳ              | ~5M                 | —                       | thận trọng         | 1       |
-| `bazaarlink`     | định kỳ              | ~4M                 | —                       | thận trọng         | 32      |
-| `openrouter`     | định kỳ              | ~1M                 | —                       | thận trọng         | 1       |
-| `cohere`         | định kỳ              | ~800K               | —                       | thận trọng         | 6       |
-| `huggingchat`    | định kỳ              | ~500K               | —                       | thận trọng         | 4       |
-| `morph`          | định kỳ              | ~400K               | —                       | ổn                 | 2       |
-| `huggingface`    | định kỳ              | ~200K               | —                       | thận trọng         | 6       |
-| `kiro`           | định kỳ              | ~25K                | —                       | nên tránh          | 12      |
-| `glm-cn`         | không giới hạn       | không giới hạn\*    | ~20M                    | ổn                 | 4       |
-| `baidu`          | không giới hạn       | không giới hạn\*    | —                       | thận trọng         | 1       |
-| `gemini`         | không giới hạn       | không giới hạn\*    | —                       | thận trọng         | 4       |
-| `kilo-gateway`   | không giới hạn       | không giới hạn\*    | —                       | thận trọng         | 7       |
-| `ollama-cloud`   | không giới hạn       | không giới hạn\*    | —                       | không rõ ràng      | 8       |
-| `opencode-zen`   | không giới hạn       | không giới hạn\*    | —                       | thận trọng         | 10      |
-| `tencent`        | không giới hạn       | không giới hạn\*    | —                       | thận trọng         | 1       |
-| `vertex`         | tín dụng khi đăng ký | —                   | ~300M                   | thận trọng         | 10      |
-| `agentrouter`    | tín dụng khi đăng ký | —                   | ~200M                   | thận trọng         | 4       |
-| `predibase`      | tín dụng khi đăng ký | —                   | ~25M                    | thận trọng         | 1       |
-| `doubao`         | tín dụng khi đăng ký | —                   | ~15M                    | không rõ ràng      | 1       |
-| `ai21`           | tín dụng khi đăng ký | —                   | ~10M                    | nên tránh          | 2       |
-| `deepseek`       | tín dụng khi đăng ký | —                   | ~5M                     | ổn                 | 2       |
-| `hyperbolic`     | tín dụng khi đăng ký | —                   | ~5M                     | ổn                 | 8       |
-| `nscale`         | tín dụng khi đăng ký | —                   | ~5M                     | thận trọng         | 6       |
-| `bytez`          | tín dụng (định kỳ)   | —                   | không rõ                | không rõ ràng      | 1       |
-| `deepinfra`      | tín dụng khi đăng ký | —                   | ~1M                     | thận trọng         | 22      |
-| `fireworks`      | tín dụng khi đăng ký | —                   | ~1M                     | nên tránh          | 10      |
-| `nebius`         | tín dụng khi đăng ký | —                   | ~1M                     | thận trọng         | 1       |
-| `qoder`          | tín dụng khi đăng ký | —                   | ~1M                     | thận trọng         | 14      |
-| `scaleway`       | tín dụng khi đăng ký | —                   | ~1M                     | ổn                 | 6       |
-| `novita`         | tín dụng khi đăng ký | —                   | ~500K                   | thận trọng         | 1       |
-| `agy`            | không cần khóa       | —                   | —                       | nên tránh          | 16      |
-| `baichuan`       | không cần khóa       | —                   | —                       | không rõ ràng      | 1       |
-| `blackbox`       | không cần khóa       | —                   | —                       | nên tránh          | 6       |
-| `coze`           | không cần khóa       | —                   | —                       | nên tránh          | 1       |
-| `duckduckgo-web` | không cần khóa       | —                   | —                       | nên tránh          | 6       |
-| `freemodel-dev`  | không cần khóa       | —                   | —                       | chưa rõ            | 4       |
-| `friendliai`     | không cần khóa       | —                   | —                       | nên tránh          | 2       |
-| `iflytek`        | không cần khóa       | —                   | —                       | nên tránh          | 1       |
-| `inference-net`  | không cần khóa       | —                   | —                       | thận trọng         | 3       |
-| `liquid`         | không cần khóa       | —                   | —                       | chưa rõ            | 1       |
-| `monsterapi`     | không cần khóa       | —                   | —                       | không rõ ràng      | 1       |
-| `muse-spark-web` | không cần khóa       | —                   | —                       | nên tránh          | 3       |
-| `nlpcloud`       | không cần khóa       | —                   | —                       | nên tránh          | 1       |
-| `nvidia`         | không giới hạn       | không giới hạn\*    | —                       | thận trọng         | 2       |
-| `pollinations`   | không cần khóa       | —                   | —                       | thận trọng         | 31      |
-| `publicai`       | không cần khóa       | —                   | —                       | thận trọng         | 3       |
-| `reka`           | không cần khóa       | —                   | —                       | thận trọng         | 2       |
-| `sensenova`      | không cần khóa       | —                   | —                       | thận trọng         | 1       |
-| `sparkdesk`      | keyless              | —                   | —                       | thận trọng         | 1       |
-| `stepfun`        | keyless              | —                   | —                       | đạt                | 1       |
-| `t3-web`         | keyless              | —                   | —                       | tránh              | 23      |
-| `uncloseai`      | keyless              | —                   | —                       | thận trọng         | 3       |
+| nhà cung cấp     | Loại miễn phí       | tokens/mo ổn định     | Tín dụng tháng đầu tiên | ToS        | Người mẫu |
+| ---------------- | ------------------- | --------------------- | ----------------------- | ---------- | --------- |
+| `mistral`        | định kỳ             | ~ 1,00B               | —                       | thận trọng | 5         |
+| `nara`           | định kỳ             | ~ 210M                | —                       | thận trọng | 8         |
+| `llm7`           | định kỳ             | ~ 150M                | —                       | thận trọng | 4         |
+| `xkiro`          | định kỳ             | ~ 150M                | —                       | thận trọng | 39        |
+| `longcat`        | một lần             | —                     | 10M                     | thận trọng | 1         |
+| `cerebras`       | một lần             | —                     | khoản tín dụng $5       | thận trọng | 2         |
+| `cloudflare-ai`  | định kỳ             | ~ 30M                 | —                       | thận trọng | 9         |
+| `groq`           | định kỳ             | ~ 30M                 | —                       | thận trọng | 5         |
+| `api-airforce`   | định kỳ             | ~ 24M                 | —                       | thận trọng | 7         |
+| `bluesminds`     | định kỳ             | ~ 7M                  | —                       | mơ hồ      | 22        |
+| `sambanova`      | định kỳ             | ~ 6M                  | —                       | thận trọng | 5         |
+| `arcee-ai`       | định kỳ             | ~ 5M                  | —                       | thận trọng | 1         |
+| `bazaarlink`     | định kỳ             | ~ 4M                  | —                       | thận trọng | 32        |
+| `openrouter`     | định kỳ             | ~ 1M                  | —                       | thận trọng | 1         |
+| `cohere`         | định kỳ             | ~ 800K                | —                       | thận trọng | 6         |
+| `huggingchat`    | định kỳ             | ~ 500K                | —                       | thận trọng | 4         |
+| `morph`          | định kỳ             | ~ 400K                | —                       | Được rồi   | 2         |
+| `huggingface`    | định kỳ             | ~ 200K                | —                       | thận trọng | 6         |
+| `kiro`           | định kỳ             | ~ 25K                 | —                       | tránh xa   | 12        |
+| `glm-cn`         | chưa mở nắp         | chưa được khai thác\* | ~ 20M                   | Được rồi   | 4         |
+| `baidu`          | chưa mở nắp         | chưa được khai thác\* | —                       | thận trọng | 1         |
+| `gemini`         | chưa mở nắp         | chưa được khai thác\* | —                       | thận trọng | 4         |
+| `kilo-gateway`   | chưa mở nắp         | chưa được khai thác\* | —                       | thận trọng | 7         |
+| `ollama-cloud`   | chưa mở nắp         | chưa được khai thác\* | —                       | mơ hồ      | 8         |
+| `opencode-zen`   | chưa mở nắp         | chưa được khai thác\* | —                       | thận trọng | 10        |
+| `tencent`        | chưa mở nắp         | chưa được khai thác\* | —                       | thận trọng | 1         |
+| `vertex`         | tín dụng đăng ký    | —                     | ~ 300M                  | thận trọng | 10        |
+| `agentrouter`    | tín dụng đăng ký    | —                     | ~ 200M                  | thận trọng | 4         |
+| `predibase`      | tín dụng đăng ký    | —                     | ~ 25M                   | thận trọng | 1         |
+| `doubao`         | tín dụng đăng ký    | —                     | ~ 15M                   | mơ hồ      | 1         |
+| `ai21`           | tín dụng đăng ký    | —                     | ~ 10M                   | tránh xa   | 2         |
+| `deepseek`       | tín dụng đăng ký    | —                     | ~ 5M                    | Được rồi   | 2         |
+| `hyperbolic`     | tín dụng đăng ký    | —                     | ~ 5M                    | Được rồi   | 8         |
+| `nscale`         | tín dụng đăng ký    | —                     | ~ 5M                    | thận trọng | 6         |
+| `bytez`          | tín dụng (rec.)     | —                     | không rõ                | mơ hồ      | 1         |
+| `deepinfra`      | tín dụng đăng ký    | —                     | ~ 1M                    | thận trọng | 22        |
+| `fireworks`      | tín dụng đăng ký    | —                     | ~ 1M                    | tránh xa   | 10        |
+| `nebius`         | tín dụng đăng ký    | —                     | ~ 1M                    | thận trọng | 1         |
+| `qoder`          | tín dụng đăng ký    | —                     | ~ 1M                    | thận trọng | 14        |
+| `scaleway`       | tín dụng đăng ký    | —                     | ~ 1M                    | Được rồi   | 6         |
+| `novita`         | tín dụng đăng ký    | —                     | ~ 500K                  | thận trọng | 1         |
+| `agy`            | không cần chìa khóa | —                     | —                       | tránh xa   | 16        |
+| `baichuan`       | không cần chìa khóa | —                     | —                       | mơ hồ      | 1         |
+| `blackbox`       | không cần chìa khóa | —                     | —                       | tránh xa   | 6         |
+| `coze`           | không cần chìa khóa | —                     | —                       | tránh xa   | 1         |
+| `duckduckgo-web` | không cần chìa khóa | —                     | —                       | tránh xa   | 6         |
+| `freemodel-dev`  | không cần chìa khóa | —                     | —                       | không rõ   | 4         |
+| `friendliai`     | không cần chìa khóa | —                     | —                       | tránh xa   | 2         |
+| `iflytek`        | không cần chìa khóa | —                     | —                       | tránh xa   | 1         |
+| `inference-net`  | không cần chìa khóa | —                     | —                       | thận trọng | 3         |
+| `liquid`         | không cần chìa khóa | —                     | —                       | không rõ   | 1         |
+| `monsterapi`     | không cần chìa khóa | —                     | —                       | mơ hồ      | 1         |
+| `muse-spark-web` | không cần chìa khóa | —                     | —                       | tránh xa   | 3         |
+| `nlpcloud`       | không cần chìa khóa | —                     | —                       | tránh xa   | 1         |
+| `nvidia`         | chưa mở nắp         | chưa được khai thác\* | —                       | thận trọng | 3         |
+| `pollinations`   | không cần chìa khóa | —                     | —                       | thận trọng | 31        |
+| `publicai`       | không cần chìa khóa | —                     | —                       | thận trọng | 3         |
+| `reka`           | không cần chìa khóa | —                     | —                       | thận trọng | 2         |
+| `sensenova`      | không cần chìa khóa | —                     | —                       | thận trọng | 1         |
+| `sparkdesk`      | không cần chìa khóa | —                     | —                       | thận trọng | 1         |
+| `stepfun`        | không cần chìa khóa | —                     | —                       | Được rồi   | 1         |
+| `t3-web`         | không cần chìa khóa | —                     | —                       | tránh xa   | 23        |
+| `uncloseai`      | không cần chìa khóa | —                     | —                       | thận trọng | 3         |
 
 ---
 

@@ -111,11 +111,11 @@ intentionnellement.
 ## Méthodologie et mises en garde
 
 - Les chiffres sont** estimations de la limite supérieure** des limites de niveau gratuit documentées de chaque fournisseur à compter du** 2026-06-17** , rassemblés par des recherches sur le Web. Les niveaux gratuits changent constamment — revérifiez avant de vous fier à un chiffre.
-- **De quoi une entrée se porte-t-elle réellement.** Aucune entrée ne comporte une cote de confiance par ligne, et le API ne sert aucun — traite chaque chiffre ci-dessus comme une estimation de la même qualité non déclarée. Deux faits sont différents, car ils sont sélectionnés manuellement plutôt que déduits : 44 entrées comportent un arrêt définitif documenté de manière indépendante (dont 39 lignes xKiro, qui partagent toutes une allocation journalière), et 21 entrées comportent une divulgation de formation rapide. `hardStopGuaranteed` n'est défini que lorsque les propres conditions du fournisseur indiquent que le dépassement de l'allocation gratuite refuse la demande plutôt que de commencer silencieusement à vous facturer, avec la source dans un commentaire à côté de l'entrée ; il n'est jamais défini par défaut sur `true` et une entrée que personne n'a vérifiée reste non définie. Ainsi, un indicateur d'arrêt définitif manquant signifie « non établi », et non « connu pour vous facturer ».** mode STRICT** (le garde de routage `freeAccessPolicy=strict` opt-in) ne fait confiance qu'aux entrées qui portent le drapeau ; tous les autres niveaux gratuits sont exclus en tant que `no-hard-stop` (voir `open-sse/services/autoCombo/strictZeroCostFilter.ts`). Lorsque le garde filtre un pool, le journal visible par l'opérateur indique à la fois le nombre d'exclusions et son partage `no-hard-stop`.
+- **De quoi une entrée se porte-t-elle réellement.** Aucune entrée ne comporte une cote de confiance par ligne, et le API ne sert aucun — traite chaque chiffre ci-dessus comme une estimation de la même qualité non déclarée. Deux faits sont différents, car ils sont sélectionnés manuellement plutôt que déduits : 44 entrées comportent un arrêt définitif documenté de manière indépendante (dont 39 lignes xKiro, qui partagent toutes une allocation journalière), et 22 entrées comportent une divulgation de formation rapide. `hardStopGuaranteed` n'est défini que lorsque les propres conditions du fournisseur indiquent que le dépassement de l'allocation gratuite refuse la demande plutôt que de commencer silencieusement à vous facturer, avec la source dans un commentaire à côté de l'entrée ; il n'est jamais défini par défaut sur `true` et une entrée que personne n'a vérifiée reste non définie. Ainsi, un indicateur d'arrêt définitif manquant signifie « non établi », et non « connu pour vous facturer ».** mode STRICT** (le garde de routage `freeAccessPolicy=strict` opt-in) ne fait confiance qu'aux entrées qui portent le drapeau ; tous les autres niveaux gratuits sont exclus en tant que `no-hard-stop` (voir `open-sse/services/autoCombo/strictZeroCostFilter.ts`). Lorsque le garde filtre un pool, le journal visible par l'opérateur indique à la fois le nombre d'exclusions et son partage `no-hard-stop`.
 - Jetons mensuels récurrents `estMonthlyFreeTokens` = uniquement.** Les crédits d'inscription uniques ne sont pas récurrents** et comptent pour 0. Les niveaux abandonnés sont également 0.
 - Plafond de jeton quotidien → `monthly = daily × 30`. Seul RPD a documenté → `RPD × ~800 output tokens × 30`. Seulement RPM/TPM (pas de plafond journalier) →** non plafonné** (voir ci-dessous).
-- **Gratuit en permanence, mais pas de plafond de jetons publié** (`glm-cn`, `tencent`, `baidu`, `kilo-gateway`, `opencode-zen`, `gemini`, `ollama-cloud`) : ce sont de véritables accès gratuits récurrents, rate/concurrency-limited. On les classe `recurring-uncapped` et** ne les résume jamais** — multipliant `RPM × 24/7 × 30d` produirait un plafond fantaisiste (l’inflation que nous rejetons). Ils sont répertoriés pour que vous sachiez qu'ils existent.
-- **Boost de déverrouillage de dépôt :** une petite recharge unique qui augmente de façon permanente un quota gratuit (OpenRouter: $10 → 1000 req/day ≈ +24M/mo). Signalé comme un chiffre distinct, tenu à l’écart du titre régulier.
+- **Accès gratuit, mais pas de plafond de jetons publié** (`glm-cn`, `tencent`, `baidu`, `kilo-gateway`, `opencode-zen`, `gemini`, `ollama-cloud`, `nvidia`) : ce sont rate/concurrency-limited. On les classe `recurring-uncapped` et** ne les résume jamais** — multipliant `RPM × 24/7 × 30d` produirait un plafond fantastique (l'inflation que nous rejetons). Le API de NVIDIA est destiné à un usage d'essai uniquement ; voir sa mise en garde ToS ci-dessous.
+- **Boost de déverrouillage de dépôt :** une petite recharge unique qui augmente de manière permanente un quota gratuit (OpenRouter: $10 → 1000 req/day ≈ +24M/mo). Signalé comme un chiffre distinct, tenu à l’écart du titre régulier.
 - **Quotas limités à l’éligibilité** (`eligibilityGate: "regional-identity"`) : un véritable quota récurrent qui n'est ouvert qu'après un contrôle d'identité lié à la région (vérification du nom réel en Chine continentale aujourd'hui). Compté avec la même règle de déduplication de pool dans un chiffre distinct (`gatedRecurringTokens`), jamais dans le titre constant. Le régime (`freeType`) est inchangé, donc le routage est inchangé.
 - **Cours de preuves.** La règle : un numéro dans le catalogue cite sa source dans un commentaire `// evidence:` à côté de l'entrée — `public-page` (une page du fournisseur que tout le monde peut lire), `api-public` (un point de terminaison non authentifié du fournisseur, par exemple le point de terminaison des plans publics de NaraRouter sur router.bynara.id), ou `console-verified <date> por <who>` (le chiffre n'est visible que dans une console de compte ; le commentaire enregistre qui l'a vu et quand, et la page publique qui indique que le plafond existe). L'état aujourd'hui : les cinq blocs réaudités le 02/09/2026 le portent (`gemini`, `groq`, `mistral`, `ollama-cloud`, `nara`) ; les entrées antérieures au réaudit du 02/09/2026 héritent des recherches antérieures jusqu'à ce qu'elles soient touchées ; n'importe lequel** nouveau ou modifié** le numéro sans commentaire de preuve est un bug. Aujourd'hui, seul `mistral` est vérifié par la console.
 
@@ -239,75 +239,75 @@ La plupart des chiffres de « jetons gratuits par mois » dans ce domaine sont o
 
 ---
 
-## Niveau gratuit par fournisseur (Bytez/Nous vérifiés le 2026-10-15 ; lignes réauditées le 2026-09-02 ; autres le 2026-06-17)
+## Niveau gratuit par fournisseur (Bytez/Nous vérifié le 15/10/2026 ; lignes réauditées le 02/09/2026 ; autres le 17/06/2026)
 
-> Régénéré à partir du catalogue par modèle (`open-sse/config/freeModelCatalog.ts`), avec dédoublonnage par pool. Trié par nombre récurrent stable de jetons/mois. `uncapped*` = gratuit en permanence, mais sans plafond de jetons publié (limité par le débit/la concurrence) — accès réel, **non additionné au total principal**. `—` = crédits uniquement / sans clé / quantification en jetons impossible.
+> Régénéré à partir du catalogue par modèle (`open-sse/config/freeModelCatalog.ts`), dédoublonné en pool. Trié par tokens/mo. stable récurrent `uncapped*` = gratuit en permanence mais pas de plafond de jeton publié (rate/concurrency-limited) accès réel —,** pas** résumé dans le titre. `—` = crédit uniquement / sans clé / non quantifiable par jeton.
 
-| Fournisseur      | Type de gratuité       | Tokens constants/mois | Crédit du premier mois | CGU      | Modèles |
-| ---------------- | ---------------------- | --------------------- | ---------------------- | -------- | ------- |
-| `mistral`        | récurrent              | ~1.00B                | —                      | prudence | 5       |
-| `nara`           | récurrent              | ~210M                 | —                      | prudence | 8       |
-| `llm7`           | récurrent              | ~150M                 | —                      | prudence | 4       |
-| `xkiro`          | récurrent              | ~150M                 | —                      | prudence | 39      |
-| `longcat`        | ponctuel               | —                     | 10M                    | prudence | 1       |
-| `cerebras`       | ponctuel               | —                     | crédit de $5           | prudence | 2       |
-| `cloudflare-ai`  | récurrent              | ~30M                  | —                      | prudence | 9       |
-| `groq`           | récurrent              | ~30M                  | —                      | prudence | 5       |
-| `api-airforce`   | récurrent              | ~24M                  | —                      | prudence | 7       |
-| `bluesminds`     | récurrent              | ~7M                   | —                      | ambigu   | 22      |
-| `sambanova`      | récurrent              | ~6M                   | —                      | prudence | 5       |
-| `arcee-ai`       | récurrent              | ~5M                   | —                      | prudence | 1       |
-| `bazaarlink`     | récurrent              | ~4M                   | —                      | prudence | 32      |
-| `openrouter`     | récurrent              | ~1M                   | —                      | prudence | 1       |
-| `cohere`         | récurrent              | ~800K                 | —                      | prudence | 6       |
-| `huggingchat`    | récurrent              | ~500K                 | —                      | prudence | 4       |
-| `morph`          | récurrent              | ~400K                 | —                      | correct  | 2       |
-| `huggingface`    | récurrent              | ~200K                 | —                      | prudence | 6       |
-| `kiro`           | récurrent              | ~25K                  | —                      | à éviter | 12      |
-| `glm-cn`         | sans plafond           | sans plafond\*        | ~20M                   | correct  | 4       |
-| `baidu`          | sans plafond           | sans plafond\*        | —                      | prudence | 1       |
-| `gemini`         | sans plafond           | sans plafond\*        | —                      | prudence | 4       |
-| `kilo-gateway`   | sans plafond           | sans plafond\*        | —                      | prudence | 7       |
-| `ollama-cloud`   | sans plafond           | sans plafond\*        | —                      | ambigu   | 8       |
-| `opencode-zen`   | sans plafond           | sans plafond\*        | —                      | prudence | 10      |
-| `tencent`        | sans plafond           | sans plafond\*        | —                      | prudence | 1       |
-| `vertex`         | crédit à l'inscription | —                     | ~300M                  | prudence | 10      |
-| `agentrouter`    | crédit à l'inscription | —                     | ~200M                  | prudence | 4       |
-| `predibase`      | crédit à l'inscription | —                     | ~25M                   | prudence | 1       |
-| `doubao`         | crédit à l'inscription | —                     | ~15M                   | ambigu   | 1       |
-| `ai21`           | crédit à l'inscription | —                     | ~10M                   | à éviter | 2       |
-| `deepseek`       | crédit à l'inscription | —                     | ~5M                    | correct  | 2       |
-| `hyperbolic`     | crédit à l'inscription | —                     | ~5M                    | correct  | 8       |
-| `nscale`         | crédit à l'inscription | —                     | ~5M                    | prudence | 6       |
-| `bytez`          | crédit (réc.)          | —                     | inconnu                | ambigu   | 1       |
-| `deepinfra`      | crédit à l'inscription | —                     | ~1M                    | prudence | 22      |
-| `fireworks`      | crédit à l'inscription | —                     | ~1M                    | à éviter | 10      |
-| `nebius`         | crédit à l'inscription | —                     | ~1M                    | prudence | 1       |
-| `qoder`          | crédit à l'inscription | —                     | ~1M                    | prudence | 14      |
-| `scaleway`       | crédit à l'inscription | —                     | ~1M                    | correct  | 6       |
-| `novita`         | crédit à l'inscription | —                     | ~500K                  | prudence | 1       |
-| `agy`            | sans clé               | —                     | —                      | à éviter | 16      |
-| `baichuan`       | sans clé               | —                     | —                      | ambigu   | 1       |
-| `blackbox`       | sans clé               | —                     | —                      | à éviter | 6       |
-| `coze`           | sans clé               | —                     | —                      | à éviter | 1       |
-| `duckduckgo-web` | sans clé               | —                     | —                      | à éviter | 6       |
-| `freemodel-dev`  | sans clé               | —                     | —                      | inconnu  | 4       |
-| `friendliai`     | sans clé               | —                     | —                      | à éviter | 2       |
-| `iflytek`        | sans clé               | —                     | —                      | à éviter | 1       |
-| `inference-net`  | sans clé               | —                     | —                      | prudence | 3       |
-| `liquid`         | sans clé               | —                     | —                      | inconnu  | 1       |
-| `monsterapi`     | sans clé               | —                     | —                      | ambigu   | 1       |
-| `muse-spark-web` | sans clé               | —                     | —                      | à éviter | 3       |
-| `nlpcloud`       | sans clé               | —                     | —                      | à éviter | 1       |
-| `nvidia`         | sans plafond           | sans plafond\*        | —                      | prudence | 2       |
-| `pollinations`   | sans clé               | —                     | —                      | prudence | 31      |
-| `publicai`       | sans clé               | —                     | —                      | prudence | 3       |
-| `reka`           | sans clé               | —                     | —                      | prudence | 2       |
-| `sensenova`      | sans clé               | —                     | —                      | prudence | 1       |
-| `sparkdesk`      | sans clé               | —                     | —                      | prudence | 1       |
-| `stepfun`        | sans clé               | —                     | —                      | correct  | 1       |
-| `t3-web`         | sans clé               | —                     | —                      | à éviter | 23      |
-| `uncloseai`      | sans clé               | —                     | —                      | prudence | 3       |
+| Fournisseur      | Type libre           | tokens/mo stable | Crédit du premier mois | ToS      | Modèles |
+| ---------------- | -------------------- | ---------------- | ---------------------- | -------- | ------- |
+| `mistral`        | récurrent            | ~ 1.00B          | —                      | prudence | 5       |
+| `nara`           | récurrent            | ~                | —                      | prudence | 8       |
+| `llm7`           | récurrent            | ~ 150M           | —                      | prudence | 4       |
+| `xkiro`          | récurrent            | ~ 150M           | —                      | prudence | 39      |
+| `longcat`        | une fois             | —                | 10M                    | prudence | 1       |
+| `cerebras`       | une fois             | —                | Crédit de 5 $          | prudence | 2       |
+| `cloudflare-ai`  | récurrent            | ~ 30M            | —                      | prudence | 9       |
+| `groq`           | récurrent            | ~ 30M            | —                      | prudence | 5       |
+| `api-airforce`   | récurrent            | ~                | —                      | prudence | 7       |
+| `bluesminds`     | récurrent            | ~ 7M             | —                      | ambiguë  | 22      |
+| `sambanova`      | récurrent            | ~ 6M             | —                      | prudence | 5       |
+| `arcee-ai`       | récurrent            | ~ 5M             | —                      | prudence | 1       |
+| `bazaarlink`     | récurrent            | ~ 4M             | —                      | prudence | 32      |
+| `openrouter`     | récurrent            | ~ 1M             | —                      | prudence | 1       |
+| `cohere`         | récurrent            | ~ 800K           | —                      | prudence | 6       |
+| `huggingchat`    | récurrent            | ~ 500K           | —                      | prudence | 4       |
+| `morph`          | récurrent            | ~ 400K           | —                      | d'accord | 2       |
+| `huggingface`    | récurrent            | ~ 200K           | —                      | prudence | 6       |
+| `kiro`           | récurrent            | ~ 25K            | —                      | éviter   | 12      |
+| `glm-cn`         | non plafonné         | non plafonné\*   | ~ 20M                  | d'accord | 4       |
+| `baidu`          | non plafonné         | non plafonné\*   | —                      | prudence | 1       |
+| `gemini`         | non plafonné         | non plafonné\*   | —                      | prudence | 4       |
+| `kilo-gateway`   | non plafonné         | non plafonné\*   | —                      | prudence | 7       |
+| `ollama-cloud`   | non plafonné         | non plafonné\*   | —                      | ambiguë  | 8       |
+| `opencode-zen`   | non plafonné         | non plafonné\*   | —                      | prudence | 10      |
+| `tencent`        | non plafonné         | non plafonné\*   | —                      | prudence | 1       |
+| `vertex`         | crédit d'inscription | —                | ~ 300M                 | prudence | 10      |
+| `agentrouter`    | crédit d'inscription | —                | ~ 200M                 | prudence | 4       |
+| `predibase`      | crédit d'inscription | —                | ~ 25M                  | prudence | 1       |
+| `doubao`         | crédit d'inscription | —                | ~ 15M                  | ambiguë  | 1       |
+| `ai21`           | crédit d'inscription | —                | ~ 10M                  | éviter   | 2       |
+| `deepseek`       | crédit d'inscription | —                | ~ 5M                   | d'accord | 2       |
+| `hyperbolic`     | crédit d'inscription | —                | ~ 5M                   | d'accord | 8       |
+| `nscale`         | crédit d'inscription | —                | ~ 5M                   | prudence | 6       |
+| `bytez`          | crédit (rec.)        | —                | inconnu                | ambiguë  | 1       |
+| `deepinfra`      | crédit d'inscription | —                | ~ 1M                   | prudence | 22      |
+| `fireworks`      | crédit d'inscription | —                | ~ 1M                   | éviter   | 10      |
+| `nebius`         | crédit d'inscription | —                | ~ 1M                   | prudence | 1       |
+| `qoder`          | crédit d'inscription | —                | ~ 1M                   | prudence | 14      |
+| `scaleway`       | crédit d'inscription | —                | ~ 1M                   | d'accord | 6       |
+| `novita`         | crédit d'inscription | —                | ~ 500K                 | prudence | 1       |
+| `agy`            | sans clé             | —                | —                      | éviter   | 16      |
+| `baichuan`       | sans clé             | —                | —                      | ambiguë  | 1       |
+| `blackbox`       | sans clé             | —                | —                      | éviter   | 6       |
+| `coze`           | sans clé             | —                | —                      | éviter   | 1       |
+| `duckduckgo-web` | sans clé             | —                | —                      | éviter   | 6       |
+| `freemodel-dev`  | sans clé             | —                | —                      | inconnu  | 4       |
+| `friendliai`     | sans clé             | —                | —                      | éviter   | 2       |
+| `iflytek`        | sans clé             | —                | —                      | éviter   | 1       |
+| `inference-net`  | sans clé             | —                | —                      | prudence | 3       |
+| `liquid`         | sans clé             | —                | —                      | inconnu  | 1       |
+| `monsterapi`     | sans clé             | —                | —                      | ambiguë  | 1       |
+| `muse-spark-web` | sans clé             | —                | —                      | éviter   | 3       |
+| `nlpcloud`       | sans clé             | —                | —                      | éviter   | 1       |
+| `nvidia`         | non plafonné         | non plafonné\*   | —                      | prudence | 3       |
+| `pollinations`   | sans clé             | —                | —                      | prudence | 31      |
+| `publicai`       | sans clé             | —                | —                      | prudence | 3       |
+| `reka`           | sans clé             | —                | —                      | prudence | 2       |
+| `sensenova`      | sans clé             | —                | —                      | prudence | 1       |
+| `sparkdesk`      | sans clé             | —                | —                      | prudence | 1       |
+| `stepfun`        | sans clé             | —                | —                      | d'accord | 1       |
+| `t3-web`         | sans clé             | —                | —                      | éviter   | 23      |
+| `uncloseai`      | sans clé             | —                | —                      | prudence | 3       |
 
 ---
 

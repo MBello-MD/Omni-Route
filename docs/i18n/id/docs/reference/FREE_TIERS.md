@@ -113,10 +113,10 @@ terjadi saat diklik — pemisahan ini dipertahankan dengan sengaja.
 ## Metodologi & peringatan
 
 - Angka adalah** perkiraan batas atas** dari batas tingkat gratis yang didokumentasikan masing-masing penyedia pada** 17-06-2026** , dikumpulkan melalui riset web. Tingkatan gratis terus berubah — verifikasi ulang sebelum mengandalkan angka.
-- **Benar-benar sebuah entri yang menjamin.** Tidak ada entri yang memiliki peringkat kepercayaan per baris, dan API tidak melayani siapa pun — memperlakukan setiap angka di atas sebagai perkiraan kualitas yang sama dan tidak disebutkan. Ada dua fakta yang berbeda, karena dikurasi secara manual dan bukan disimpulkan: 44 entri berisi hard stop yang didokumentasikan secara independen (39 di antaranya adalah baris xKiro, yang semuanya berbagi satu tunjangan harian), dan 21 entri berisi pengungkapan pelatihan cepat. `hardStopGuaranteed` diatur hanya ketika ketentuan penyedia sendiri mengatakan bahwa melebihi tunjangan gratis menolak permintaan daripada secara diam-diam mulai menagih Anda, dengan sumber di komentar di sebelah entri; itu tidak pernah ditetapkan secara default ke `true`, dan entri yang belum diverifikasi oleh siapa pun tetap tidak disetel. Jadi bendera hard-stop yang hilang berarti "tidak ditetapkan", bukan "dikenal menagih Anda".** modus STRICT** (penjaga perutean `freeAccessPolicy=strict` opt-in) hanya mempercayai entri yang membawa bendera; setiap tingkat gratis lainnya dikecualikan sebagai `no-hard-stop` (lihat `open-sse/services/autoCombo/strictZeroCostFilter.ts`). Saat penjaga memfilter kumpulan, log yang terlihat oleh operator melaporkan jumlah pengecualian dan pembagian `no-hard-stop`.
+- **Benar-benar sebuah entri yang menjamin.** Tidak ada entri yang memiliki peringkat kepercayaan per baris, dan API tidak melayani siapa pun — memperlakukan setiap angka di atas sebagai perkiraan kualitas yang sama dan tidak disebutkan. Ada dua fakta yang berbeda, karena dikurasi secara manual dan bukan disimpulkan: 44 entri memuat hard stop yang didokumentasikan secara independen (39 di antaranya adalah baris xKiro, yang semuanya berbagi satu tunjangan harian), dan 22 entri berisi pengungkapan pelatihan cepat. `hardStopGuaranteed` diatur hanya ketika ketentuan penyedia sendiri mengatakan bahwa melebihi tunjangan gratis menolak permintaan daripada secara diam-diam mulai menagih Anda, dengan sumber di komentar di sebelah entri; itu tidak pernah ditetapkan secara default ke `true`, dan entri yang belum diverifikasi oleh siapa pun tetap tidak disetel. Jadi bendera hard-stop yang hilang berarti "tidak ditetapkan", bukan "dikenal menagih Anda".** modus STRICT** (penjaga perutean `freeAccessPolicy=strict` opt-in) hanya mempercayai entri yang membawa bendera; setiap tingkat gratis lainnya dikecualikan sebagai `no-hard-stop` (lihat `open-sse/services/autoCombo/strictZeroCostFilter.ts`). Saat penjaga memfilter kumpulan, log yang terlihat oleh operator melaporkan jumlah pengecualian dan pembagian `no-hard-stop`.
 - `estMonthlyFreeTokens` = token bulanan berulang saja.** Kredit pendaftaran satu kali tidak berulang** dan dihitung sebagai 0. Tingkatan yang dihentikan juga 0.
 - Batas token harian → `monthly = daily × 30`. Hanya RPD yang mendokumentasikan → `RPD × ~800 output tokens × 30`. Hanya RPM/TPM (tanpa batas harian) →** terbuka** (lihat di bawah).
-- **Gratis secara permanen, tetapi tidak ada batasan token yang dipublikasikan** (`glm-cn`, `tencent`, `baidu`, `kilo-gateway`, `opencode-zen`, `gemini`, `ollama-cloud`): ini adalah akses gratis berulang yang nyata, rate/concurrency-limited. Kami mengklasifikasikannya `recurring-uncapped` dan** jangan pernah menjumlahkannya** — mengalikan `RPM × 24/7 × 30d` akan menghasilkan batas atas fantasi (inflasi yang kita tolak). Mereka terdaftar sehingga Anda tahu mereka ada.
+- **Akses gratis, tetapi tidak ada batasan token yang dipublikasikan** (`glm-cn`, `tencent`, `baidu`, `kilo-gateway`, `opencode-zen`, `gemini`, `ollama-cloud`, `nvidia`): ini adalah rate/concurrency-limited. Kami mengklasifikasikannya `recurring-uncapped` dan** jangan pernah menjumlahkannya** — mengalikan `RPM × 24/7 × 30d` akan menghasilkan batas atas fantasi (inflasi yang kami tolak). NVIDIA's API hanya untuk penggunaan percobaan; lihat ToS di bawah.
 - **Peningkatan pembukaan deposit:** isi ulang kecil satu kali yang secara permanen menambah kuota gratis (OpenRouter: $10 → 1000 req/day ≈ +24M/mo). Dilaporkan sebagai gambar terpisah, tidak dimasukkan dalam judul tetap.
 - **Kuota yang memenuhi syarat** (`eligibilityGate: "regional-identity"`): kuota berulang nyata yang hanya terbuka setelah pemeriksaan identitas terikat wilayah (hari ini verifikasi nama asli Tiongkok Daratan). Dihitung dengan aturan pool-dedupe yang sama ke dalam angka terpisah (`gatedRecurringTokens`), tidak pernah dimasukkan ke dalam judul tetap. Rezim (`freeType`) tidak berubah, jadi perutean tidak berubah.
 - **Kelas bukti.** Aturannya: nomor dalam katalog mengutip sumbernya dalam komentar `// evidence:` di sebelah entri — `public-page` (halaman penyedia yang dapat dibaca siapa pun), `api-public` (titik akhir penyedia yang tidak diautentikasi, misalnya titik akhir rencana publik NaraRouter di router.bynara.id), atau `console-verified <date> por <who>` (angka tersebut hanya terlihat di dalam konsol akun; komentar mencatat siapa yang melihatnya dan kapan, dan halaman publik yang menyatakan batas tersebut ada). Keadaan hari ini: lima blok yang diaudit ulang pada 02-09-2026 melaksanakannya (`gemini`, `groq`, `mistral`, `ollama-cloud`, `nara`); entri yang mendahului audit ulang 02-09-2026 mewarisi penelitian sebelumnya sampai mereka disentuh; setiap** baru atau diubah** nomor tanpa komentar bukti adalah bug. Saat ini hanya `mistral` yang terverifikasi konsol.
@@ -241,75 +241,75 @@ Sebagian besar angka "token gratis per bulan" di ranah ini merupakan penjumlahan
 
 ---
 
-## Tingkat gratis per penyedia (Bytez/Nous diperiksa 2026-10-15; baris yang diaudit ulang 2026-09-02; lainnya 2026-06-17)
+## Tingkat gratis per penyedia (Bytez/Nous diperiksa 15-10-2026; baris yang diaudit ulang 02-09-2026; lainnya 17-06-2026)
 
-> Dibuat ulang dari katalog per model (`open-sse/config/freeModelCatalog.ts`), dengan deduplikasi berdasarkan pool. Diurutkan berdasarkan token berulang per bulan dalam kondisi stabil. `uncapped*` = gratis secara permanen, tetapi tidak memiliki batas token yang dipublikasikan (dibatasi oleh laju/konkurensi) — akses nyata, **tidak** dijumlahkan ke angka utama. `—` = hanya kredit / tanpa kunci / tidak dapat dihitung dalam token.
+> Diregenerasi dari katalog per model (`open-sse/config/freeModelCatalog.ts`), yang di-deduplikasi. Diurutkan berdasarkan tokens/mo. stabil berulang `uncapped*` = gratis secara permanen tetapi tidak ada batas token yang dipublikasikan (rate/concurrency-limited) — akses nyata,** bukan** diringkas menjadi judul. `—` = hanya kredit / tanpa kunci / tidak dapat dihitung token.
 
-| Penyedia         | Jenis gratis       | Token stabil/bln | Kredit bulan pertama | Ketentuan Layanan | Model |
-| ---------------- | ------------------ | ---------------- | -------------------- | ----------------- | ----- |
-| `mistral`        | berulang           | ~1.00B           | —                    | waspada           | 5     |
-| `nara`           | berulang           | ~210M            | —                    | waspada           | 8     |
-| `llm7`           | berulang           | ~150M            | —                    | waspada           | 4     |
-| `xkiro`          | berulang           | ~150M            | —                    | waspada           | 39    |
-| `longcat`        | satu kali          | —                | 10M                  | waspada           | 1     |
-| `cerebras`       | satu kali          | —                | kredit $5            | waspada           | 2     |
-| `cloudflare-ai`  | berulang           | ~30M             | —                    | waspada           | 9     |
-| `groq`           | berulang           | ~30M             | —                    | waspada           | 5     |
-| `api-airforce`   | berulang           | ~24M             | —                    | waspada           | 7     |
-| `bluesminds`     | berulang           | ~7M              | —                    | ambigu            | 22    |
-| `sambanova`      | berulang           | ~6M              | —                    | waspada           | 5     |
-| `arcee-ai`       | berulang           | ~5M              | —                    | waspada           | 1     |
-| `bazaarlink`     | berulang           | ~4M              | —                    | waspada           | 32    |
-| `openrouter`     | berulang           | ~1M              | —                    | waspada           | 1     |
-| `cohere`         | berulang           | ~800K            | —                    | waspada           | 6     |
-| `huggingchat`    | berulang           | ~500K            | —                    | waspada           | 4     |
-| `morph`          | berulang           | ~400K            | —                    | oke               | 2     |
-| `huggingface`    | berulang           | ~200K            | —                    | waspada           | 6     |
-| `kiro`           | berulang           | ~25K             | —                    | hindari           | 12    |
-| `glm-cn`         | tanpa batas        | tanpa batas\*    | ~20M                 | oke               | 4     |
-| `baidu`          | tanpa batas        | tanpa batas\*    | —                    | waspada           | 1     |
-| `gemini`         | tanpa batas        | tanpa batas\*    | —                    | waspada           | 4     |
-| `kilo-gateway`   | tanpa batas        | tanpa batas\*    | —                    | waspada           | 7     |
-| `ollama-cloud`   | tanpa batas        | tanpa batas\*    | —                    | ambigu            | 8     |
-| `opencode-zen`   | tanpa batas        | tanpa batas\*    | —                    | waspada           | 10    |
-| `tencent`        | tanpa batas        | tanpa batas\*    | —                    | waspada           | 1     |
-| `vertex`         | kredit pendaftaran | —                | ~300M                | waspada           | 10    |
-| `agentrouter`    | kredit pendaftaran | —                | ~200M                | waspada           | 4     |
-| `predibase`      | kredit pendaftaran | —                | ~25M                 | waspada           | 1     |
-| `doubao`         | kredit pendaftaran | —                | ~15M                 | ambigu            | 1     |
-| `ai21`           | kredit pendaftaran | —                | ~10M                 | hindari           | 2     |
-| `deepseek`       | kredit pendaftaran | —                | ~5M                  | oke               | 2     |
-| `hyperbolic`     | kredit pendaftaran | —                | ~5M                  | oke               | 8     |
-| `nscale`         | kredit pendaftaran | —                | ~5M                  | waspada           | 6     |
-| `bytez`          | kredit (berulang)  | —                | tidak diketahui      | ambigu            | 1     |
-| `deepinfra`      | kredit pendaftaran | —                | ~1M                  | waspada           | 22    |
-| `fireworks`      | kredit pendaftaran | —                | ~1M                  | hindari           | 10    |
-| `nebius`         | kredit pendaftaran | —                | ~1M                  | waspada           | 1     |
-| `qoder`          | kredit pendaftaran | —                | ~1M                  | waspada           | 14    |
-| `scaleway`       | kredit pendaftaran | —                | ~1M                  | oke               | 6     |
-| `novita`         | kredit pendaftaran | —                | ~500K                | waspada           | 1     |
-| `agy`            | tanpa kunci        | —                | —                    | hindari           | 16    |
-| `baichuan`       | tanpa kunci        | —                | —                    | ambigu            | 1     |
-| `blackbox`       | tanpa kunci        | —                | —                    | hindari           | 6     |
-| `coze`           | tanpa kunci        | —                | —                    | hindari           | 1     |
-| `duckduckgo-web` | tanpa kunci        | —                | —                    | hindari           | 6     |
-| `freemodel-dev`  | tanpa kunci        | —                | —                    | tidak diketahui   | 4     |
-| `friendliai`     | tanpa kunci        | —                | —                    | hindari           | 2     |
-| `iflytek`        | tanpa kunci        | —                | —                    | hindari           | 1     |
-| `inference-net`  | tanpa kunci        | —                | —                    | waspada           | 3     |
-| `liquid`         | tanpa kunci        | —                | —                    | tidak diketahui   | 1     |
-| `monsterapi`     | tanpa kunci        | —                | —                    | ambigu            | 1     |
-| `muse-spark-web` | tanpa kunci        | —                | —                    | hindari           | 3     |
-| `nlpcloud`       | tanpa kunci        | —                | —                    | hindari           | 1     |
-| `nvidia`         | tanpa batas        | tanpa batas\*    | —                    | waspada           | 2     |
-| `pollinations`   | tanpa kunci        | —                | —                    | waspada           | 31    |
-| `publicai`       | tanpa kunci        | —                | —                    | waspada           | 3     |
-| `reka`           | tanpa kunci        | —                | —                    | waspada           | 2     |
-| `sensenova`      | tanpa kunci        | —                | —                    | waspada           | 1     |
-| `sparkdesk`      | keyless            | —                | —                    | waspada           | 1     |
-| `stepfun`        | keyless            | —                | —                    | oke               | 1     |
-| `t3-web`         | keyless            | —                | —                    | hindari           | 23    |
-| `uncloseai`      | keyless            | —                | —                    | waspada           | 3     |
+| Penyedia         | Tipe bebas         | tokens/mo stabil | Kredit bulan pertama | ToS           | Model |
+| ---------------- | ------------------ | ---------------- | -------------------- | ------------- | ----- |
+| `mistral`        | berulang           | ~ 1,00B          | —                    | peringatan    | 5     |
+| `nara`           | berulang           | ~ 210M           | —                    | peringatan    | 8     |
+| `llm7`           | berulang           | ~ 150M           | —                    | peringatan    | 4     |
+| `xkiro`          | berulang           | ~ 150M           | —                    | peringatan    | 39    |
+| `longcat`        | satu kali          | —                | 10M                  | peringatan    | 1     |
+| `cerebras`       | satu kali          | —                | kredit $5            | peringatan    | 2     |
+| `cloudflare-ai`  | berulang           | ~ 30M            | —                    | peringatan    | 9     |
+| `groq`           | berulang           | ~ 30M            | —                    | peringatan    | 5     |
+| `api-airforce`   | berulang           | ~ 24M            | —                    | peringatan    | 7     |
+| `bluesminds`     | berulang           | ~ 7M             | —                    | ambigu        | 22    |
+| `sambanova`      | berulang           | ~ 6M             | —                    | peringatan    | 5     |
+| `arcee-ai`       | berulang           | ~ 5M             | —                    | peringatan    | 1     |
+| `bazaarlink`     | berulang           | ~ 4M             | —                    | peringatan    | 32    |
+| `openrouter`     | berulang           | ~ 1M             | —                    | peringatan    | 1     |
+| `cohere`         | berulang           | ~ 800K           | —                    | peringatan    | 6     |
+| `huggingchat`    | berulang           | ~ 500K           | —                    | peringatan    | 4     |
+| `morph`          | berulang           | ~ 400K           | —                    | Oke           | 2     |
+| `huggingface`    | berulang           | ~ 200K           | —                    | peringatan    | 6     |
+| `kiro`           | berulang           | ~ 25K            | —                    | menghindari   | 12    |
+| `glm-cn`         | terbuka            | belum dibuka\*   | ~ 20M                | Oke           | 4     |
+| `baidu`          | terbuka            | belum dibuka\*   | —                    | peringatan    | 1     |
+| `gemini`         | terbuka            | belum dibuka\*   | —                    | peringatan    | 4     |
+| `kilo-gateway`   | terbuka            | belum dibuka\*   | —                    | peringatan    | 7     |
+| `ollama-cloud`   | terbuka            | belum dibuka\*   | —                    | ambigu        | 8     |
+| `opencode-zen`   | terbuka            | belum dibuka\*   | —                    | peringatan    | 10    |
+| `tencent`        | terbuka            | belum dibuka\*   | —                    | peringatan    | 1     |
+| `vertex`         | kredit pendaftaran | —                | ~ 300M               | peringatan    | 10    |
+| `agentrouter`    | kredit pendaftaran | —                | ~ 200M               | peringatan    | 4     |
+| `predibase`      | kredit pendaftaran | —                | ~ 25M                | peringatan    | 1     |
+| `doubao`         | kredit pendaftaran | —                | ~ 15M                | ambigu        | 1     |
+| `ai21`           | kredit pendaftaran | —                | ~ 10M                | menghindari   | 2     |
+| `deepseek`       | kredit pendaftaran | —                | ~ 5M                 | Oke           | 2     |
+| `hyperbolic`     | kredit pendaftaran | —                | ~ 5M                 | Oke           | 8     |
+| `nscale`         | kredit pendaftaran | —                | ~ 5M                 | peringatan    | 6     |
+| `bytez`          | kredit (rek.)      | —                | tidak dikenal        | ambigu        | 1     |
+| `deepinfra`      | kredit pendaftaran | —                | ~ 1M                 | peringatan    | 22    |
+| `fireworks`      | kredit pendaftaran | —                | ~ 1M                 | menghindari   | 10    |
+| `nebius`         | kredit pendaftaran | —                | ~ 1M                 | peringatan    | 1     |
+| `qoder`          | kredit pendaftaran | —                | ~ 1M                 | peringatan    | 14    |
+| `scaleway`       | kredit pendaftaran | —                | ~ 1M                 | Oke           | 6     |
+| `novita`         | kredit pendaftaran | —                | ~ 500K               | peringatan    | 1     |
+| `agy`            | tanpa kunci        | —                | —                    | menghindari   | 16    |
+| `baichuan`       | tanpa kunci        | —                | —                    | ambigu        | 1     |
+| `blackbox`       | tanpa kunci        | —                | —                    | menghindari   | 6     |
+| `coze`           | tanpa kunci        | —                | —                    | menghindari   | 1     |
+| `duckduckgo-web` | tanpa kunci        | —                | —                    | menghindari   | 6     |
+| `freemodel-dev`  | tanpa kunci        | —                | —                    | tidak dikenal | 4     |
+| `friendliai`     | tanpa kunci        | —                | —                    | menghindari   | 2     |
+| `iflytek`        | tanpa kunci        | —                | —                    | menghindari   | 1     |
+| `inference-net`  | tanpa kunci        | —                | —                    | peringatan    | 3     |
+| `liquid`         | tanpa kunci        | —                | —                    | tidak dikenal | 1     |
+| `monsterapi`     | tanpa kunci        | —                | —                    | ambigu        | 1     |
+| `muse-spark-web` | tanpa kunci        | —                | —                    | menghindari   | 3     |
+| `nlpcloud`       | tanpa kunci        | —                | —                    | menghindari   | 1     |
+| `nvidia`         | terbuka            | belum dibuka\*   | —                    | peringatan    | 3     |
+| `pollinations`   | tanpa kunci        | —                | —                    | peringatan    | 31    |
+| `publicai`       | tanpa kunci        | —                | —                    | peringatan    | 3     |
+| `reka`           | tanpa kunci        | —                | —                    | peringatan    | 2     |
+| `sensenova`      | tanpa kunci        | —                | —                    | peringatan    | 1     |
+| `sparkdesk`      | tanpa kunci        | —                | —                    | peringatan    | 1     |
+| `stepfun`        | tanpa kunci        | —                | —                    | Oke           | 1     |
+| `t3-web`         | tanpa kunci        | —                | —                    | menghindari   | 23    |
+| `uncloseai`      | tanpa kunci        | —                | —                    | peringatan    | 3     |
 
 ---
 

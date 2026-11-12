@@ -111,10 +111,10 @@ pagkakahating ito.
 ## Pamamaraan at mga babala
 
 - Ang mga numero ay** upper-bound na mga pagtatantya** mula sa mga nakadokumentong limitasyon ng libreng antas ng bawat provider simula noong** 2026-06-17** , na nakalap ng pananaliksik sa web. Ang mga libreng tier ay patuloy na nagbabago — muling i-verify bago umasa sa isang figure.
-- **Ano talaga ang tinitiyak ng isang entry.** Walang entry na nagdadala ng per-row confidence rating, at ang API ay hindi nagsisilbing — na tinatrato ang bawat figure sa itaas bilang isang pagtatantya ng pareho, hindi nakasaad na kalidad. Dalawang katotohanan ang magkaiba, dahil ang mga ito ay na-curate sa pamamagitan ng kamay sa halip na hinuha: 44 na mga entry ang may independiyenteng dokumentado na hard stop (39 sa mga ito ay ang mga xKiro row, na lahat ay nagbabahagi ng isang pang-araw-araw na allowance), at 21 na mga entry ang nagtataglay ng isang maagang pagsisiwalat ng pagsasanay. `hardStopGuaranteed` ay itinakda lamang kapag ang sariling mga tuntunin ng provider ay nagsabi na ang paglampas sa libreng allowance ay tumatanggi sa kahilingan sa halip na tahimik na simulang singilin ka, kasama ang pinagmulan sa isang komento sa tabi ng entry; hindi ito kailanman na-default sa `true`, at ang isang entry na walang na-verify ay mananatiling hindi nakatakda. Kaya ang isang nawawalang hard-stop na flag ay nangangahulugang "hindi itinatag", hindi "kilalang sisingilin ka."**STRICT mode** (ang opt-in `freeAccessPolicy=strict` routing guard) ay nagtitiwala lamang sa mga entry na nagdadala ng bandila; bawat iba pang libreng tier ay hindi kasama bilang `no-hard-stop` (tingnan `open-sse/services/autoCombo/strictZeroCostFilter.ts`). Kapag nag-filter ang guard ng pool, iniuulat ng operator-visible log ang bilang ng pagbubukod at ang bahagi ng `no-hard-stop` nito.
+- **Ano talaga ang tinitiyak ng isang entry.** Walang entry na nagdadala ng per-row confidence rating, at ang API ay hindi nagsisilbing — na tinatrato ang bawat figure sa itaas bilang isang pagtatantya ng pareho, hindi nakasaad na kalidad. Magkaiba ang dalawang katotohanan, dahil kinu-curate ang mga ito sa pamamagitan ng kamay sa halip na hinuhulaan: 44 na mga entry ang may independiyenteng dokumentado na hard stop (39 sa mga ito ay ang mga xKiro row, na lahat ay nagbabahagi ng isang pang-araw-araw na allowance), at 22 na mga entry ang nagtataglay ng agarang pagsisiwalat ng pagsasanay. `hardStopGuaranteed` ay itinakda lamang kapag ang sariling mga tuntunin ng provider ay nagsabi na ang paglampas sa libreng allowance ay tumatanggi sa kahilingan sa halip na tahimik na simulang singilin ka, kasama ang pinagmulan sa isang komento sa tabi ng entry; hindi ito kailanman na-default sa `true`, at ang isang entry na walang na-verify ay mananatiling hindi nakatakda. Kaya ang isang nawawalang hard-stop na flag ay nangangahulugang "hindi itinatag", hindi "kilalang sisingilin ka."**STRICT mode** (ang opt-in `freeAccessPolicy=strict` routing guard) ay nagtitiwala lamang sa mga entry na nagdadala ng bandila; bawat iba pang libreng tier ay hindi kasama bilang `no-hard-stop` (tingnan `open-sse/services/autoCombo/strictZeroCostFilter.ts`). Kapag nag-filter ang guard ng pool, iniuulat ng operator-visible log ang bilang ng pagbubukod at ang bahagi ng `no-hard-stop` nito.
 - `estMonthlyFreeTokens` = umuulit na buwanang mga token lamang.** Ang isang beses na mga kredito sa pag-signup ay hindi umuulit** at binibilang bilang 0. Ang mga natigil na tier ay 0 din.
 - Araw-araw na token cap → `monthly = daily × 30`. RPD lang ang nakadokumento → `RPD × ~800 output tokens × 30`. RPM/TPM lang (walang daily cap) →** walang takip** (tingnan sa ibaba).
-- **Permanenteng libre, ngunit walang na-publish na token cap** (`glm-cn`, `tencent`, `baidu`, `kilo-gateway`, `opencode-zen`, `gemini`, `ollama-cloud`): ito ay tunay na paulit-ulit na libreng pag-access, rate/concurrency-limited. Inuuri namin ang mga ito `recurring-uncapped` at** huwag na huwag silang susumahin** Ang pagpaparami ng — `RPM × 24/7 × 30d` ay magbubunga ng isang fantasy ceiling (ang inflation na tinatanggihan namin). Nakalista ang mga ito para malaman mo na mayroon sila.
+- **Libreng access, ngunit walang na-publish na token cap** (`glm-cn`, `tencent`, `baidu`, `kilo-gateway`, `opencode-zen`, `gemini`, `ollama-cloud`, `nvidia`): ito ay rate/concurrency-limited. Inuuri namin ang mga ito `recurring-uncapped` at** huwag na huwag silang susumahin** — multiplying `RPM × 24/7 × 30d` ay magdudulot ng fantasy ceiling (ang inflation na tinatanggihan namin). NVIDIA ng API ay trial-use lamang; tingnan ToS caveat nito sa ibaba.
 - **Pagpapalakas ng deposit-unlock:** isang minsanang maliit na top-up na permanenteng nagtataas ng libreng quota (OpenRouter: $10 → 1000 req/day ≈ +24M/mo). Iniulat bilang isang hiwalay na figure, na hindi nakalagay sa steady na headline.
 - **Mga quota na may gate ng pagiging karapat-dapat** (`eligibilityGate: "regional-identity"`): isang tunay na umuulit na quota na nagbubukas lamang pagkatapos ng pagsusuri sa pagkakakilanlan sa rehiyon (pag-verify ng totoong pangalan ng mainland-China ngayon). Binibilang na may parehong pool-dedupe na panuntunan sa isang hiwalay na figure (`gatedRecurringTokens`), hindi kailanman sa steady headline. Ang rehimen (`freeType`) ay hindi nagbabago, kaya ang pagruruta ay hindi nagbabago.
 - **Mga klase ng ebidensya.** Ang panuntunan: binanggit ng isang numero sa catalog ang pinagmulan nito sa isang `// evidence:` na komento sa tabi ng entry na — `public-page` (isang pahina ng provider na mababasa ng sinuman), `api-public` (isang hindi napatunayang endpoint ng provider, hal. ang endpoint ng mga pampublikong plano ng NaraRouter sa router.bynara.id), o `console-verified <date> por <who>` (makikita lamang ang figure sa loob ng isang account console; ang komento ay nagtatala at nakakita ng pampublikong pahina nito at nakakita nito). Ang estado ngayon: ang limang bloke na muling na-audit noong 2026-09-02 ay nagdadala nito (`gemini`, `groq`, `mistral`, `ollama-cloud`, `nara`); ang mga entry na nauna sa muling pag-audit ng 2026-09-02 ay namamana ng naunang pananaliksik hanggang sa mahawakan ang mga ito; anuman** bago o binago** Ang numero na walang komentong ebidensya ay isang bug. Ngayon ang `mistral` lang ang na-verify ng console.
@@ -239,75 +239,75 @@ Karamihan sa mga bilang ng "libreng token kada buwan" sa larangang ito ay mga ka
 
 ---
 
-## Libreng tier bawat provider (sinuri ang Bytez/Nous noong 2026-10-15; muling sinuri ang mga row noong 2026-09-02; ang iba pa noong 2026-06-17)
+## Free-tier ng bawat provider (Bytez/Nous checked 2026-10-15; re-audited row 2026-09-02; others 2026-06-17)
 
-> Muling binuo mula sa katalogo bawat modelo (`open-sse/config/freeModelCatalog.ts`), na inalisan ng mga duplicate sa pool. Inayos ayon sa umuulit na steady tokens/buwan. Ang `uncapped*` = permanenteng libre ngunit walang nailathalang limitasyon sa token (limitado ng rate/concurrency) — tunay na access, **hindi** isinama sa pangunahing kabuuan. Ang `—` = credit-only / walang key / hindi masusukat sa token.
+> Na-regenerate mula sa per-model catalog (`open-sse/config/freeModelCatalog.ts`), pool-deduped. Pinagbukud-bukod ayon sa umuulit na steady tokens/mo. `uncapped*` = na permanenteng libre ngunit walang na-publish na token cap (rate/concurrency-limited) — real access,** hindi** summed sa headline. `—` = credit-only / keyless / hindi token-quantifiable.
 
-| Provider         | Uri ng libre          | Tuloy-tuloy na token/buwan | Credit sa unang buwan | ToS        | Mga modelo |
-| ---------------- | --------------------- | -------------------------- | --------------------- | ---------- | ---------- |
-| `mistral`        | umuulit               | ~1.00B                     | —                     | mag-ingat  | 5          |
-| `nara`           | umuulit               | ~210M                      | —                     | mag-ingat  | 8          |
-| `llm7`           | umuulit               | ~150M                      | —                     | mag-ingat  | 4          |
-| `xkiro`          | umuulit               | ~150M                      | —                     | mag-ingat  | 39         |
-| `longcat`        | minsanan              | —                          | 10M                   | mag-ingat  | 1          |
-| `cerebras`       | minsanan              | —                          | credit na $5          | mag-ingat  | 2          |
-| `cloudflare-ai`  | umuulit               | ~30M                       | —                     | mag-ingat  | 9          |
-| `groq`           | umuulit               | ~30M                       | —                     | mag-ingat  | 5          |
-| `api-airforce`   | umuulit               | ~24M                       | —                     | mag-ingat  | 7          |
-| `bluesminds`     | umuulit               | ~7M                        | —                     | malabo     | 22         |
-| `sambanova`      | umuulit               | ~6M                        | —                     | mag-ingat  | 5          |
-| `arcee-ai`       | umuulit               | ~5M                        | —                     | mag-ingat  | 1          |
-| `bazaarlink`     | umuulit               | ~4M                        | —                     | mag-ingat  | 32         |
-| `openrouter`     | umuulit               | ~1M                        | —                     | mag-ingat  | 1          |
-| `cohere`         | umuulit               | ~800K                      | —                     | mag-ingat  | 6          |
-| `huggingchat`    | umuulit               | ~500K                      | —                     | mag-ingat  | 4          |
-| `morph`          | umuulit               | ~400K                      | —                     | okay       | 2          |
-| `huggingface`    | umuulit               | ~200K                      | —                     | mag-ingat  | 6          |
-| `kiro`           | umuulit               | ~25K                       | —                     | iwasan     | 12         |
-| `glm-cn`         | walang limitasyon     | walang limitasyon*         | ~20M                  | okay       | 4          |
-| `baidu`          | walang limitasyon     | walang limitasyon*         | —                     | mag-ingat  | 1          |
-| `gemini`         | walang limitasyon     | walang limitasyon*         | —                     | mag-ingat  | 4          |
-| `kilo-gateway`   | walang limitasyon     | walang limitasyon*         | —                     | mag-ingat  | 7          |
-| `ollama-cloud`   | walang limitasyon     | walang limitasyon*         | —                     | malabo     | 8          |
-| `opencode-zen`   | walang limitasyon     | walang limitasyon*         | —                     | mag-ingat  | 10         |
-| `tencent`        | walang limitasyon     | walang limitasyon*         | —                     | mag-ingat  | 1          |
-| `vertex`         | credit sa pag-sign up | —                          | ~300M                 | mag-ingat  | 10         |
-| `agentrouter`    | credit sa pag-sign up | —                          | ~200M                 | mag-ingat  | 4          |
-| `predibase`      | credit sa pag-sign up | —                          | ~25M                  | mag-ingat  | 1          |
-| `doubao`         | credit sa pag-sign up | —                          | ~15M                  | malabo     | 1          |
-| `ai21`           | credit sa pag-sign up | —                          | ~10M                  | iwasan     | 2          |
-| `deepseek`       | credit sa pag-sign up | —                          | ~5M                   | okay       | 2          |
-| `hyperbolic`     | credit sa pag-sign up | —                          | ~5M                   | okay       | 8          |
-| `nscale`         | credit sa pag-sign up | —                          | ~5M                   | mag-ingat  | 6          |
-| `bytez`          | credit (umuulit)      | —                          | hindi alam            | malabo     | 1          |
-| `deepinfra`      | credit sa pag-sign up | —                          | ~1M                   | mag-ingat  | 22         |
-| `fireworks`      | credit sa pag-sign up | —                          | ~1M                   | iwasan     | 10         |
-| `nebius`         | credit sa pag-sign up | —                          | ~1M                   | mag-ingat  | 1          |
-| `qoder`          | credit sa pag-sign up | —                          | ~1M                   | mag-ingat  | 14         |
-| `scaleway`       | credit sa pag-sign up | —                          | ~1M                   | okay       | 6          |
-| `novita`         | credit sa pag-sign up | —                          | ~500K                 | mag-ingat  | 1          |
-| `agy`            | walang key            | —                          | —                     | iwasan     | 16         |
-| `baichuan`       | walang key            | —                          | —                     | malabo     | 1          |
-| `blackbox`       | walang key            | —                          | —                     | iwasan     | 6          |
-| `coze`           | walang key            | —                          | —                     | iwasan     | 1          |
-| `duckduckgo-web` | walang key            | —                          | —                     | iwasan     | 6          |
-| `freemodel-dev`  | walang key            | —                          | —                     | hindi alam | 4          |
-| `friendliai`     | walang key            | —                          | —                     | iwasan     | 2          |
-| `iflytek`        | walang key            | —                          | —                     | iwasan     | 1          |
-| `inference-net`  | walang key            | —                          | —                     | mag-ingat  | 3          |
-| `liquid`         | walang key            | —                          | —                     | hindi alam | 1          |
-| `monsterapi`     | walang key            | —                          | —                     | malabo     | 1          |
-| `muse-spark-web` | walang key            | —                          | —                     | iwasan     | 3          |
-| `nlpcloud`       | walang key            | —                          | —                     | iwasan     | 1          |
-| `nvidia`         | walang limitasyon     | walang limitasyon*         | —                     | mag-ingat  | 2          |
-| `pollinations`   | walang key            | —                          | —                     | mag-ingat  | 31         |
-| `publicai`       | walang key            | —                          | —                     | mag-ingat  | 3          |
-| `reka`           | walang key            | —                          | —                     | mag-ingat  | 2          |
-| `sensenova`      | walang key            | —                          | —                     | mag-ingat  | 1          |
-| `sparkdesk`      | keyless               | —                          | —                     | pag-iingat | 1          |
-| `stepfun`        | keyless               | —                          | —                     | ayos       | 1          |
-| `t3-web`         | keyless               | —                          | —                     | iwasan     | 23         |
-| `uncloseai`      | keyless               | —                          | —                     | pag-iingat | 3          |
+| Provider         | Libreng uri            | Panay tokens/mo | Unang buwang kredito | ToS          | Mga modelo |
+| ---------------- | ---------------------- | --------------- | -------------------- | ------------ | ---------- |
+| `mistral`        | umuulit                | ~ 1.00B         | —                    | pag-iingat   | 5          |
+| `nara`           | umuulit                | ~ 210M          | —                    | pag-iingat   | 8          |
+| `llm7`           | umuulit                | ~ 150M          | —                    | pag-iingat   | 4          |
+| `xkiro`          | umuulit                | ~ 150M          | —                    | pag-iingat   | 39         |
+| `longcat`        | isang beses            | —               | 10M                  | pag-iingat   | 1          |
+| `cerebras`       | isang beses            | —               | $5 na kredito        | pag-iingat   | 2          |
+| `cloudflare-ai`  | umuulit                | ~ 30M           | —                    | pag-iingat   | 9          |
+| `groq`           | umuulit                | ~ 30M           | —                    | pag-iingat   | 5          |
+| `api-airforce`   | umuulit                | ~ 24M           | —                    | pag-iingat   | 7          |
+| `bluesminds`     | umuulit                | ~ 7M            | —                    | malabo       | 22         |
+| `sambanova`      | umuulit                | ~ 6M            | —                    | pag-iingat   | 5          |
+| `arcee-ai`       | umuulit                | ~ 5M            | —                    | pag-iingat   | 1          |
+| `bazaarlink`     | umuulit                | ~ 4M            | —                    | pag-iingat   | 32         |
+| `openrouter`     | umuulit                | ~ 1M            | —                    | pag-iingat   | 1          |
+| `cohere`         | umuulit                | ~ 800K          | —                    | pag-iingat   | 6          |
+| `huggingchat`    | umuulit                | ~ 500K          | —                    | pag-iingat   | 4          |
+| `morph`          | umuulit                | ~ 400K          | —                    | ok           | 2          |
+| `huggingface`    | umuulit                | ~ 200K          | —                    | pag-iingat   | 6          |
+| `kiro`           | umuulit                | ~ 25K           | —                    | iwasan       | 12         |
+| `glm-cn`         | walang takip           | walang takip\*  | ~ 20M                | ok           | 4          |
+| `baidu`          | walang takip           | walang takip\*  | —                    | pag-iingat   | 1          |
+| `gemini`         | walang takip           | walang takip\*  | —                    | pag-iingat   | 4          |
+| `kilo-gateway`   | walang takip           | walang takip\*  | —                    | pag-iingat   | 7          |
+| `ollama-cloud`   | walang takip           | walang takip\*  | —                    | malabo       | 8          |
+| `opencode-zen`   | walang takip           | walang takip\*  | —                    | pag-iingat   | 10         |
+| `tencent`        | walang takip           | walang takip\*  | —                    | pag-iingat   | 1          |
+| `vertex`         | kredito sa pag-sign up | —               | ~ 300M               | pag-iingat   | 10         |
+| `agentrouter`    | kredito sa pag-sign up | —               | ~ 200M               | pag-iingat   | 4          |
+| `predibase`      | kredito sa pag-sign up | —               | ~ 25M                | pag-iingat   | 1          |
+| `doubao`         | kredito sa pag-sign up | —               | ~ 15M                | malabo       | 1          |
+| `ai21`           | kredito sa pag-sign up | —               | ~ 10M                | iwasan       | 2          |
+| `deepseek`       | kredito sa pag-sign up | —               | ~ 5M                 | ok           | 2          |
+| `hyperbolic`     | kredito sa pag-sign up | —               | ~ 5M                 | ok           | 8          |
+| `nscale`         | kredito sa pag-sign up | —               | ~ 5M                 | pag-iingat   | 6          |
+| `bytez`          | kredito (rec.)         | —               | hindi kilala         | malabo       | 1          |
+| `deepinfra`      | kredito sa pag-sign up | —               | ~ 1M                 | pag-iingat   | 22         |
+| `fireworks`      | kredito sa pag-sign up | —               | ~ 1M                 | iwasan       | 10         |
+| `nebius`         | kredito sa pag-sign up | —               | ~ 1M                 | pag-iingat   | 1          |
+| `qoder`          | kredito sa pag-sign up | —               | ~ 1M                 | pag-iingat   | 14         |
+| `scaleway`       | kredito sa pag-sign up | —               | ~ 1M                 | ok           | 6          |
+| `novita`         | kredito sa pag-sign up | —               | ~ 500K               | pag-iingat   | 1          |
+| `agy`            | walang susi            | —               | —                    | iwasan       | 16         |
+| `baichuan`       | walang susi            | —               | —                    | malabo       | 1          |
+| `blackbox`       | walang susi            | —               | —                    | iwasan       | 6          |
+| `coze`           | walang susi            | —               | —                    | iwasan       | 1          |
+| `duckduckgo-web` | walang susi            | —               | —                    | iwasan       | 6          |
+| `freemodel-dev`  | walang susi            | —               | —                    | hindi kilala | 4          |
+| `friendliai`     | walang susi            | —               | —                    | iwasan       | 2          |
+| `iflytek`        | walang susi            | —               | —                    | iwasan       | 1          |
+| `inference-net`  | walang susi            | —               | —                    | pag-iingat   | 3          |
+| `liquid`         | walang susi            | —               | —                    | hindi kilala | 1          |
+| `monsterapi`     | walang susi            | —               | —                    | malabo       | 1          |
+| `muse-spark-web` | walang susi            | —               | —                    | iwasan       | 3          |
+| `nlpcloud`       | walang susi            | —               | —                    | iwasan       | 1          |
+| `nvidia`         | walang takip           | walang takip\*  | —                    | pag-iingat   | 3          |
+| `pollinations`   | walang susi            | —               | —                    | pag-iingat   | 31         |
+| `publicai`       | walang susi            | —               | —                    | pag-iingat   | 3          |
+| `reka`           | walang susi            | —               | —                    | pag-iingat   | 2          |
+| `sensenova`      | walang susi            | —               | —                    | pag-iingat   | 1          |
+| `sparkdesk`      | walang susi            | —               | —                    | pag-iingat   | 1          |
+| `stepfun`        | walang susi            | —               | —                    | ok           | 1          |
+| `t3-web`         | walang susi            | —               | —                    | iwasan       | 23         |
+| `uncloseai`      | walang susi            | —               | —                    | pag-iingat   | 3          |
 
 ---
 

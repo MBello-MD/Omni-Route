@@ -101,13 +101,13 @@ importul pe server din alta, previzualizarea nu ar corespunde cu ceea ce se
 ## Metodologie și avertismente
 
 - Numerele sunt** estimări superioare** din limitele documentate de nivel gratuit ale fiecărui furnizor începând cu** 17-06-2026** , adunate prin cercetări web. Nivelurile gratuite se schimbă în mod constant — re-verificați înainte de a vă baza pe o cifră.
-- **Pentru ce o intrare garantează de fapt.** Nicio intrare nu are un rating de încredere pe rând, iar API nu servește niciunui — tratați fiecare cifră de mai sus ca o estimare a aceleiași calități nedeclarate. Două fapte sunt diferite, deoarece sunt controlate manual, mai degrabă decât deduse: 44 de intrări au un hard stop documentat în mod independent (39 dintre ele rândurile xKiro, care au toate o indemnizație zilnică) și 21 de intrări au o dezvăluire de instruire promptă. `hardStopGuaranteed` este setat doar atunci când propriii termeni ai furnizorului spun că depășirea indemnizației gratuite refuză cererea mai degrabă decât să înceapă în tăcere să te facture, cu sursa într-un comentariu lângă intrare; nu este niciodată implicită la `true`, iar o intrare pe care nimeni nu a verificat-o rămâne nesetată. Deci, un steag hard-stop lipsă înseamnă „nestabilit”, nu „știut că vă facturează”.** modul STRICT** (garda de rutare `freeAccessPolicy=strict` opt-in) are încredere numai în intrările care poartă steag; orice alt nivel gratuit este exclus ca `no-hard-stop` (vezi `open-sse/services/autoCombo/strictZeroCostFilter.ts`). Când gardianul filtrează un pool, jurnalul vizibil de operator raportează atât numărul de excludere, cât și cota sa `no-hard-stop`.
+- **Pentru ce o intrare garantează de fapt.** Nicio intrare nu are un rating de încredere pe rând, iar API nu servește niciunui — tratați fiecare cifră de mai sus ca o estimare a aceleiași calități nedeclarate. Două fapte sunt diferite, deoarece sunt controlate manual, mai degrabă decât deduse: 44 de intrări au un hard stop documentat independent (39 dintre ele rândurile xKiro, care au toate o indemnizație zilnică) și 22 de intrări au o dezvăluire de instruire promptă. `hardStopGuaranteed` este setat doar atunci când propriii termeni ai furnizorului spun că depășirea indemnizației gratuite refuză cererea mai degrabă decât să înceapă în tăcere să te facture, cu sursa într-un comentariu lângă intrare; nu este niciodată implicită la `true`, iar o intrare pe care nimeni nu a verificat-o rămâne nesetată. Deci, un steag hard-stop lipsă înseamnă „nestabilit”, nu „știut că vă facturează”.** modul STRICT** (garda de rutare `freeAccessPolicy=strict` opt-in) are încredere numai în intrările care poartă steag; orice alt nivel gratuit este exclus ca `no-hard-stop` (vezi `open-sse/services/autoCombo/strictZeroCostFilter.ts`). Când gardianul filtrează un pool, jurnalul vizibil de operator raportează atât numărul de excludere, cât și cota sa `no-hard-stop`.
 - `estMonthlyFreeTokens` = numai jetoane lunare recurente.** Creditele de înscriere unică nu se repetă** și numără ca 0. Nivelurile întrerupte sunt, de asemenea, 0.
 - Token cap zilnic → `monthly = daily × 30`. Doar RPD a documentat → `RPD × ~800 output tokens × 30`. Doar RPM/TPM (fără plafon zilnic) →** necapsulat** (vezi mai jos).
-- **Permanent gratuit, dar fără limită de simbol publicată** (`glm-cn`, `tencent`, `baidu`, `kilo-gateway`, `opencode-zen`, `gemini`, `ollama-cloud`): acestea sunt reale acces liber recurent, rate/concurrency-limited. Le clasificăm `recurring-uncapped` și** nu le însumați niciodată** — înmulțirea `RPM × 24/7 × 30d` ar produce un plafon de fantezie (inflația pe care o respingem). Sunt listate astfel încât să știți că există.
+- **Acces gratuit, dar fără limită de token publicat** (`glm-cn`, `tencent`, `baidu`, `kilo-gateway`, `opencode-zen`, `gemini`, `ollama-cloud`, `nvidia`): acestea sunt rate/concurrency-limited. Le clasificăm `recurring-uncapped` și** nu le însumați niciodată** — înmulțirea `RPM × 24/7 × 30d` ar produce un plafon de fantezie (inflația pe care o respingem). NVIDIA lui API este numai pentru utilizare de probă; vedeți avertismentul ToS mai jos.
 - **Boost de deblocare a depozitului:** o reîncărcare mică o singură dată care ridică permanent o cotă gratuită (OpenRouter: 10 USD → 1000 req/day ≈ +24M/mo). Raportat ca o cifră separată, păstrată în afara titlului constant.
 - **Cote limitate de eligibilitate** (`eligibilityGate: "regional-identity"`): o cotă reală recurentă care se deschide numai după o verificare a identității în funcție de regiune (verificarea numelui real din China continentală astăzi). Numărat cu aceeași regulă de deducție a grupului într-o cifră separată (`gatedRecurringTokens`), niciodată în titlul constant. Regimul (`freeType`) este neschimbat, deci rutarea este neschimbată.
-- **Cursuri de probe.** Regula: un număr din catalog își citează sursa într-un comentariu `// evidence:` lângă intrarea — `public-page` (o pagină de furnizor pe care oricine o poate citi), `api-public` (un punct final neautentificat al furnizorului, de exemplu punctul final al planurilor publice al lui NaraRouter la router.bynara.id) sau `console-verified <date> por <who>` (cifra este vizibilă doar în interiorul unei pagini de cont și consolă; capac există). Statul de astăzi: cele cinci blocuri reauditate pe 2026-09-02 îl poartă (`gemini`, `groq`, `mistral`, `ollama-cloud`, `nara`); intrările care preced reauditul din 2026-09-02 moștenesc cercetarea anterioară până când sunt atinse; orice** nou sau schimbat** numărul fără un comentariu de dovezi este o eroare. Astăzi, numai `mistral` este verificat de consolă.
+- **Cursuri de probe.** Regula: un număr din catalog își citează sursa într-un comentariu `// evidence:` lângă intrarea — `public-page` (o pagină de furnizor pe care oricine o poate citi), `api-public` (un punct final neautentificat al furnizorului, de exemplu, punctul final al planurilor publice al lui NaraRouter la router.bynara.id) sau `console-verified <date> por <who>` (cifra este vizibilă doar în interiorul unei pagini de cont și consolă; capac există). Statul de astăzi: cele cinci blocuri reauditate pe 2026-09-02 îl poartă (`gemini`, `groq`, `mistral`, `ollama-cloud`, `nara`); intrările care preced reauditul din 2026-09-02 moștenesc cercetarea anterioară până când sunt atinse; orice** nou sau schimbat** numărul fără un comentariu de dovezi este o eroare. Astăzi, numai `mistral` este verificat de consolă.
 
 ---
 
@@ -229,75 +229,75 @@ Majoritatea cifrelor privind „tokenurile gratuite pe lună” din acest domeni
 
 ---
 
-## Nivel gratuit per furnizor (Bytez/Nous verificat la 2026-10-15; rânduri reverificate la 2026-09-02; celelalte la 2026-06-17)
+## Nivel gratuit pentru fiecare furnizor (Bytez/Nous verificat 2026-10-15; rânduri reauditate 2026-09-02; altele 2026-06-17)
 
-> Regenerat din catalogul per model (`open-sse/config/freeModelCatalog.ts`), cu eliminarea duplicatelor din pool. Sortat după numărul recurent de tokeni/lună. `uncapped*` = gratuit permanent, dar fără o limită de tokeni publicată (limitat de rată/concurență) — acces real, **nu este inclus în suma principală**. `—` = exclusiv pe bază de credit / fără cheie / nu poate fi cuantificat în tokeni.
+> Regenerat din catalogul per-model (`open-sse/config/freeModelCatalog.ts`), deducat în grup. Sortat în funcție de tokens/mo. `uncapped*` = constant recurent, permanent gratuit, dar fără limită de simbol publicată (rate/concurrency-limited) — acces real,** nu** rezumat în titlu. `—` = numai cu credit / fără cheie / nu se poate cuantifica prin simbol.
 
-| Furnizor         | Tip gratuit         | Tokeni constanți/lună | Credit în prima lună | Termeni    | Modele |
-| ---------------- | ------------------- | --------------------- | -------------------- | ---------- | ------ |
-| `mistral`        | recurent            | ~1.00B                | —                    | atenție    | 5      |
-| `nara`           | recurent            | ~210M                 | —                    | atenție    | 8      |
-| `llm7`           | recurent            | ~150M                 | —                    | atenție    | 4      |
-| `xkiro`          | recurent            | ~150M                 | —                    | atenție    | 39     |
-| `longcat`        | unic                | —                     | 10M                  | atenție    | 1      |
-| `cerebras`       | unic                | —                     | credit de 5 $        | atenție    | 2      |
-| `cloudflare-ai`  | recurent            | ~30M                  | —                    | atenție    | 9      |
-| `groq`           | recurent            | ~30M                  | —                    | atenție    | 5      |
-| `api-airforce`   | recurent            | ~24M                  | —                    | atenție    | 7      |
-| `bluesminds`     | recurent            | ~7M                   | —                    | ambiguu    | 22     |
-| `sambanova`      | recurent            | ~6M                   | —                    | atenție    | 5      |
-| `arcee-ai`       | recurent            | ~5M                   | —                    | atenție    | 1      |
-| `bazaarlink`     | recurent            | ~4M                   | —                    | atenție    | 32     |
-| `openrouter`     | recurent            | ~1M                   | —                    | atenție    | 1      |
-| `cohere`         | recurent            | ~800K                 | —                    | atenție    | 6      |
-| `huggingchat`    | recurent            | ~500K                 | —                    | atenție    | 4      |
-| `morph`          | recurent            | ~400K                 | —                    | în regulă  | 2      |
-| `huggingface`    | recurent            | ~200K                 | —                    | atenție    | 6      |
-| `kiro`           | recurent            | ~25K                  | —                    | evită      | 12     |
-| `glm-cn`         | nelimitat           | nelimitat\*           | ~20M                 | în regulă  | 4      |
-| `baidu`          | nelimitat           | nelimitat\*           | —                    | atenție    | 1      |
-| `gemini`         | nelimitat           | nelimitat\*           | —                    | atenție    | 4      |
-| `kilo-gateway`   | nelimitat           | nelimitat\*           | —                    | atenție    | 7      |
-| `ollama-cloud`   | nelimitat           | nelimitat\*           | —                    | ambiguu    | 8      |
-| `opencode-zen`   | nelimitat           | nelimitat\*           | —                    | atenție    | 10     |
-| `tencent`        | nelimitat           | nelimitat\*           | —                    | atenție    | 1      |
-| `vertex`         | credit la înscriere | —                     | ~300M                | atenție    | 10     |
-| `agentrouter`    | credit la înscriere | —                     | ~200M                | atenție    | 4      |
-| `predibase`      | credit la înscriere | —                     | ~25M                 | atenție    | 1      |
-| `doubao`         | credit la înscriere | —                     | ~15M                 | ambiguu    | 1      |
-| `ai21`           | credit la înscriere | —                     | ~10M                 | evită      | 2      |
-| `deepseek`       | credit la înscriere | —                     | ~5M                  | în regulă  | 2      |
-| `hyperbolic`     | credit la înscriere | —                     | ~5M                  | în regulă  | 8      |
-| `nscale`         | credit la înscriere | —                     | ~5M                  | atenție    | 6      |
-| `bytez`          | credit (recurent)   | —                     | necunoscut           | ambiguu    | 1      |
-| `deepinfra`      | credit la înscriere | —                     | ~1M                  | atenție    | 22     |
-| `fireworks`      | credit la înscriere | —                     | ~1M                  | evită      | 10     |
-| `nebius`         | credit la înscriere | —                     | ~1M                  | atenție    | 1      |
-| `qoder`          | credit la înscriere | —                     | ~1M                  | atenție    | 14     |
-| `scaleway`       | credit la înscriere | —                     | ~1M                  | în regulă  | 6      |
-| `novita`         | credit la înscriere | —                     | ~500K                | atenție    | 1      |
-| `agy`            | fără cheie          | —                     | —                    | evită      | 16     |
-| `baichuan`       | fără cheie          | —                     | —                    | ambiguu    | 1      |
-| `blackbox`       | fără cheie          | —                     | —                    | evită      | 6      |
-| `coze`           | fără cheie          | —                     | —                    | evită      | 1      |
-| `duckduckgo-web` | fără cheie          | —                     | —                    | evită      | 6      |
-| `freemodel-dev`  | fără cheie          | —                     | —                    | necunoscut | 4      |
-| `friendliai`     | fără cheie          | —                     | —                    | evită      | 2      |
-| `iflytek`        | fără cheie          | —                     | —                    | evită      | 1      |
-| `inference-net`  | fără cheie          | —                     | —                    | atenție    | 3      |
-| `liquid`         | fără cheie          | —                     | —                    | necunoscut | 1      |
-| `monsterapi`     | fără cheie          | —                     | —                    | ambiguu    | 1      |
-| `muse-spark-web` | fără cheie          | —                     | —                    | evită      | 3      |
-| `nlpcloud`       | fără cheie          | —                     | —                    | evită      | 1      |
-| `nvidia`         | nelimitat           | nelimitat\*           | —                    | atenție    | 2      |
-| `pollinations`   | fără cheie          | —                     | —                    | atenție    | 31     |
-| `publicai`       | fără cheie          | —                     | —                    | atenție    | 3      |
-| `reka`           | fără cheie          | —                     | —                    | atenție    | 2      |
-| `sensenova`      | fără cheie          | —                     | —                    | atenție    | 1      |
-| `sparkdesk`      | keyless             | —                     | —                    | atenție    | 1      |
-| `stepfun`        | keyless             | —                     | —                    | ok         | 1      |
-| `t3-web`         | keyless             | —                     | —                    | evitați    | 23     |
-| `uncloseai`      | keyless             | —                     | —                    | atenție    | 3      |
+| Furnizor         | Tip liber           | tokens/mo constantă | Credit pentru prima lună | ToS        | Modele |
+| ---------------- | ------------------- | ------------------- | ------------------------ | ---------- | ------ |
+| `mistral`        | recurente           | ~ 1.00B             | —                        | Atenţie    | 5      |
+| `nara`           | recurente           | ~ 210M              | —                        | Atenţie    | 8      |
+| `llm7`           | recurente           | ~ 150M              | —                        | Atenţie    | 4      |
+| `xkiro`          | recurente           | ~ 150M              | —                        | Atenţie    | 39     |
+| `longcat`        | o dată              | —                   | 10M                      | Atenţie    | 1      |
+| `cerebras`       | o dată              | —                   | Credit de 5 USD          | Atenţie    | 2      |
+| `cloudflare-ai`  | recurente           | ~ 30M               | —                        | Atenţie    | 9      |
+| `groq`           | recurente           | ~ 30M               | —                        | Atenţie    | 5      |
+| `api-airforce`   | recurente           | ~ 24M               | —                        | Atenţie    | 7      |
+| `bluesminds`     | recurente           | ~ 7M                | —                        | ambiguu    | 22     |
+| `sambanova`      | recurente           | ~ 6M                | —                        | Atenţie    | 5      |
+| `arcee-ai`       | recurente           | ~ 5M                | —                        | Atenţie    | 1      |
+| `bazaarlink`     | recurente           | ~ 4M                | —                        | Atenţie    | 32     |
+| `openrouter`     | recurente           | ~ 1M                | —                        | Atenţie    | 1      |
+| `cohere`         | recurente           | ~ 800K              | —                        | Atenţie    | 6      |
+| `huggingchat`    | recurente           | ~ 500K              | —                        | Atenţie    | 4      |
+| `morph`          | recurente           | ~ 400K              | —                        | Bine       | 2      |
+| `huggingface`    | recurente           | ~ 200K              | —                        | Atenţie    | 6      |
+| `kiro`           | recurente           | ~ 25K               | —                        | evita      | 12     |
+| `glm-cn`         | necapsulat          | necapsulat\*        | ~ 20M                    | Bine       | 4      |
+| `baidu`          | necapsulat          | necapsulat\*        | —                        | Atenţie    | 1      |
+| `gemini`         | necapsulat          | necapsulat\*        | —                        | Atenţie    | 4      |
+| `kilo-gateway`   | necapsulat          | necapsulat\*        | —                        | Atenţie    | 7      |
+| `ollama-cloud`   | necapsulat          | necapsulat\*        | —                        | ambiguu    | 8      |
+| `opencode-zen`   | necapsulat          | necapsulat\*        | —                        | Atenţie    | 10     |
+| `tencent`        | necapsulat          | necapsulat\*        | —                        | Atenţie    | 1      |
+| `vertex`         | credit de înscriere | —                   | ~ 300M                   | Atenţie    | 10     |
+| `agentrouter`    | credit de înscriere | —                   | ~ 200M                   | Atenţie    | 4      |
+| `predibase`      | credit de înscriere | —                   | ~ 25M                    | Atenţie    | 1      |
+| `doubao`         | credit de înscriere | —                   | ~ 15M                    | ambiguu    | 1      |
+| `ai21`           | credit de înscriere | —                   | ~ 10M                    | evita      | 2      |
+| `deepseek`       | credit de înscriere | —                   | ~ 5M                     | Bine       | 2      |
+| `hyperbolic`     | credit de înscriere | —                   | ~ 5M                     | Bine       | 8      |
+| `nscale`         | credit de înscriere | —                   | ~ 5M                     | Atenţie    | 6      |
+| `bytez`          | credit (rec.)       | —                   | necunoscut               | ambiguu    | 1      |
+| `deepinfra`      | credit de înscriere | —                   | ~ 1M                     | Atenţie    | 22     |
+| `fireworks`      | credit de înscriere | —                   | ~ 1M                     | evita      | 10     |
+| `nebius`         | credit de înscriere | —                   | ~ 1M                     | Atenţie    | 1      |
+| `qoder`          | credit de înscriere | —                   | ~ 1M                     | Atenţie    | 14     |
+| `scaleway`       | credit de înscriere | —                   | ~ 1M                     | Bine       | 6      |
+| `novita`         | credit de înscriere | —                   | ~ 500K                   | Atenţie    | 1      |
+| `agy`            | fără cheie          | —                   | —                        | evita      | 16     |
+| `baichuan`       | fără cheie          | —                   | —                        | ambiguu    | 1      |
+| `blackbox`       | fără cheie          | —                   | —                        | evita      | 6      |
+| `coze`           | fără cheie          | —                   | —                        | evita      | 1      |
+| `duckduckgo-web` | fără cheie          | —                   | —                        | evita      | 6      |
+| `freemodel-dev`  | fără cheie          | —                   | —                        | necunoscut | 4      |
+| `friendliai`     | fără cheie          | —                   | —                        | evita      | 2      |
+| `iflytek`        | fără cheie          | —                   | —                        | evita      | 1      |
+| `inference-net`  | fără cheie          | —                   | —                        | Atenţie    | 3      |
+| `liquid`         | fără cheie          | —                   | —                        | necunoscut | 1      |
+| `monsterapi`     | fără cheie          | —                   | —                        | ambiguu    | 1      |
+| `muse-spark-web` | fără cheie          | —                   | —                        | evita      | 3      |
+| `nlpcloud`       | fără cheie          | —                   | —                        | evita      | 1      |
+| `nvidia`         | necapsulat          | necapsulat\*        | —                        | Atenţie    | 3      |
+| `pollinations`   | fără cheie          | —                   | —                        | Atenţie    | 31     |
+| `publicai`       | fără cheie          | —                   | —                        | Atenţie    | 3      |
+| `reka`           | fără cheie          | —                   | —                        | Atenţie    | 2      |
+| `sensenova`      | fără cheie          | —                   | —                        | Atenţie    | 1      |
+| `sparkdesk`      | fără cheie          | —                   | —                        | Atenţie    | 1      |
+| `stepfun`        | fără cheie          | —                   | —                        | Bine       | 1      |
+| `t3-web`         | fără cheie          | —                   | —                        | evita      | 23     |
+| `uncloseai`      | fără cheie          | —                   | —                        | Atenţie    | 3      |
 
 ---
 

@@ -111,10 +111,10 @@ namjerno.
 ## Metodologija i upozorenja
 
 - Brojevi su** procjene gornje granice** od dokumentiranih besplatnih ograničenja svakog provajdera od dana** 2026-06-17** , prikupljeno web istraživanjem. Slobodni slojevi se stalno mijenjaju — ponovo provjeriti prije nego se osloni na figuru.
-- **Za šta zapravo jamči unos.** Nijedan unos ne nosi ocjenu pouzdanosti po redu, a API ne služi nijednom — tretirati svaku gornju cifru kao procjenu istog, neiskazanog kvaliteta. Dve činjenice su različite, jer su kurirane ručno, a ne na osnovu zaključaka: 44 unosa nose nezavisno dokumentovano teško zaustavljanje (od toga 39 xKiro redova, koji svi dele jednu dnevnicu), a 21 unos sadrži obaveštenje o brzoj obuci. `hardStopGuaranteed` se postavlja samo kada sami uslovi provajdera kažu da prekoračenje besplatnog iznosa odbija zahtev, a ne počinje tiho da vam fakturiše, sa izvorom u komentaru pored unosa; nikada nije zadana vrijednost `true`, a unos koji niko nije provjerio ostaje nepostavljen. Dakle, zastavica koja nedostaje znači "nije uspostavljena", a ne "poznato da vam treba naplatiti".**STRICT mod** (opt-in `freeAccessPolicy=strict` čuvar rutiranja) vjeruje samo unosima koji nose zastavicu; svaki drugi slobodni nivo je isključen kao `no-hard-stop` (vidi `open-sse/services/autoCombo/strictZeroCostFilter.ts`). Kada čuvar filtrira skup, dnevnik vidljiv operatoru prijavljuje i broj isključenja i njegov `no-hard-stop` udio.
+- **Za šta zapravo jamči unos.** Nijedan unos ne nosi ocjenu pouzdanosti po redu, a API ne služi nijednom — tretirati svaku gornju cifru kao procjenu istog, neiskazanog kvaliteta. Dvije činjenice su različite, jer su kurirane ručno, a ne zaključene: 44 unosa nose neovisno dokumentiranu čvrstu stopu (od toga 39 xKiro redova, koji svi dijele jednu dnevnicu), a 22 unosa sadrže informacije o brzoj obuci. `hardStopGuaranteed` se postavlja samo kada sami uslovi provajdera kažu da prekoračenje besplatnog iznosa odbija zahtev, a ne počinje tiho da vam fakturiše, sa izvorom u komentaru pored unosa; nikada nije zadana vrijednost `true`, a unos koji niko nije provjerio ostaje nepostavljen. Dakle, zastavica koja nedostaje znači "nije uspostavljena", a ne "poznato da vam treba naplatiti".**STRICT mod** (opt-in `freeAccessPolicy=strict` čuvar rutiranja) vjeruje samo unosima koji nose zastavicu; svaki drugi slobodni nivo je isključen kao `no-hard-stop` (vidi `open-sse/services/autoCombo/strictZeroCostFilter.ts`). Kada čuvar filtrira skup, dnevnik vidljiv operatoru prijavljuje i broj isključenja i njegov `no-hard-stop` udio.
 - `estMonthlyFreeTokens` = samo ponavljajući mjesečni tokeni.** Krediti za jednokratnu registraciju se ne ponavljaju** i računaju se kao 0. Prekinuti nivoi su također 0.
 - Kapacitet dnevnog tokena → `monthly = daily × 30`. Samo RPD dokumentuje → `RPD × ~800 output tokens × 30`. Samo RPM/TPM (bez dnevnog ograničenja) →** uncapped** (vidi dolje).
-- **Trajno besplatno, ali bez objavljenog ograničenja tokena** (`glm-cn`, `tencent`, `baidu`, `kilo-gateway`, `opencode-zen`, `gemini`, `ollama-cloud`): ovo su pravi ponavljajući besplatni pristup, rate/concurrency-limited. Klasificiramo ih `recurring-uncapped` i** nikada ih ne zbrajajte** — množenjem `RPM × 24/7 × 30d` proizvelo bi fantazijski plafon (inflaciju koju odbijamo). Navedeni su tako da znate da postoje.
+- **Besplatan pristup, ali bez objavljenog ograničenja tokena** (`glm-cn`, `tencent`, `baidu`, `kilo-gateway`, `opencode-zen`, `gemini`, `ollama-cloud`, `nvidia`): to su rate/concurrency-limited. Mi ih klasifikujemo `recurring-uncapped` i** nikada ih ne zbrajajte** — množenjem `RPM × 24/7 × 30d` bi proizveo plafon fantazije (inflaciju koju odbijamo). NVIDIA-ov API je samo za probnu upotrebu; pogledajte njegovo ToS upozorenje ispod.
 - **Povećanje depozita i otključavanja:** jednokratna mala dopuna koja trajno povećava besplatnu kvotu (OpenRouter: $10 → 1000 req/day ≈ +24M/mo). Prijavljen kao zasebna brojka, koja se ne pojavljuje u stalnom naslovu.
 - **Kvote ograničene na podobnost** (`eligibilityGate: "regional-identity"`): stvarna ponavljajuća kvota koja se otvara tek nakon provjere identiteta vezanog za regiju (današnja verifikacija stvarnog imena kopno-Kina). Računa se sa istim pravilom dedupe grupe u zasebnu cifru (`gatedRecurringTokens`), nikad u stalni naslov. Režim (`freeType`) je nepromijenjen, tako da je rutiranje nepromijenjeno.
 - **Časovi dokaza.** Pravilo: broj u katalogu navodi svoj izvor u komentaru `// evidence:` pored unosa — `public-page` (stranica provajdera koju svako može pročitati), `api-public` (neautentikovana krajnja tačka provajdera, npr. NaraRouter-ova krajnja tačka javnih planova na router.bynara.id), ili `console-verified <date> por <who>` (figura je vidljiva samo u okviru konzole za zapise, a ko piše na konzoli za javnu stranicu). postoji). Današnje stanje: pet blokova ponovo revidiranih 2026-09-02 nosi to (`gemini`, `groq`, `mistral`, `ollama-cloud`, `nara`); unosi koji su prethodili ponovnoj reviziji 2026-09-02 nasljeđuju ranija istraživanja dok se ne dotaknu; bilo koji** novo ili promijenjeno** broj bez komentara dokaza je greška. Danas je samo `mistral` verifikovan na konzoli.
@@ -239,75 +239,75 @@ Većina podataka o „besplatnim tokenima mjesečno“ u ovom prostoru predstavl
 
 ---
 
-## Besplatni nivo po pružaocu (Bytez/Nous provjereno 2026-10-15; ponovo provjerene stavke 2026-09-02; ostali 2026-06-17)
+## Slobodni nivo po pružaocu (Bytez/Nous provjereno 15.10.2026; revidirani redovi 2026-09-02; ostali 2026-06-17)
 
-> Ponovo generisano iz kataloga po modelima (`open-sse/config/freeModelCatalog.ts`), s uklonjenim duplikatima po poolu. Sortirano prema ponavljajućoj stabilnoj mjesečnoj količini tokena. `uncapped*` = trajno besplatno, ali bez objavljenog ograničenja broja tokena (ograničeno brzinom/brojem istovremenih zahtjeva) — stvaran pristup, **nije uračunato u glavnu brojku**. `—` = samo kredit / bez ključa / količina tokena se ne može kvantifikovati.
+> Regenerirano iz kataloga po modelu (`open-sse/config/freeModelCatalog.ts`), dedupirano iz skupa. Sortirano po ponavljajućem stalnom tokens/mo. `uncapped*` = trajno besplatnom, ali bez objavljenog ograničenja tokena (rate/concurrency-limited) — stvarni pristup,** ne** sažeto u naslovu. `—` = samo kreditno / bez ključa / ne može se mjeriti tokenom.
 
-| Pružalac         | Vrsta besplatnog pristupa | Stabilni tokeni/mj. | Kredit prvog mjeseca | Uslovi korištenja | Modeli |
-| ---------------- | ------------------------- | ------------------- | -------------------- | ----------------- | ------ |
-| `mistral`        | ponavljajući              | ~1.00B              | —                    | oprez             | 5      |
-| `nara`           | ponavljajući              | ~210M               | —                    | oprez             | 8      |
-| `llm7`           | ponavljajući              | ~150M               | —                    | oprez             | 4      |
-| `xkiro`          | ponavljajući              | ~150M               | —                    | oprez             | 39     |
-| `longcat`        | jednokratno               | —                   | 10M                  | oprez             | 1      |
-| `cerebras`       | jednokratno               | —                   | kredit od $5         | oprez             | 2      |
-| `cloudflare-ai`  | ponavljajući              | ~30M                | —                    | oprez             | 9      |
-| `groq`           | ponavljajući              | ~30M                | —                    | oprez             | 5      |
-| `api-airforce`   | ponavljajući              | ~24M                | —                    | oprez             | 7      |
-| `bluesminds`     | ponavljajući              | ~7M                 | —                    | nejasno           | 22     |
-| `sambanova`      | ponavljajući              | ~6M                 | —                    | oprez             | 5      |
-| `arcee-ai`       | ponavljajući              | ~5M                 | —                    | oprez             | 1      |
-| `bazaarlink`     | ponavljajući              | ~4M                 | —                    | oprez             | 32     |
-| `openrouter`     | ponavljajući              | ~1M                 | —                    | oprez             | 1      |
-| `cohere`         | ponavljajući              | ~800K               | —                    | oprez             | 6      |
-| `huggingchat`    | ponavljajući              | ~500K               | —                    | oprez             | 4      |
-| `morph`          | ponavljajući              | ~400K               | —                    | u redu            | 2      |
-| `huggingface`    | ponavljajući              | ~200K               | —                    | oprez             | 6      |
-| `kiro`           | ponavljajući              | ~25K                | —                    | izbjegavati       | 12     |
-| `glm-cn`         | bez ograničenja           | bez ograničenja\*   | ~20M                 | u redu            | 4      |
-| `baidu`          | bez ograničenja           | bez ograničenja\*   | —                    | oprez             | 1      |
-| `gemini`         | bez ograničenja           | bez ograničenja\*   | —                    | oprez             | 4      |
-| `kilo-gateway`   | bez ograničenja           | bez ograničenja\*   | —                    | oprez             | 7      |
-| `ollama-cloud`   | bez ograničenja           | bez ograničenja\*   | —                    | nejasno           | 8      |
-| `opencode-zen`   | bez ograničenja           | bez ograničenja\*   | —                    | oprez             | 10     |
-| `tencent`        | bez ograničenja           | bez ograničenja\*   | —                    | oprez             | 1      |
-| `vertex`         | kredit pri registraciji   | —                   | ~300M                | oprez             | 10     |
-| `agentrouter`    | kredit pri registraciji   | —                   | ~200M                | oprez             | 4      |
-| `predibase`      | kredit pri registraciji   | —                   | ~25M                 | oprez             | 1      |
-| `doubao`         | kredit pri registraciji   | —                   | ~15M                 | nejasno           | 1      |
-| `ai21`           | kredit pri registraciji   | —                   | ~10M                 | izbjegavati       | 2      |
-| `deepseek`       | kredit pri registraciji   | —                   | ~5M                  | u redu            | 2      |
-| `hyperbolic`     | kredit pri registraciji   | —                   | ~5M                  | u redu            | 8      |
-| `nscale`         | kredit pri registraciji   | —                   | ~5M                  | oprez             | 6      |
-| `bytez`          | kredit (pon.)             | —                   | nepoznato            | nejasno           | 1      |
-| `deepinfra`      | kredit pri registraciji   | —                   | ~1M                  | oprez             | 22     |
-| `fireworks`      | kredit pri registraciji   | —                   | ~1M                  | izbjegavati       | 10     |
-| `nebius`         | kredit pri registraciji   | —                   | ~1M                  | oprez             | 1      |
-| `qoder`          | kredit pri registraciji   | —                   | ~1M                  | oprez             | 14     |
-| `scaleway`       | kredit pri registraciji   | —                   | ~1M                  | u redu            | 6      |
-| `novita`         | kredit pri registraciji   | —                   | ~500K                | oprez             | 1      |
-| `agy`            | bez ključa                | —                   | —                    | izbjegavati       | 16     |
-| `baichuan`       | bez ključa                | —                   | —                    | nejasno           | 1      |
-| `blackbox`       | bez ključa                | —                   | —                    | izbjegavati       | 6      |
-| `coze`           | bez ključa                | —                   | —                    | izbjegavati       | 1      |
-| `duckduckgo-web` | bez ključa                | —                   | —                    | izbjegavati       | 6      |
-| `freemodel-dev`  | bez ključa                | —                   | —                    | nepoznato         | 4      |
-| `friendliai`     | bez ključa                | —                   | —                    | izbjegavati       | 2      |
-| `iflytek`        | bez ključa                | —                   | —                    | izbjegavati       | 1      |
-| `inference-net`  | bez ključa                | —                   | —                    | oprez             | 3      |
-| `liquid`         | bez ključa                | —                   | —                    | nepoznato         | 1      |
-| `monsterapi`     | bez ključa                | —                   | —                    | nejasno           | 1      |
-| `muse-spark-web` | bez ključa                | —                   | —                    | izbjegavati       | 3      |
-| `nlpcloud`       | bez ključa                | —                   | —                    | izbjegavati       | 1      |
-| `nvidia`         | bez ograničenja           | bez ograničenja\*   | —                    | oprez             | 2      |
-| `pollinations`   | bez ključa                | —                   | —                    | oprez             | 31     |
-| `publicai`       | bez ključa                | —                   | —                    | oprez             | 3      |
-| `reka`           | bez ključa                | —                   | —                    | oprez             | 2      |
-| `sensenova`      | bez ključa                | —                   | —                    | oprez             | 1      |
-| `sparkdesk`      | bez ključa                | —                   | —                    | oprez             | 1      |
-| `stepfun`        | bez ključa                | —                   | —                    | u redu            | 1      |
-| `t3-web`         | bez ključa                | —                   | —                    | izbjegavati       | 23     |
-| `uncloseai`      | bez ključa                | —                   | —                    | oprez             | 3      |
+| Provajder        | Slobodni tip      | Steady tokens/mo | Kredit za prvi mjesec | ToS         | Modeli |
+| ---------------- | ----------------- | ---------------- | --------------------- | ----------- | ------ |
+| `mistral`        | ponavljajući      | ~ 1.00B          | —                     | oprez       | 5      |
+| `nara`           | ponavljajući      | ~ 210M           | —                     | oprez       | 8      |
+| `llm7`           | ponavljajući      | ~ 150M           | —                     | oprez       | 4      |
+| `xkiro`          | ponavljajući      | ~ 150M           | —                     | oprez       | 39     |
+| `longcat`        | jednokratno       | —                | 10M                   | oprez       | 1      |
+| `cerebras`       | jednokratno       | —                | $5 kredit             | oprez       | 2      |
+| `cloudflare-ai`  | ponavljajući      | ~ 30M            | —                     | oprez       | 9      |
+| `groq`           | ponavljajući      | ~ 30M            | —                     | oprez       | 5      |
+| `api-airforce`   | ponavljajući      | ~ 24M            | —                     | oprez       | 7      |
+| `bluesminds`     | ponavljajući      | ~ 7M             | —                     | dvosmisleno | 22     |
+| `sambanova`      | ponavljajući      | ~ 6M             | —                     | oprez       | 5      |
+| `arcee-ai`       | ponavljajući      | ~ 5M             | —                     | oprez       | 1      |
+| `bazaarlink`     | ponavljajući      | ~ 4M             | —                     | oprez       | 32     |
+| `openrouter`     | ponavljajući      | ~ 1M             | —                     | oprez       | 1      |
+| `cohere`         | ponavljajući      | ~ 800K           | —                     | oprez       | 6      |
+| `huggingchat`    | ponavljajući      | ~ 500K           | —                     | oprez       | 4      |
+| `morph`          | ponavljajući      | ~ 400K           | —                     | ok          | 2      |
+| `huggingface`    | ponavljajući      | ~ 200K           | —                     | oprez       | 6      |
+| `kiro`           | ponavljajući      | ~ 25K            | —                     | izbjegavati | 12     |
+| `glm-cn`         | uncapped          | neotvoren\*      | ~ 20M                 | ok          | 4      |
+| `baidu`          | uncapped          | neotvoren\*      | —                     | oprez       | 1      |
+| `gemini`         | uncapped          | neotvoren\*      | —                     | oprez       | 4      |
+| `kilo-gateway`   | uncapped          | neotvoren\*      | —                     | oprez       | 7      |
+| `ollama-cloud`   | uncapped          | neotvoren\*      | —                     | dvosmisleno | 8      |
+| `opencode-zen`   | uncapped          | neotvoren\*      | —                     | oprez       | 10     |
+| `tencent`        | uncapped          | neotvoren\*      | —                     | oprez       | 1      |
+| `vertex`         | kredit za prijavu | —                | ~ 300M                | oprez       | 10     |
+| `agentrouter`    | kredit za prijavu | —                | ~ 200M                | oprez       | 4      |
+| `predibase`      | kredit za prijavu | —                | ~ 25M                 | oprez       | 1      |
+| `doubao`         | kredit za prijavu | —                | ~ 15M                 | dvosmisleno | 1      |
+| `ai21`           | kredit za prijavu | —                | ~ 10M                 | izbjegavati | 2      |
+| `deepseek`       | kredit za prijavu | —                | ~ 5M                  | ok          | 2      |
+| `hyperbolic`     | kredit za prijavu | —                | ~ 5M                  | ok          | 8      |
+| `nscale`         | kredit za prijavu | —                | ~ 5M                  | oprez       | 6      |
+| `bytez`          | kredit (rec.)     | —                | nepoznato             | dvosmisleno | 1      |
+| `deepinfra`      | kredit za prijavu | —                | ~ 1M                  | oprez       | 22     |
+| `fireworks`      | kredit za prijavu | —                | ~ 1M                  | izbjegavati | 10     |
+| `nebius`         | kredit za prijavu | —                | ~ 1M                  | oprez       | 1      |
+| `qoder`          | kredit za prijavu | —                | ~ 1M                  | oprez       | 14     |
+| `scaleway`       | kredit za prijavu | —                | ~ 1M                  | ok          | 6      |
+| `novita`         | kredit za prijavu | —                | ~ 500K                | oprez       | 1      |
+| `agy`            | bez ključa        | —                | —                     | izbjegavati | 16     |
+| `baichuan`       | bez ključa        | —                | —                     | dvosmisleno | 1      |
+| `blackbox`       | bez ključa        | —                | —                     | izbjegavati | 6      |
+| `coze`           | bez ključa        | —                | —                     | izbjegavati | 1      |
+| `duckduckgo-web` | bez ključa        | —                | —                     | izbjegavati | 6      |
+| `freemodel-dev`  | bez ključa        | —                | —                     | nepoznato   | 4      |
+| `friendliai`     | bez ključa        | —                | —                     | izbjegavati | 2      |
+| `iflytek`        | bez ključa        | —                | —                     | izbjegavati | 1      |
+| `inference-net`  | bez ključa        | —                | —                     | oprez       | 3      |
+| `liquid`         | bez ključa        | —                | —                     | nepoznato   | 1      |
+| `monsterapi`     | bez ključa        | —                | —                     | dvosmisleno | 1      |
+| `muse-spark-web` | bez ključa        | —                | —                     | izbjegavati | 3      |
+| `nlpcloud`       | bez ključa        | —                | —                     | izbjegavati | 1      |
+| `nvidia`         | uncapped          | neotvoren\*      | —                     | oprez       | 3      |
+| `pollinations`   | bez ključa        | —                | —                     | oprez       | 31     |
+| `publicai`       | bez ključa        | —                | —                     | oprez       | 3      |
+| `reka`           | bez ključa        | —                | —                     | oprez       | 2      |
+| `sensenova`      | bez ključa        | —                | —                     | oprez       | 1      |
+| `sparkdesk`      | bez ključa        | —                | —                     | oprez       | 1      |
+| `stepfun`        | bez ključa        | —                | —                     | ok          | 1      |
+| `t3-web`         | bez ključa        | —                | —                     | izbjegavati | 23     |
+| `uncloseai`      | bez ključa        | —                | —                     | oprez       | 3      |
 
 ---
 

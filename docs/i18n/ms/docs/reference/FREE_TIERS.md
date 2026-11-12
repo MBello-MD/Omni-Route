@@ -98,11 +98,11 @@ Pengiraan boleh bertambah baik apabila suapan tersedia. Penentuan kekal berdasar
 
 ## Metodologi & kaveat
 
-- Nombor adalah** anggaran sempadan atas** daripada setiap had peringkat bebas yang didokumenkan oleh setiap pembekal setakat** 17-06-2026** , dikumpulkan oleh penyelidikan web. Peringkat percuma berubah sentiasa — sahkan semula sebelum bergantung pada angka.
-- **Apa yang dijanjikan oleh entri sebenarnya.** Tiada entri yang membawa penilaian keyakinan setiap baris, dan API tidak menyajikan satu pun — menganggap setiap angka di atas sebagai anggaran kualiti yang sama dan tidak dinyatakan. Dua fakta adalah berbeza, kerana ia disusun mengikut tangan dan bukannya disimpulkan: 44 entri membawa hentian keras yang didokumenkan secara bebas (39 daripadanya baris xKiro, yang kesemuanya berkongsi satu elaun harian), dan 21 entri membawa pendedahan latihan segera. `hardStopGuaranteed` ditetapkan hanya apabila syarat penyedia sendiri mengatakan bahawa melebihi elaun percuma menolak permintaan dan bukannya secara senyap mula mengebil anda, dengan sumber dalam ulasan di sebelah entri; ia tidak pernah lalai kepada `true`, dan entri yang tiada siapa yang telah disahkan kekal tidak ditetapkan. Jadi bendera henti-henti yang hilang bermaksud "tidak ditubuhkan", bukan "diketahui untuk mengebilkan anda".** mod STRICT** (pengawal laluan `freeAccessPolicy=strict` ikut serta) hanya mempercayai entri yang membawa bendera; setiap peringkat percuma yang lain dikecualikan sebagai `no-hard-stop` (lihat `open-sse/services/autoCombo/strictZeroCostFilter.ts`). Apabila pengawal menapis kolam, log kelihatan pengendali melaporkan kedua-dua kiraan pengecualian dan bahagian `no-hard-stop`.
+- Nombor adalah** anggaran sempadan atas** daripada setiap had peringkat bebas yang didokumenkan oleh setiap pembekal setakat** 2026-06-17** , dikumpulkan oleh penyelidikan web. Peringkat percuma berubah sentiasa — sahkan semula sebelum bergantung pada angka.
+- **Apa yang dijanjikan oleh entri sebenarnya.** Tiada entri yang membawa penilaian keyakinan setiap baris, dan API tidak menyajikan satu pun — menganggap setiap angka di atas sebagai anggaran kualiti yang sama dan tidak dinyatakan. Dua fakta adalah berbeza, kerana ia disusun mengikut tangan dan bukannya disimpulkan: 44 entri membawa hentian keras yang didokumenkan secara bebas (39 daripadanya baris xKiro, yang kesemuanya berkongsi satu elaun harian), dan 22 entri membawa pendedahan latihan segera. `hardStopGuaranteed` ditetapkan hanya apabila syarat penyedia sendiri mengatakan bahawa melebihi elaun percuma menolak permintaan dan bukannya secara senyap mula mengebil anda, dengan sumber dalam ulasan di sebelah entri; ia tidak pernah lalai kepada `true`, dan entri yang tiada siapa yang telah disahkan kekal tidak ditetapkan. Jadi bendera henti-henti yang hilang bermaksud "tidak ditubuhkan", bukan "diketahui untuk mengebilkan anda".** mod STRICT** (pengawal laluan `freeAccessPolicy=strict` ikut serta) hanya mempercayai entri yang membawa bendera; setiap peringkat percuma yang lain dikecualikan sebagai `no-hard-stop` (lihat `open-sse/services/autoCombo/strictZeroCostFilter.ts`). Apabila pengawal menapis kolam, log kelihatan pengendali melaporkan kedua-dua kiraan pengecualian dan bahagian `no-hard-stop`.
 - `estMonthlyFreeTokens` = token bulanan berulang sahaja.** Kredit pendaftaran sekali tidak berulang** dan dikira sebagai 0. Peringkat yang dihentikan juga adalah 0.
 - Token cap harian → `monthly = daily × 30`. Hanya RPD yang didokumenkan → `RPD × ~800 output tokens × 30`. Hanya RPM/TPM (tiada had harian) →** tidak bertutup** (lihat di bawah).
-- **Percuma secara kekal, tetapi tiada had token yang diterbitkan** (`glm-cn`, `tencent`, `baidu`, `kilo-gateway`, `opencode-zen`, `gemini`, `ollama-cloud`): ini adalah akses percuma berulang sebenar, rate/concurrency-limited. Kami mengklasifikasikannya `recurring-uncapped` dan** jangan sekali-kali menjumlahkannya** — mendarab `RPM × 24/7 × 30d` akan menghasilkan siling fantasi (inflasi yang kita tolak). Mereka disenaraikan supaya anda tahu ia wujud.
+- **Akses percuma, tetapi tiada had token yang diterbitkan** (`glm-cn`, `tencent`, `baidu`, `kilo-gateway`, `opencode-zen`, `gemini`, `ollama-cloud`, `nvidia`): ini adalah rate/concurrency-limited. Kami mengklasifikasikannya `recurring-uncapped` dan** jangan sekali-kali menjumlahkannya** — mendarab `RPM × 24/7 × 30d` akan menghasilkan siling fantasi (inflasi yang kita tolak). NVIDIAAPI adalah kegunaan percubaan sahaja; lihat kaveat ToS di bawah.
 - **Rangsangan buka kunci deposit:** tambah nilai kecil sekali sahaja yang menaikkan kuota percuma secara kekal (OpenRouter: $10 → 1000 req/day ≈ +24M/mo). Dilaporkan sebagai angka yang berasingan, diketepikan daripada tajuk tetap.
 - **Kuota berpagar kelayakan** (`eligibilityGate: "regional-identity"`): kuota berulang sebenar yang hanya dibuka selepas semakan identiti terikat wilayah (pengesahan nama sebenar tanah besar-China hari ini). Dikira dengan peraturan pool-dedupe yang sama ke dalam angka yang berasingan (`gatedRecurringTokens`), tidak sekali-kali ke dalam tajuk tetap. Rejim (`freeType`) tidak berubah, jadi penghalaan tidak berubah.
 - **Kelas bukti.** Peraturan: nombor dalam katalog memetik sumbernya dalam ulasan `// evidence:` di sebelah entri — `public-page` (halaman penyedia boleh dibaca oleh sesiapa sahaja), `api-public` (titik akhir pembekal yang tidak disahkan, cth titik akhir rancangan awam NaraRouter di router.bynara.id), atau `console-verified <date> por <who>` (angka itu hanya boleh dilihat di dalam konsol akaun; komen itu merekodkan orang yang melihat dan melihat halaman itu). Negeri hari ini: lima blok yang diaudit semula pada 2026-09-02 membawanya (`gemini`, `groq`, `mistral`, `ollama-cloud`, `nara`); entri yang mendahului audit semula 2026-09-02 mewarisi penyelidikan terdahulu sehingga ia disentuh; mana-mana** baru atau berubah** nombor tanpa ulasan bukti adalah pepijat. Hari ini hanya `mistral` yang disahkan konsol.
@@ -227,75 +227,75 @@ Kebanyakan angka "token percuma sebulan" dalam bidang ini ialah hasil tambah lab
 
 ---
 
-## Percuma setiap penyedia (Bytez/Nous disemak 2026-10-15; baris diaudit semula 2026-09-02; yang lain 2026-06-17)
+## Peringkat percuma setiap penyedia (Bytez/Nous diperiksa 2026-10-15; baris diaudit semula 2026-09-02; lain-lain 2026-06-17)
 
-> Dijana semula daripada katalog setiap model (`open-sse/config/freeModelCatalog.ts`), dengan kumpulan dideduplikasi. Diisih mengikut jumlah token berulang yang stabil/bulan. `uncapped*` = percuma secara kekal tetapi tiada had token yang diterbitkan (terhad oleh kadar/keupayaan serentak) — akses sebenar, **tidak dijumlahkan ke dalam angka utama**. `—` = kredit sahaja / tanpa kunci / tidak boleh dikira dalam token.
+> Dijana semula daripada katalog setiap model (`open-sse/config/freeModelCatalog.ts`), dititipkan. Diisih mengikut tokens/mo. `uncapped*` = berterusan berulang secara kekal tetapi tiada had token yang diterbitkan (rate/concurrency-limited) akses sebenar —,** bukan** disimpulkan ke dalam tajuk utama. `—` = kredit sahaja / tanpa kunci / tidak boleh diukur dengan token.
 
-| Penyedia         | Jenis percuma      | Token stabil/bln | Kredit bulan pertama | Syarat penggunaan | Model |
-| ---------------- | ------------------ | ---------------- | -------------------- | ----------------- | ----- |
-| `mistral`        | berulang           | ~1.00B           | —                    | berhati-hati      | 5     |
-| `nara`           | berulang           | ~210M            | —                    | berhati-hati      | 8     |
-| `llm7`           | berulang           | ~150M            | —                    | berhati-hati      | 4     |
-| `xkiro`          | berulang           | ~150M            | —                    | berhati-hati      | 39    |
-| `longcat`        | sekali sahaja      | —                | 10M                  | berhati-hati      | 1     |
-| `cerebras`       | sekali sahaja      | —                | kredit $5            | berhati-hati      | 2     |
-| `cloudflare-ai`  | berulang           | ~30M             | —                    | berhati-hati      | 9     |
-| `groq`           | berulang           | ~30M             | —                    | berhati-hati      | 5     |
-| `api-airforce`   | berulang           | ~24M             | —                    | berhati-hati      | 7     |
-| `bluesminds`     | berulang           | ~7M              | —                    | samar             | 22    |
-| `sambanova`      | berulang           | ~6M              | —                    | berhati-hati      | 5     |
-| `arcee-ai`       | berulang           | ~5M              | —                    | berhati-hati      | 1     |
-| `bazaarlink`     | berulang           | ~4M              | —                    | berhati-hati      | 32    |
-| `openrouter`     | berulang           | ~1M              | —                    | berhati-hati      | 1     |
-| `cohere`         | berulang           | ~800K            | —                    | berhati-hati      | 6     |
-| `huggingchat`    | berulang           | ~500K            | —                    | berhati-hati      | 4     |
-| `morph`          | berulang           | ~400K            | —                    | ok                | 2     |
-| `huggingface`    | berulang           | ~200K            | —                    | berhati-hati      | 6     |
-| `kiro`           | berulang           | ~25K             | —                    | elakkan           | 12    |
-| `glm-cn`         | tanpa had          | tanpa had\*      | ~20M                 | ok                | 4     |
-| `baidu`          | tanpa had          | tanpa had\*      | —                    | berhati-hati      | 1     |
-| `gemini`         | tanpa had          | tanpa had\*      | —                    | berhati-hati      | 4     |
-| `kilo-gateway`   | tanpa had          | tanpa had\*      | —                    | berhati-hati      | 7     |
-| `ollama-cloud`   | tanpa had          | tanpa had\*      | —                    | samar             | 8     |
-| `opencode-zen`   | tanpa had          | tanpa had\*      | —                    | berhati-hati      | 10    |
-| `tencent`        | tanpa had          | tanpa had\*      | —                    | berhati-hati      | 1     |
-| `vertex`         | kredit pendaftaran | —                | ~300M                | berhati-hati      | 10    |
-| `agentrouter`    | kredit pendaftaran | —                | ~200M                | berhati-hati      | 4     |
-| `predibase`      | kredit pendaftaran | —                | ~25M                 | berhati-hati      | 1     |
-| `doubao`         | kredit pendaftaran | —                | ~15M                 | samar             | 1     |
-| `ai21`           | kredit pendaftaran | —                | ~10M                 | elakkan           | 2     |
-| `deepseek`       | kredit pendaftaran | —                | ~5M                  | ok                | 2     |
-| `hyperbolic`     | kredit pendaftaran | —                | ~5M                  | ok                | 8     |
-| `nscale`         | kredit pendaftaran | —                | ~5M                  | berhati-hati      | 6     |
-| `bytez`          | kredit (berulang)  | —                | tidak diketahui      | samar             | 1     |
-| `deepinfra`      | kredit pendaftaran | —                | ~1M                  | berhati-hati      | 22    |
-| `fireworks`      | kredit pendaftaran | —                | ~1M                  | elakkan           | 10    |
-| `nebius`         | kredit pendaftaran | —                | ~1M                  | berhati-hati      | 1     |
-| `qoder`          | kredit pendaftaran | —                | ~1M                  | berhati-hati      | 14    |
-| `scaleway`       | kredit pendaftaran | —                | ~1M                  | ok                | 6     |
-| `novita`         | kredit pendaftaran | —                | ~500K                | berhati-hati      | 1     |
-| `agy`            | tanpa kunci        | —                | —                    | elakkan           | 16    |
-| `baichuan`       | tanpa kunci        | —                | —                    | samar             | 1     |
-| `blackbox`       | tanpa kunci        | —                | —                    | elakkan           | 6     |
-| `coze`           | tanpa kunci        | —                | —                    | elakkan           | 1     |
-| `duckduckgo-web` | tanpa kunci        | —                | —                    | elakkan           | 6     |
-| `freemodel-dev`  | tanpa kunci        | —                | —                    | tidak diketahui   | 4     |
-| `friendliai`     | tanpa kunci        | —                | —                    | elakkan           | 2     |
-| `iflytek`        | tanpa kunci        | —                | —                    | elakkan           | 1     |
-| `inference-net`  | tanpa kunci        | —                | —                    | berhati-hati      | 3     |
-| `liquid`         | tanpa kunci        | —                | —                    | tidak diketahui   | 1     |
-| `monsterapi`     | tanpa kunci        | —                | —                    | samar             | 1     |
-| `muse-spark-web` | tanpa kunci        | —                | —                    | elakkan           | 3     |
-| `nlpcloud`       | tanpa kunci        | —                | —                    | elakkan           | 1     |
-| `nvidia`         | tanpa had          | tanpa had\*      | —                    | berhati-hati      | 2     |
-| `pollinations`   | tanpa kunci        | —                | —                    | berhati-hati      | 31    |
-| `publicai`       | tanpa kunci        | —                | —                    | berhati-hati      | 3     |
-| `reka`           | tanpa kunci        | —                | —                    | berhati-hati      | 2     |
-| `sensenova`      | tanpa kunci        | —                | —                    | berhati-hati      | 1     |
-| `sparkdesk`      | keyless            | —                | —                    | berhati-hati      | 1     |
-| `stepfun`        | keyless            | —                | —                    | ok                | 1     |
-| `t3-web`         | keyless            | —                | —                    | elakkan           | 23    |
-| `uncloseai`      | keyless            | —                | —                    | berhati-hati      | 3     |
+| Pembekal         | Jenis percuma      | Mantap tokens/mo | Kredit bulan pertama | ToS             | model |
+| ---------------- | ------------------ | ---------------- | -------------------- | --------------- | ----- |
+| `mistral`        | berulang           | ~ 1.00B          | —                    | berhati-hati    | 5     |
+| `nara`           | berulang           | ~ 210M           | —                    | berhati-hati    | 8     |
+| `llm7`           | berulang           | ~ 150M           | —                    | berhati-hati    | 4     |
+| `xkiro`          | berulang           | ~ 150M           | —                    | berhati-hati    | 39    |
+| `longcat`        | sekali sahaja      | —                | 10J                  | berhati-hati    | 1     |
+| `cerebras`       | sekali sahaja      | —                | kredit $5            | berhati-hati    | 2     |
+| `cloudflare-ai`  | berulang           | ~ 30M            | —                    | berhati-hati    | 9     |
+| `groq`           | berulang           | ~ 30M            | —                    | berhati-hati    | 5     |
+| `api-airforce`   | berulang           | ~ 24M            | —                    | berhati-hati    | 7     |
+| `bluesminds`     | berulang           | ~ 7M             | —                    | samar-samar     | 22    |
+| `sambanova`      | berulang           | ~ 6M             | —                    | berhati-hati    | 5     |
+| `arcee-ai`       | berulang           | ~ 5M             | —                    | berhati-hati    | 1     |
+| `bazaarlink`     | berulang           | ~ 4M             | —                    | berhati-hati    | 32    |
+| `openrouter`     | berulang           | ~ 1M             | —                    | berhati-hati    | 1     |
+| `cohere`         | berulang           | ~ 800K           | —                    | berhati-hati    | 6     |
+| `huggingchat`    | berulang           | ~ 500K           | —                    | berhati-hati    | 4     |
+| `morph`          | berulang           | ~ 400K           | —                    | ok              | 2     |
+| `huggingface`    | berulang           | ~ 200K           | —                    | berhati-hati    | 6     |
+| `kiro`           | berulang           | ~ 25K            | —                    | elakkan         | 12    |
+| `glm-cn`         | tidak bertutup     | tidak bertutup\* | ~ 20M                | ok              | 4     |
+| `baidu`          | tidak bertutup     | tidak bertutup\* | —                    | berhati-hati    | 1     |
+| `gemini`         | tidak bertutup     | tidak bertutup\* | —                    | berhati-hati    | 4     |
+| `kilo-gateway`   | tidak bertutup     | tidak bertutup\* | —                    | berhati-hati    | 7     |
+| `ollama-cloud`   | tidak bertutup     | tidak bertutup\* | —                    | samar-samar     | 8     |
+| `opencode-zen`   | tidak bertutup     | tidak bertutup\* | —                    | berhati-hati    | 10    |
+| `tencent`        | tidak bertutup     | tidak bertutup\* | —                    | berhati-hati    | 1     |
+| `vertex`         | kredit pendaftaran | —                | ~ 300M               | berhati-hati    | 10    |
+| `agentrouter`    | kredit pendaftaran | —                | ~ 200M               | berhati-hati    | 4     |
+| `predibase`      | kredit pendaftaran | —                | ~ 25M                | berhati-hati    | 1     |
+| `doubao`         | kredit pendaftaran | —                | ~ 15M                | samar-samar     | 1     |
+| `ai21`           | kredit pendaftaran | —                | ~ 10M                | elakkan         | 2     |
+| `deepseek`       | kredit pendaftaran | —                | ~ 5M                 | ok              | 2     |
+| `hyperbolic`     | kredit pendaftaran | —                | ~ 5M                 | ok              | 8     |
+| `nscale`         | kredit pendaftaran | —                | ~ 5M                 | berhati-hati    | 6     |
+| `bytez`          | kredit (rec.)      | —                | tidak diketahui      | samar-samar     | 1     |
+| `deepinfra`      | kredit pendaftaran | —                | ~ 1M                 | berhati-hati    | 22    |
+| `fireworks`      | kredit pendaftaran | —                | ~ 1M                 | elakkan         | 10    |
+| `nebius`         | kredit pendaftaran | —                | ~ 1M                 | berhati-hati    | 1     |
+| `qoder`          | kredit pendaftaran | —                | ~ 1M                 | berhati-hati    | 14    |
+| `scaleway`       | kredit pendaftaran | —                | ~ 1M                 | ok              | 6     |
+| `novita`         | kredit pendaftaran | —                | ~ 500K               | berhati-hati    | 1     |
+| `agy`            | tanpa kunci        | —                | —                    | elakkan         | 16    |
+| `baichuan`       | tanpa kunci        | —                | —                    | samar-samar     | 1     |
+| `blackbox`       | tanpa kunci        | —                | —                    | elakkan         | 6     |
+| `coze`           | tanpa kunci        | —                | —                    | elakkan         | 1     |
+| `duckduckgo-web` | tanpa kunci        | —                | —                    | elakkan         | 6     |
+| `freemodel-dev`  | tanpa kunci        | —                | —                    | tidak diketahui | 4     |
+| `friendliai`     | tanpa kunci        | —                | —                    | elakkan         | 2     |
+| `iflytek`        | tanpa kunci        | —                | —                    | elakkan         | 1     |
+| `inference-net`  | tanpa kunci        | —                | —                    | berhati-hati    | 3     |
+| `liquid`         | tanpa kunci        | —                | —                    | tidak diketahui | 1     |
+| `monsterapi`     | tanpa kunci        | —                | —                    | samar-samar     | 1     |
+| `muse-spark-web` | tanpa kunci        | —                | —                    | elakkan         | 3     |
+| `nlpcloud`       | tanpa kunci        | —                | —                    | elakkan         | 1     |
+| `nvidia`         | tidak bertutup     | tidak bertutup\* | —                    | berhati-hati    | 3     |
+| `pollinations`   | tanpa kunci        | —                | —                    | berhati-hati    | 31    |
+| `publicai`       | tanpa kunci        | —                | —                    | berhati-hati    | 3     |
+| `reka`           | tanpa kunci        | —                | —                    | berhati-hati    | 2     |
+| `sensenova`      | tanpa kunci        | —                | —                    | berhati-hati    | 1     |
+| `sparkdesk`      | tanpa kunci        | —                | —                    | berhati-hati    | 1     |
+| `stepfun`        | tanpa kunci        | —                | —                    | ok              | 1     |
+| `t3-web`         | tanpa kunci        | —                | —                    | elakkan         | 23    |
+| `uncloseai`      | tanpa kunci        | —                | —                    | berhati-hati    | 3     |
 
 ---
 

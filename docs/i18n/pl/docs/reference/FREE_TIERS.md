@@ -113,10 +113,10 @@ utrzymywany celowo.
 ## Metodologia i zastrzeżenia
 
 - Liczby są** szacunki górne** od udokumentowanych limitów poziomu bezpłatnego każdego dostawcy na dzień** 2026-06-17** , zebrane podczas badań internetowych. Bezpłatne poziomy zmieniają się stale. — sprawdzić, zanim zaczniesz polegać na liczbach.
-- **Za czym tak naprawdę ręczy wpis.** Żaden wpis nie ma wskaźnika zaufania dla każdego wiersza, a API nie służy żadnemu — traktuje każdą powyższą liczbę jako szacunkową wartość o tej samej, nieokreślonej jakości. Dwa fakty są różne, ponieważ są ustalane ręcznie, a nie wywnioskowane: 44 wpisy zawierają niezależnie udokumentowany twardy stop (39 z nich to wiersze xKiro, z których wszystkie dzielą jedną dietę dzienną), a 21 wpisów zawiera informację o szybkim szkoleniu. `hardStopGuaranteed` jest ustawiane tylko wtedy, gdy własne warunki dostawcy mówią, że przekroczenie bezpłatnego limitu powoduje odrzucenie żądania, zamiast po cichu rozpocząć naliczanie opłat, ze źródłem w komentarzu obok wpisu; nigdy nie jest domyślnie ustawiona na `true`, a wpis, którego nikt nie zweryfikował, pozostaje nieustawiony. Zatem brakująca flaga twardego stopu oznacza „nieustalony”, a nie „znany z wystawienia rachunku”.** tryb STRICT** (opcjonalny strażnik routingu `freeAccessPolicy=strict` ) ufa tylko wpisom noszącym flagę; każdy inny darmowy poziom jest wykluczony jako `no-hard-stop` (patrz `open-sse/services/autoCombo/strictZeroCostFilter.ts`). Kiedy strażnik filtruje pulę, dziennik widoczny dla operatora zgłasza zarówno liczbę wykluczeń, jak i udział `no-hard-stop`.
+- **Za czym tak naprawdę ręczy wpis.** Żaden wpis nie ma wskaźnika zaufania dla każdego wiersza, a API nie służy żadnemu — traktuje każdą powyższą liczbę jako szacunkową wartość o tej samej, nieokreślonej jakości. Dwa fakty są różne, ponieważ są ustalane ręcznie, a nie wywnioskowane: 44 wpisy zawierają niezależnie udokumentowany twardy stop (39 z nich to wiersze xKiro, z których wszystkie dzielą jedną dietę dzienną), a 22 wpisy zawierają informację o szybkim szkoleniu. `hardStopGuaranteed` jest ustawiane tylko wtedy, gdy własne warunki dostawcy mówią, że przekroczenie bezpłatnego limitu powoduje odrzucenie żądania, zamiast po cichu rozpocząć naliczanie opłat, ze źródłem w komentarzu obok wpisu; nigdy nie jest domyślnie ustawiona na `true`, a wpis, którego nikt nie zweryfikował, pozostaje nieustawiony. Zatem brakująca flaga twardego stopu oznacza „nieustalony”, a nie „znany z wystawienia rachunku”.** tryb STRICT** (opcjonalny strażnik routingu `freeAccessPolicy=strict` ) ufa tylko wpisom noszącym flagę; każdy inny darmowy poziom jest wykluczony jako `no-hard-stop` (patrz `open-sse/services/autoCombo/strictZeroCostFilter.ts`). Kiedy strażnik filtruje pulę, dziennik widoczny dla operatora zgłasza zarówno liczbę wykluczeń, jak i udział `no-hard-stop`.
 - `estMonthlyFreeTokens` = Tylko powtarzające się tokeny miesięczne.** Jednorazowe środki za rejestrację nie są powtarzane** i licz jako 0. Poziomy wycofane również wynoszą 0.
 - Dzienny limit tokenów → `monthly = daily × 30`. Tylko RPD udokumentowane → `RPD × ~800 output tokens × 30`. Tylko RPM/TPM (bez dziennego limitu) →** bez kaptura** (patrz poniżej).
-- **Trwale bezpłatne, ale bez opublikowanego limitu tokenów** (`glm-cn`, `tencent`, `baidu`, `kilo-gateway`, `opencode-zen`, `gemini`, `ollama-cloud`): są to rzeczywiste, powtarzające się bezpłatne dostępy, rate/concurrency-limited. Klasyfikujemy je `recurring-uncapped` i** nigdy ich nie sumuj** — pomnożenie `RPM × 24/7 × 30d` dałoby fantastyczny pułap (odrzucamy inflację). Są wymienione, więc wiesz, że istnieją.
+- **Bezpłatny dostęp, ale bez opublikowanego limitu tokenów** (`glm-cn`, `tencent`, `baidu`, `kilo-gateway`, `opencode-zen`, `gemini`, `ollama-cloud`, `nvidia`): to są rate/concurrency-limited. Klasyfikujemy je `recurring-uncapped` i** nigdy ich nie sumuj** — pomnożenie `RPM × 24/7 × 30d` dałoby fantastyczny pułap (inflację, którą odrzucamy). NVIDIAAPI jest przeznaczony wyłącznie do użytku próbnego; zobacz zastrzeżenie ToS poniżej.
 - **Zwiększenie odblokowania depozytu:** jednorazowe małe doładowanie, które na stałe zwiększa darmowy limit (OpenRouter: 10 $ → 1000 req/day ≈ +24M/mo). Podawane jako osobna liczba, trzymana poza stałymi nagłówkami.
 - **Kwoty ograniczone kwalifikowalnością** (`eligibilityGate: "regional-identity"`): prawdziwy, powtarzalny limit, który otwiera się dopiero po kontroli tożsamości w regionie (obecnie weryfikacja prawdziwych nazwisk w Chinach kontynentalnych). Liczone według tej samej zasady deduplikacji puli jako oddzielna liczba (`gatedRecurringTokens`), nigdy w stałym nagłówku. Reżim (`freeType`) pozostaje niezmieniony, więc routing pozostaje niezmieniony.
 - **Zajęcia dowodowe.** Zasada: numer w katalogu cytuje jego źródło w komentarzu `// evidence:` obok wpisu — `public-page` (strona dostawcy, którą każdy może przeczytać), `api-public` (nieuwierzytelniony punkt końcowy dostawcy, np. punkt końcowy planów publicznych NaraRouter pod adresem router.bynara.id) lub `console-verified <date> por <who>` (liczba jest widoczna tylko w konsoli konta; komentarz rejestruje, kto i kiedy ją widział, oraz stronę publiczną z informacją, że istnieje ograniczenie). Stan dzisiejszy: posiada go pięć bloków poddanych ponownemu audytowi w dniu 2026-09-02 (`gemini`, `groq`, `mistral`, `ollama-cloud`, `nara`); wpisy sprzed ponownego audytu 2026-09-02 dziedziczą wcześniejsze badania, dopóki nie zostaną dotknięte; każdy** nowy lub zmieniony** numer bez komentarza dowodowego jest błędem. Obecnie tylko `mistral` jest weryfikowany na konsoli.
@@ -241,75 +241,75 @@ Większość podawanych w tej branży wartości „darmowych tokenów miesięczn
 
 ---
 
-## Bezpłatny poziom dla każdego dostawcy (Bytez/Nous sprawdzone 2026-10-15; wiersze poddane ponownemu audytowi 2026-09-02; pozostali 2026-06-17)
+## Bezpłatna warstwa na dostawcę (sprawdzono Bytez/Nous 15.10.2026 r.; wiersze poddane ponownej kontroli 02.09.2026 r.; inne 17.06.2026 r.)
 
-> Wygenerowano na podstawie katalogu modeli według dostawcy (`open-sse/config/freeModelCatalog.ts`), z usunięciem duplikatów puli. Posortowano według stałej liczby tokenów/mies. `uncapped*` = bezpłatne bezterminowo, ale bez opublikowanego limitu tokenów (ograniczone szybkością/konkurencją) — rzeczywisty dostęp, **nieuwzględniany w wartości nagłówkowej**. `—` = wyłącznie za kredyty / bez klucza / bez możliwości określenia liczby tokenów.
+> Zregenerowano z katalogu według modelu (`open-sse/config/freeModelCatalog.ts`), z deduplikacją puli. Posortowane według powtarzających się stałych tokens/mo. `uncapped*` = trwale darmowych, ale bez opublikowanego limitu tokenów (rate/concurrency-limited) — realny dostęp,** nie** podsumowane w nagłówku. `—` = tylko kredytowe / bezkluczykowe / niemierzalne za pomocą tokena.
 
-| Dostawca         | Typ bezpłatnego dostępu | Stała liczba tokenów/mies. | Kredyt w pierwszym miesiącu | Warunki         | Modele |
-| ---------------- | ----------------------- | -------------------------- | --------------------------- | --------------- | ------ |
-| `mistral`        | cykliczny               | ~1.00B                     | —                           | ostrożnie       | 5      |
-| `nara`           | cykliczny               | ~210M                      | —                           | ostrożnie       | 8      |
-| `llm7`           | cykliczny               | ~150M                      | —                           | ostrożnie       | 4      |
-| `xkiro`          | cykliczny               | ~150M                      | —                           | ostrożnie       | 39     |
-| `longcat`        | jednorazowy             | —                          | 10M                         | ostrożnie       | 1      |
-| `cerebras`       | jednorazowy             | —                          | kredyt $5                   | ostrożnie       | 2      |
-| `cloudflare-ai`  | cykliczny               | ~30M                       | —                           | ostrożnie       | 9      |
-| `groq`           | cykliczny               | ~30M                       | —                           | ostrożnie       | 5      |
-| `api-airforce`   | cykliczny               | ~24M                       | —                           | ostrożnie       | 7      |
-| `bluesminds`     | cykliczny               | ~7M                        | —                           | niejednoznaczne | 22     |
-| `sambanova`      | cykliczny               | ~6M                        | —                           | ostrożnie       | 5      |
-| `arcee-ai`       | cykliczny               | ~5M                        | —                           | ostrożnie       | 1      |
-| `bazaarlink`     | cykliczny               | ~4M                        | —                           | ostrożnie       | 32     |
-| `openrouter`     | cykliczny               | ~1M                        | —                           | ostrożnie       | 1      |
-| `cohere`         | cykliczny               | ~800K                      | —                           | ostrożnie       | 6      |
-| `huggingchat`    | cykliczny               | ~500K                      | —                           | ostrożnie       | 4      |
-| `morph`          | cykliczny               | ~400K                      | —                           | ok              | 2      |
-| `huggingface`    | cykliczny               | ~200K                      | —                           | ostrożnie       | 6      |
-| `kiro`           | cykliczny               | ~25K                       | —                           | unikać          | 12     |
-| `glm-cn`         | bez limitu              | bez limitu\*               | ~20M                        | ok              | 4      |
-| `baidu`          | bez limitu              | bez limitu\*               | —                           | ostrożnie       | 1      |
-| `gemini`         | bez limitu              | bez limitu\*               | —                           | ostrożnie       | 4      |
-| `kilo-gateway`   | bez limitu              | bez limitu\*               | —                           | ostrożnie       | 7      |
-| `ollama-cloud`   | bez limitu              | bez limitu\*               | —                           | niejednoznaczne | 8      |
-| `opencode-zen`   | bez limitu              | bez limitu\*               | —                           | ostrożnie       | 10     |
-| `tencent`        | bez limitu              | bez limitu\*               | —                           | ostrożnie       | 1      |
-| `vertex`         | bonus za rejestrację    | —                          | ~300M                       | ostrożnie       | 10     |
-| `agentrouter`    | bonus za rejestrację    | —                          | ~200M                       | ostrożnie       | 4      |
-| `predibase`      | bonus za rejestrację    | —                          | ~25M                        | ostrożnie       | 1      |
-| `doubao`         | bonus za rejestrację    | —                          | ~15M                        | niejednoznaczne | 1      |
-| `ai21`           | bonus za rejestrację    | —                          | ~10M                        | unikać          | 2      |
-| `deepseek`       | bonus za rejestrację    | —                          | ~5M                         | ok              | 2      |
-| `hyperbolic`     | bonus za rejestrację    | —                          | ~5M                         | ok              | 8      |
-| `nscale`         | bonus za rejestrację    | —                          | ~5M                         | ostrożnie       | 6      |
-| `bytez`          | kredyt (odnawialny)     | —                          | nieznany                    | niejednoznaczne | 1      |
-| `deepinfra`      | bonus za rejestrację    | —                          | ~1M                         | ostrożnie       | 22     |
-| `fireworks`      | bonus za rejestrację    | —                          | ~1M                         | unikać          | 10     |
-| `nebius`         | bonus za rejestrację    | —                          | ~1M                         | ostrożnie       | 1      |
-| `qoder`          | bonus za rejestrację    | —                          | ~1M                         | ostrożnie       | 14     |
-| `scaleway`       | bonus za rejestrację    | —                          | ~1M                         | ok              | 6      |
-| `novita`         | bonus za rejestrację    | —                          | ~500K                       | ostrożnie       | 1      |
-| `agy`            | bez klucza              | —                          | —                           | unikać          | 16     |
-| `baichuan`       | bez klucza              | —                          | —                           | niejednoznaczne | 1      |
-| `blackbox`       | bez klucza              | —                          | —                           | unikać          | 6      |
-| `coze`           | bez klucza              | —                          | —                           | unikać          | 1      |
-| `duckduckgo-web` | bez klucza              | —                          | —                           | unikać          | 6      |
-| `freemodel-dev`  | bez klucza              | —                          | —                           | nieznane        | 4      |
-| `friendliai`     | bez klucza              | —                          | —                           | unikać          | 2      |
-| `iflytek`        | bez klucza              | —                          | —                           | unikać          | 1      |
-| `inference-net`  | bez klucza              | —                          | —                           | ostrożnie       | 3      |
-| `liquid`         | bez klucza              | —                          | —                           | nieznane        | 1      |
-| `monsterapi`     | bez klucza              | —                          | —                           | niejednoznaczne | 1      |
-| `muse-spark-web` | bez klucza              | —                          | —                           | unikać          | 3      |
-| `nlpcloud`       | bez klucza              | —                          | —                           | unikać          | 1      |
-| `nvidia`         | bez limitu              | bez limitu\*               | —                           | ostrożnie       | 2      |
-| `pollinations`   | bez klucza              | —                          | —                           | ostrożnie       | 31     |
-| `publicai`       | bez klucza              | —                          | —                           | ostrożnie       | 3      |
-| `reka`           | bez klucza              | —                          | —                           | ostrożnie       | 2      |
-| `sensenova`      | bez klucza              | —                          | —                           | ostrożnie       | 1      |
-| `sparkdesk`      | keyless                 | —                          | —                           | ostrożność      | 1      |
-| `stepfun`        | keyless                 | —                          | —                           | OK              | 1      |
-| `t3-web`         | keyless                 | —                          | —                           | unikaj          | 23     |
-| `uncloseai`      | keyless                 | —                          | —                           | ostrożność      | 3      |
+| Dostawca         | Typ wolny             | Stałe tokens/mo | Kredyt na pierwszy miesiąc  | ToS        | Modele |
+| ---------------- | --------------------- | --------------- | --------------------------- | ---------- | ------ |
+| `mistral`        | powtarzający się      | ~ 1,00B         | —                           | ostrożność | 5      |
+| `nara`           | powtarzający się      | ~ 210M          | —                           | ostrożność | 8      |
+| `llm7`           | powtarzający się      | ~ 150M          | —                           | ostrożność | 4      |
+| `xkiro`          | powtarzający się      | ~ 150M          | —                           | ostrożność | 39     |
+| `longcat`        | jednorazowe           | —               | 10M                         | ostrożność | 1      |
+| `cerebras`       | jednorazowe           | —               | Kredyt o wartości 5 dolarów | ostrożność | 2      |
+| `cloudflare-ai`  | powtarzający się      | ~ 30M           | —                           | ostrożność | 9      |
+| `groq`           | powtarzający się      | ~ 30M           | —                           | ostrożność | 5      |
+| `api-airforce`   | powtarzający się      | ~ 24M           | —                           | ostrożność | 7      |
+| `bluesminds`     | powtarzający się      | ~ 7M            | —                           | dwuznaczny | 22     |
+| `sambanova`      | powtarzający się      | ~ 6M            | —                           | ostrożność | 5      |
+| `arcee-ai`       | powtarzający się      | ~ 5M            | —                           | ostrożność | 1      |
+| `bazaarlink`     | powtarzający się      | ~ 4M            | —                           | ostrożność | 32     |
+| `openrouter`     | powtarzający się      | ~ 1M            | —                           | ostrożność | 1      |
+| `cohere`         | powtarzający się      | ~ 800 tys       | —                           | ostrożność | 6      |
+| `huggingchat`    | powtarzający się      | ~ 500 tys       | —                           | ostrożność | 4      |
+| `morph`          | powtarzający się      | ~ 400 tys       | —                           | OK         | 2      |
+| `huggingface`    | powtarzający się      | ~ 200 tys       | —                           | ostrożność | 6      |
+| `kiro`           | powtarzający się      | ~ 25 tys        | —                           | unikać     | 12     |
+| `glm-cn`         | bez kaptura           | bez limitu\*    | ~ 20M                       | OK         | 4      |
+| `baidu`          | bez kaptura           | bez limitu\*    | —                           | ostrożność | 1      |
+| `gemini`         | bez kaptura           | bez limitu\*    | —                           | ostrożność | 4      |
+| `kilo-gateway`   | bez kaptura           | bez limitu\*    | —                           | ostrożność | 7      |
+| `ollama-cloud`   | bez kaptura           | bez limitu\*    | —                           | dwuznaczny | 8      |
+| `opencode-zen`   | bez kaptura           | bez limitu\*    | —                           | ostrożność | 10     |
+| `tencent`        | bez kaptura           | bez limitu\*    | —                           | ostrożność | 1      |
+| `vertex`         | Kredyt rejestracyjny  | —               | ~ 300M                      | ostrożność | 10     |
+| `agentrouter`    | Kredyt rejestracyjny  | —               | ~ 200M                      | ostrożność | 4      |
+| `predibase`      | Kredyt rejestracyjny  | —               | ~ 25M                       | ostrożność | 1      |
+| `doubao`         | Kredyt rejestracyjny  | —               | ~ 15M                       | dwuznaczny | 1      |
+| `ai21`           | Kredyt rejestracyjny  | —               | ~ 10M                       | unikać     | 2      |
+| `deepseek`       | Kredyt rejestracyjny  | —               | ~ 5M                        | OK         | 2      |
+| `hyperbolic`     | Kredyt rejestracyjny  | —               | ~ 5M                        | OK         | 8      |
+| `nscale`         | Kredyt rejestracyjny  | —               | ~ 5M                        | ostrożność | 6      |
+| `bytez`          | kredyt (rekomendacja) | —               | nieznany                    | dwuznaczny | 1      |
+| `deepinfra`      | Kredyt rejestracyjny  | —               | ~ 1M                        | ostrożność | 22     |
+| `fireworks`      | Kredyt rejestracyjny  | —               | ~ 1M                        | unikać     | 10     |
+| `nebius`         | Kredyt rejestracyjny  | —               | ~ 1M                        | ostrożność | 1      |
+| `qoder`          | Kredyt rejestracyjny  | —               | ~ 1M                        | ostrożność | 14     |
+| `scaleway`       | Kredyt rejestracyjny  | —               | ~ 1M                        | OK         | 6      |
+| `novita`         | Kredyt rejestracyjny  | —               | ~ 500 tys                   | ostrożność | 1      |
+| `agy`            | bezkluczykowy         | —               | —                           | unikać     | 16     |
+| `baichuan`       | bezkluczykowy         | —               | —                           | dwuznaczny | 1      |
+| `blackbox`       | bezkluczykowy         | —               | —                           | unikać     | 6      |
+| `coze`           | bezkluczykowy         | —               | —                           | unikać     | 1      |
+| `duckduckgo-web` | bezkluczykowy         | —               | —                           | unikać     | 6      |
+| `freemodel-dev`  | bezkluczykowy         | —               | —                           | nieznany   | 4      |
+| `friendliai`     | bezkluczykowy         | —               | —                           | unikać     | 2      |
+| `iflytek`        | bezkluczykowy         | —               | —                           | unikać     | 1      |
+| `inference-net`  | bezkluczykowy         | —               | —                           | ostrożność | 3      |
+| `liquid`         | bezkluczykowy         | —               | —                           | nieznany   | 1      |
+| `monsterapi`     | bezkluczykowy         | —               | —                           | dwuznaczny | 1      |
+| `muse-spark-web` | bezkluczykowy         | —               | —                           | unikać     | 3      |
+| `nlpcloud`       | bezkluczykowy         | —               | —                           | unikać     | 1      |
+| `nvidia`         | bez kaptura           | bez limitu\*    | —                           | ostrożność | 3      |
+| `pollinations`   | bezkluczykowy         | —               | —                           | ostrożność | 31     |
+| `publicai`       | bezkluczykowy         | —               | —                           | ostrożność | 3      |
+| `reka`           | bezkluczykowy         | —               | —                           | ostrożność | 2      |
+| `sensenova`      | bezkluczykowy         | —               | —                           | ostrożność | 1      |
+| `sparkdesk`      | bezkluczykowy         | —               | —                           | ostrożność | 1      |
+| `stepfun`        | bezkluczykowy         | —               | —                           | OK         | 1      |
+| `t3-web`         | bezkluczykowy         | —               | —                           | unikać     | 23     |
+| `uncloseai`      | bezkluczykowy         | —               | —                           | ostrożność | 3      |
 
 ---
 
