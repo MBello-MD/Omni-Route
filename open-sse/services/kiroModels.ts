@@ -40,6 +40,8 @@ import {
   KIRO_EXTERNAL_IDP_TOKEN_TYPE_VALUE,
 } from "./kiroExternalIdp.ts";
 import { resolveKiroRuntimeRegion } from "./kiroRegion.ts";
+// Shared with inference so the catalog fingerprint cannot drift below Kiro's version gate (#19607).
+import { KIRO_IDE_VERSION } from "../config/providerHeaderProfiles.ts";
 import { supportsKiroAdaptiveThinking } from "../translator/request/openai-to-kiro/adaptiveThinking.ts";
 
 type RawRecord = Record<string, unknown>;
@@ -48,7 +50,6 @@ const KIRO_RUNTIME_SDK_VERSION = "1.0.0";
 const KIRO_AGENT_OS = "windows";
 const KIRO_AGENT_OS_VERSION = "10.0.26200";
 const KIRO_NODE_VERSION = "22.21.1";
-const KIRO_IDE_VERSION = "0.10.32";
 const CACHE_TTL_MS = 5 * 60 * 1000;
 
 const catalogCache = new Map<string, { expiresAt: number; models: KiroModel[] }>();
