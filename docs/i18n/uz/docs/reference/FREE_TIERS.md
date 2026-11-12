@@ -114,10 +114,10 @@ kelardi — bu ajratish ataylab saqlangan.
 ## Metodologiya va ogohlantirishlar
 
 - Raqamlar** yuqori chegaradagi taxminlar** har bir provayderning hujjatlashtirilgan bepul darajali chegaralaridan** 2026-06-17** , veb-tadqiqot tomonidan to'plangan. Bepul darajalar doimiy ravishda o'zgarib turadi — raqamga tayanishdan oldin qayta tekshiring.
-- **Kirish aslida nimaga kafolat beradi.** Hech bir yozuv har bir satr uchun ishonchlilik reytingiga ega emas va API hech — xizmat qilmaydi. Ikkita fakt bir-biridan farq qiladi, chunki ular xulosa chiqarishdan ko‘ra qo‘lda tuziladi: 44 ta yozuv mustaqil hujjatlashtirilgan qattiq to‘xtash joyiga ega (ulardan 39 tasi xKiro qatorlari, ularning barchasi bir kunlik nafaqani taqsimlaydi) va 21 ta yozuvda tezkor treningni ochib berish. `hardStopGuaranteed` faqat provayderning o'z shartlariga ko'ra, bepul nafaqadan oshib ketish sizni indamay hisob-kitob qilishni boshlashdan ko'ra so'rovni rad etishini aytganida o'rnatiladi, yozuvning yonidagi izohda manba; u hech qachon `true` ga o'rnatilmaydi va hech kim tasdiqlamagan yozuv sozlanmagan bo'lib qoladi. Shunday qilib, yo'qolgan qattiq to'xtash bayrog'i "o'rnatilmagan" degan ma'noni anglatadi, "sizga ma'lum" emas.**STRICT rejimi** ( `freeAccessPolicy=strict` marshrutlash qo'riqchisi) faqat bayroq ko'tarilgan yozuvlarga ishonadi; har bir boshqa erkin daraja `no-hard-stop` sifatida chiqarib tashlanadi (qarang: `open-sse/services/autoCombo/strictZeroCostFilter.ts`). Qo'riqchi hovuzni filtrlaganda, operator tomonidan ko'rinadigan jurnal istisnolar soni va uning `no-hard-stop` ulushi haqida xabar beradi.
+- **Kirish aslida nimaga kafolat beradi.** Hech bir yozuv har bir satr uchun ishonchlilik reytingiga ega emas va API hech — xizmat qilmaydi. Ikkita fakt bir-biridan farq qiladi, chunki ular xulosa chiqarishdan ko‘ra qo‘lda tuziladi: 44 ta yozuv mustaqil hujjatlashtirilgan qattiq to‘xtash joyiga ega (ulardan 39 tasi xKiro qatorlari, ularning barchasi bir kunlik nafaqani taqsimlaydi) va 22 ta yozuvda tezkor treningni ochib berish. `hardStopGuaranteed` faqat provayderning o'z shartlariga ko'ra, bepul nafaqadan oshib ketish sizni indamay hisob-kitob qilishni boshlashdan ko'ra so'rovni rad etishini aytganida o'rnatiladi, yozuvning yonidagi izohda manba; u hech qachon `true` ga o'rnatilmaydi va hech kim tasdiqlamagan yozuv sozlanmagan bo'lib qoladi. Shunday qilib, yo'qolgan qattiq to'xtash bayrog'i "o'rnatilmagan" degan ma'noni anglatadi, "sizga ma'lum" emas.**STRICT rejimi** ( `freeAccessPolicy=strict` marshrutlash qo'riqchisi) faqat bayroq ko'tarilgan yozuvlarga ishonadi; har bir boshqa erkin daraja `no-hard-stop` sifatida chiqarib tashlanadi (qarang: `open-sse/services/autoCombo/strictZeroCostFilter.ts`). Qo'riqchi hovuzni filtrlaganda, operator tomonidan ko'rinadigan jurnal istisnolar soni va uning `no-hard-stop` ulushi haqida xabar beradi.
 - `estMonthlyFreeTokens` = faqat takrorlanuvchi oylik tokenlar.** Bir martalik ro'yxatdan o'tish kreditlari takrorlanmaydi** va 0 deb hisoblang. To'xtatilgan darajalar ham 0 ga teng.
 - Kundalik token cap → `monthly = daily × 30`. Faqat RPD hujjatlashtirilgan → `RPD × ~800 output tokens × 30`. Faqat RPM/TPM (kunlik chegarasiz) →** qopqoqsiz** (pastga qarang).
-- **Doimiy bepul, lekin e'lon qilingan token qopqog'i yo'q** (`glm-cn`, `tencent`, `baidu`, `kilo-gateway`, `opencode-zen`, `gemini`, `ollama-cloud`): bular haqiqiy takrorlanuvchi erkin kirish, rate/concurrency-limited. Biz ularni `recurring-uncapped` va tasniflaymiz.** ularni hech qachon jamlamang** — ko'paytirish `RPM × 24/7 × 30d` fantaziya shiftini hosil qiladi (biz rad etgan inflyatsiya). Ular borligini bilish uchun ro'yxatga olingan.
+- **Bepul kirish, lekin e'lon qilingan token qopqog'i yo'q** (`glm-cn`, `tencent`, `baidu`, `kilo-gateway`, `opencode-zen`, `gemini`, `ollama-cloud`, `nvidia`): bular rate/concurrency-limited. Biz ularni `recurring-uncapped` va tasniflaymiz.** ularni hech qachon jamlamang** — `RPM × 24/7 × 30d` ko'paytirish fantaziya shiftini (biz rad etgan inflyatsiyani) hosil qiladi. NVIDIA ning API faqat sinov uchun mo'ljallangan; quyida uning ToS ogohlantirishiga qarang.
 - **Depozitni ochish:** bepul kvotani doimiy ravishda oshiradigan bir martalik kichik to'ldirish (OpenRouter: $10 → 1000 req/day ≈ +24M/mo). Alohida raqam sifatida xabar qilingan, doimiy sarlavhadan tashqarida.
 - **Muvofiqlik bilan chegaralangan kvotalar** (`eligibilityGate: "regional-identity"`): haqiqiy takrorlanuvchi kvota, faqat mintaqa bo'yicha identifikatsiya tekshiruvidan so'ng ochiladi (bugungi kunda materik-Xitoy haqiqiy ism-sharifi). Xuddi shu hovuz-dedupe qoidasi bilan alohida raqamga (`gatedRecurringTokens`) sanaladi, hech qachon barqaror sarlavhaga kirmaydi. Rejim (`freeType`) o'zgarmagan, shuning uchun marshrutlash o'zgarmagan.
 - **Dalillar sinflari.** Qoida: katalogdagi raqam o‘z manbasini `// evidence:` sharhida yozuv yonidagi — `public-page` (har kim o‘qishi mumkin bo‘lgan provayder sahifasi), `api-public` (provayderning autentifikatsiya qilinmagan so‘nggi nuqtasi, masalan, router.bynara.id manzilidagi NaraRouter ning umumiy rejalari) yoki `console-verified <date> por <who>` (izohda kim ko‘rganligi va qayd qilinganidagina ko‘rish mumkin) ko‘rsatadi. qalpoq mavjudligi haqida umumiy sahifa). Davlat bugungi kunda: 2026-09-02 da qayta tekshirilgan besh blok uni olib yuradi (`gemini`, `groq`, `mistral`, `ollama-cloud`, `nara`); 2026-09-20 qayta auditdan oldingi yozuvlar ularga tegilgunga qadar oldingi tadqiqotni meros qilib oladi; har qanday** yangi yoki o'zgartirilgan** dalilsiz izohsiz raqam xatodir. Bugungi kunda faqat `mistral` konsol tomonidan tasdiqlangan.
@@ -242,75 +242,75 @@ Bu sohadagi aksariyat «oyiga bepul tokenlar» ko‘rsatkichlari har bir model u
 
 ---
 
-## Provayderlar bo‘yicha bepul tarif (Bytez/Nous 2026-10-15 da tekshirildi; qatorlar 2026-09-02 da qayta audit qilindi; boshqalar 2026-06-17 da)
+## Har bir provayder uchun bepul daraja (Bytez/Nous tekshirildi 2026-10-15; qayta tekshirilgan qatorlar 2026-09-02; boshqalar 2026-06-17)
 
-> Provayderlar bo‘yicha model katalogidan (`open-sse/config/freeModelCatalog.ts`) qayta generatsiya qilingan, pool bo‘yicha dublikatlari olib tashlangan. Takrorlanuvchi barqaror tokens/mo miqdori bo‘yicha saralangan. `uncapped*` = doimiy ravishda bepul, ammo e’lon qilingan token cheklovi yo‘q (tezlik/parallellik bilan cheklangan) — haqiqiy kirish mavjud, **asosiy jami hisobiga qo‘shilmagan**. `—` = faqat kredit asosida / kalitsiz / tokenlarda o‘lchab bo‘lmaydi.
+> Har bir model katalogidan (`open-sse/config/freeModelCatalog.ts`) qayta tiklangan, hovuzdan olingan. Takroriy doimiy tokens/mo. `uncapped*` = bo‘yicha saralangan, doimiy bo‘sh, lekin nashr etilgan token qopqog‘i (rate/concurrency-limited) — haqiqiy ruxsati yo‘q,** emas** sarlavhaga jamlangan. `—` = faqat kredit uchun / kalitsiz / token miqdorini aniqlash mumkin emas.
 
-| Provayder        | Bepul turi                | Oyiga barqaror tokenlar | Birinchi oy krediti | Foydalanish shartlari | Modellar |
-| ---------------- | ------------------------- | ----------------------- | ------------------- | --------------------- | -------- |
-| `mistral`        | takroriy                  | ~1.00B                  | —                   | ehtiyot bo‘ling       | 5        |
-| `nara`           | takroriy                  | ~210M                   | —                   | ehtiyot bo‘ling       | 8        |
-| `llm7`           | takroriy                  | ~150M                   | —                   | ehtiyot bo‘ling       | 4        |
-| `xkiro`          | takroriy                  | ~150M                   | —                   | ehtiyot bo‘ling       | 39       |
-| `longcat`        | bir martalik              | —                       | 10M                 | ehtiyot bo‘ling       | 1        |
-| `cerebras`       | bir martalik              | —                       | $5 kredit           | ehtiyot bo‘ling       | 2        |
-| `cloudflare-ai`  | takroriy                  | ~30M                    | —                   | ehtiyot bo‘ling       | 9        |
-| `groq`           | takroriy                  | ~30M                    | —                   | ehtiyot bo‘ling       | 5        |
-| `api-airforce`   | takroriy                  | ~24M                    | —                   | ehtiyot bo‘ling       | 7        |
-| `bluesminds`     | takroriy                  | ~7M                     | —                   | noaniq                | 22       |
-| `sambanova`      | takroriy                  | ~6M                     | —                   | ehtiyot bo‘ling       | 5        |
-| `arcee-ai`       | takroriy                  | ~5M                     | —                   | ehtiyot bo‘ling       | 1        |
-| `bazaarlink`     | takroriy                  | ~4M                     | —                   | ehtiyot bo‘ling       | 32       |
-| `openrouter`     | takroriy                  | ~1M                     | —                   | ehtiyot bo‘ling       | 1        |
-| `cohere`         | takroriy                  | ~800K                   | —                   | ehtiyot bo‘ling       | 6        |
-| `huggingchat`    | takroriy                  | ~500K                   | —                   | ehtiyot bo‘ling       | 4        |
-| `morph`          | takroriy                  | ~400K                   | —                   | yaxshi                | 2        |
-| `huggingface`    | takroriy                  | ~200K                   | —                   | ehtiyot bo‘ling       | 6        |
-| `kiro`           | takroriy                  | ~25K                    | —                   | saqlaning             | 12       |
-| `glm-cn`         | cheklanmagan              | cheklanmagan\*          | ~20M                | yaxshi                | 4        |
-| `baidu`          | cheklanmagan              | cheklanmagan\*          | —                   | ehtiyot bo‘ling       | 1        |
-| `gemini`         | cheklanmagan              | cheklanmagan\*          | —                   | ehtiyot bo‘ling       | 4        |
-| `kilo-gateway`   | cheklanmagan              | cheklanmagan\*          | —                   | ehtiyot bo‘ling       | 7        |
-| `ollama-cloud`   | cheklanmagan              | cheklanmagan\*          | —                   | noaniq                | 8        |
-| `opencode-zen`   | cheklanmagan              | cheklanmagan\*          | —                   | ehtiyot bo‘ling       | 10       |
-| `tencent`        | cheklanmagan              | cheklanmagan\*          | —                   | ehtiyot bo‘ling       | 1        |
-| `vertex`         | ro‘yxatdan o‘tish krediti | —                       | ~300M               | ehtiyot bo‘ling       | 10       |
-| `agentrouter`    | ro‘yxatdan o‘tish krediti | —                       | ~200M               | ehtiyot bo‘ling       | 4        |
-| `predibase`      | ro‘yxatdan o‘tish krediti | —                       | ~25M                | ehtiyot bo‘ling       | 1        |
-| `doubao`         | ro‘yxatdan o‘tish krediti | —                       | ~15M                | noaniq                | 1        |
-| `ai21`           | ro‘yxatdan o‘tish krediti | —                       | ~10M                | saqlaning             | 2        |
-| `deepseek`       | ro‘yxatdan o‘tish krediti | —                       | ~5M                 | yaxshi                | 2        |
-| `hyperbolic`     | ro‘yxatdan o‘tish krediti | —                       | ~5M                 | yaxshi                | 8        |
-| `nscale`         | ro‘yxatdan o‘tish krediti | —                       | ~5M                 | ehtiyot bo‘ling       | 6        |
-| `bytez`          | kredit (takroriy)         | —                       | noma’lum            | noaniq                | 1        |
-| `deepinfra`      | ro‘yxatdan o‘tish krediti | —                       | ~1M                 | ehtiyot bo‘ling       | 22       |
-| `fireworks`      | ro‘yxatdan o‘tish krediti | —                       | ~1M                 | saqlaning             | 10       |
-| `nebius`         | ro‘yxatdan o‘tish krediti | —                       | ~1M                 | ehtiyot bo‘ling       | 1        |
-| `qoder`          | ro‘yxatdan o‘tish krediti | —                       | ~1M                 | ehtiyot bo‘ling       | 14       |
-| `scaleway`       | ro‘yxatdan o‘tish krediti | —                       | ~1M                 | yaxshi                | 6        |
-| `novita`         | ro‘yxatdan o‘tish krediti | —                       | ~500K               | ehtiyot bo‘ling       | 1        |
-| `agy`            | kalitsiz                  | —                       | —                   | saqlaning             | 16       |
-| `baichuan`       | kalitsiz                  | —                       | —                   | noaniq                | 1        |
-| `blackbox`       | kalitsiz                  | —                       | —                   | saqlaning             | 6        |
-| `coze`           | kalitsiz                  | —                       | —                   | saqlaning             | 1        |
-| `duckduckgo-web` | kalitsiz                  | —                       | —                   | saqlaning             | 6        |
-| `freemodel-dev`  | kalitsiz                  | —                       | —                   | noma’lum              | 4        |
-| `friendliai`     | kalitsiz                  | —                       | —                   | saqlaning             | 2        |
-| `iflytek`        | kalitsiz                  | —                       | —                   | saqlaning             | 1        |
-| `inference-net`  | kalitsiz                  | —                       | —                   | ehtiyot bo‘ling       | 3        |
-| `liquid`         | kalitsiz                  | —                       | —                   | noma’lum              | 1        |
-| `monsterapi`     | kalitsiz                  | —                       | —                   | noaniq                | 1        |
-| `muse-spark-web` | kalitsiz                  | —                       | —                   | saqlaning             | 3        |
-| `nlpcloud`       | kalitsiz                  | —                       | —                   | saqlaning             | 1        |
-| `nvidia`         | cheklanmagan              | cheklanmagan\*          | —                   | ehtiyot bo‘ling       | 2        |
-| `pollinations`   | kalitsiz                  | —                       | —                   | ehtiyot bo‘ling       | 31       |
-| `publicai`       | kalitsiz                  | —                       | —                   | ehtiyot bo‘ling       | 3        |
-| `reka`           | kalitsiz                  | —                       | —                   | ehtiyot bo‘ling       | 2        |
-| `sensenova`      | kalitsiz                  | —                       | —                   | ehtiyot bo‘ling       | 1        |
-| `sparkdesk`      | keyless                   | —                       | —                   | ehtiyotkorlik         | 1        |
-| `stepfun`        | keyless                   | —                       | —                   | yaxshi                | 1        |
-| `t3-web`         | keyless                   | —                       | —                   | saqlaning             | 23       |
-| `uncloseai`      | keyless                   | —                       | —                   | ehtiyotkorlik         | 3        |
+| Provayder        | Erkin turi                | Barqaror tokens/mo | Birinchi oylik kredit | ToS         | Modellar |
+| ---------------- | ------------------------- | ------------------ | --------------------- | ----------- | -------- |
+| `mistral`        | takrorlanuvchi            | ~ 1.00B            | —                     | ehtiyot     | 5        |
+| `nara`           | takrorlanuvchi            | ~ 210M             | —                     | ehtiyot     | 8        |
+| `llm7`           | takrorlanuvchi            | ~ 150M             | —                     | ehtiyot     | 4        |
+| `xkiro`          | takrorlanuvchi            | ~ 150M             | —                     | ehtiyot     | 39       |
+| `longcat`        | bir marta                 | —                  | 10M                   | ehtiyot     | 1        |
+| `cerebras`       | bir marta                 | —                  | $5 kredit             | ehtiyot     | 2        |
+| `cloudflare-ai`  | takrorlanuvchi            | ~ 30M              | —                     | ehtiyot     | 9        |
+| `groq`           | takrorlanuvchi            | ~ 30M              | —                     | ehtiyot     | 5        |
+| `api-airforce`   | takrorlanuvchi            | ~ 24M              | —                     | ehtiyot     | 7        |
+| `bluesminds`     | takrorlanuvchi            | ~ 7M               | —                     | noaniq      | 22       |
+| `sambanova`      | takrorlanuvchi            | ~ 6M               | —                     | ehtiyot     | 5        |
+| `arcee-ai`       | takrorlanuvchi            | ~ 5M               | —                     | ehtiyot     | 1        |
+| `bazaarlink`     | takrorlanuvchi            | ~ 4M               | —                     | ehtiyot     | 32       |
+| `openrouter`     | takrorlanuvchi            | ~ 1M               | —                     | ehtiyot     | 1        |
+| `cohere`         | takrorlanuvchi            | ~ 800K             | —                     | ehtiyot     | 6        |
+| `huggingchat`    | takrorlanuvchi            | ~ 500K             | —                     | ehtiyot     | 4        |
+| `morph`          | takrorlanuvchi            | ~ 400K             | —                     | Kelishdikmi | 2        |
+| `huggingface`    | takrorlanuvchi            | ~ 200K             | —                     | ehtiyot     | 6        |
+| `kiro`           | takrorlanuvchi            | ~ 25K              | —                     | qochish     | 12       |
+| `glm-cn`         | qopqoqsiz                 | yopilmagan\*       | ~ 20M                 | Kelishdikmi | 4        |
+| `baidu`          | qopqoqsiz                 | yopilmagan\*       | —                     | ehtiyot     | 1        |
+| `gemini`         | qopqoqsiz                 | yopilmagan\*       | —                     | ehtiyot     | 4        |
+| `kilo-gateway`   | qopqoqsiz                 | yopilmagan\*       | —                     | ehtiyot     | 7        |
+| `ollama-cloud`   | qopqoqsiz                 | yopilmagan\*       | —                     | noaniq      | 8        |
+| `opencode-zen`   | qopqoqsiz                 | yopilmagan\*       | —                     | ehtiyot     | 10       |
+| `tencent`        | qopqoqsiz                 | yopilmagan\*       | —                     | ehtiyot     | 1        |
+| `vertex`         | ro'yxatdan o'tish krediti | —                  | ~ 300M                | ehtiyot     | 10       |
+| `agentrouter`    | ro'yxatdan o'tish krediti | —                  | ~ 200M                | ehtiyot     | 4        |
+| `predibase`      | ro'yxatdan o'tish krediti | —                  | ~ 25M                 | ehtiyot     | 1        |
+| `doubao`         | ro'yxatdan o'tish krediti | —                  | ~ 15M                 | noaniq      | 1        |
+| `ai21`           | ro'yxatdan o'tish krediti | —                  | ~ 10M                 | qochish     | 2        |
+| `deepseek`       | ro'yxatdan o'tish krediti | —                  | ~ 5M                  | Kelishdikmi | 2        |
+| `hyperbolic`     | ro'yxatdan o'tish krediti | —                  | ~ 5M                  | Kelishdikmi | 8        |
+| `nscale`         | ro'yxatdan o'tish krediti | —                  | ~ 5M                  | ehtiyot     | 6        |
+| `bytez`          | kredit (tavsiya)          | —                  | noma'lum              | noaniq      | 1        |
+| `deepinfra`      | ro'yxatdan o'tish krediti | —                  | ~ 1M                  | ehtiyot     | 22       |
+| `fireworks`      | ro'yxatdan o'tish krediti | —                  | ~ 1M                  | qochish     | 10       |
+| `nebius`         | ro'yxatdan o'tish krediti | —                  | ~ 1M                  | ehtiyot     | 1        |
+| `qoder`          | ro'yxatdan o'tish krediti | —                  | ~ 1M                  | ehtiyot     | 14       |
+| `scaleway`       | ro'yxatdan o'tish krediti | —                  | ~ 1M                  | Kelishdikmi | 6        |
+| `novita`         | ro'yxatdan o'tish krediti | —                  | ~ 500K                | ehtiyot     | 1        |
+| `agy`            | kalitsiz                  | —                  | —                     | qochish     | 16       |
+| `baichuan`       | kalitsiz                  | —                  | —                     | noaniq      | 1        |
+| `blackbox`       | kalitsiz                  | —                  | —                     | qochish     | 6        |
+| `coze`           | kalitsiz                  | —                  | —                     | qochish     | 1        |
+| `duckduckgo-web` | kalitsiz                  | —                  | —                     | qochish     | 6        |
+| `freemodel-dev`  | kalitsiz                  | —                  | —                     | noma'lum    | 4        |
+| `friendliai`     | kalitsiz                  | —                  | —                     | qochish     | 2        |
+| `iflytek`        | kalitsiz                  | —                  | —                     | qochish     | 1        |
+| `inference-net`  | kalitsiz                  | —                  | —                     | ehtiyot     | 3        |
+| `liquid`         | kalitsiz                  | —                  | —                     | noma'lum    | 1        |
+| `monsterapi`     | kalitsiz                  | —                  | —                     | noaniq      | 1        |
+| `muse-spark-web` | kalitsiz                  | —                  | —                     | qochish     | 3        |
+| `nlpcloud`       | kalitsiz                  | —                  | —                     | qochish     | 1        |
+| `nvidia`         | qopqoqsiz                 | yopilmagan\*       | —                     | ehtiyot     | 3        |
+| `pollinations`   | kalitsiz                  | —                  | —                     | ehtiyot     | 31       |
+| `publicai`       | kalitsiz                  | —                  | —                     | ehtiyot     | 3        |
+| `reka`           | kalitsiz                  | —                  | —                     | ehtiyot     | 2        |
+| `sensenova`      | kalitsiz                  | —                  | —                     | ehtiyot     | 1        |
+| `sparkdesk`      | kalitsiz                  | —                  | —                     | ehtiyot     | 1        |
+| `stepfun`        | kalitsiz                  | —                  | —                     | Kelishdikmi | 1        |
+| `t3-web`         | kalitsiz                  | —                  | —                     | qochish     | 23       |
+| `uncloseai`      | kalitsiz                  | —                  | —                     | ehtiyot     | 3        |
 
 ---
 

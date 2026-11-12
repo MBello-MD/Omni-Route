@@ -111,10 +111,10 @@ makusudi.
 ## Mbinu na tahadhari
 
 - Nambari ni** makadirio ya hali ya juu** kutoka kwa vikomo vya viwango vya bure vya kila mtoa huduma kama vya** 2026-06-17** , iliyokusanywa na utafiti wa wavuti. Viwango vya bure hubadilika kila mara — thibitisha tena kabla ya kutegemea takwimu.
-- **Ni kiingilio gani kinathibitisha.** Hakuna ingizo linalobeba ukadiriaji wa uaminifu kwa kila safu, na API haitumii — yoyote inayochukulia kila takwimu iliyo hapo juu kama makadirio ya ubora sawa, ambao haujatajwa. Mambo mawili ni tofauti, kwa sababu yameratibiwa kwa mkono badala ya kukisiwa: Maingizo 44 yana sehemu ngumu iliyo na kumbukumbu inayojitegemea (39 kati yake safu mlalo xKiro, ambazo zote hushiriki posho moja ya kila siku), na maingizo 21 yana ufichuzi wa mafunzo ya haraka. `hardStopGuaranteed` huwekwa tu wakati masharti ya mtoa huduma mwenyewe yanasema kwamba kuzidi posho ya bure kunakataa ombi badala ya kuanza kukutoza kimya kimya, na chanzo kwenye maoni karibu na ingizo; haijawahi kuwa chaguomsingi `true`, na ingizo ambalo hakuna mtu ameithibitisha halijawekwa. Kwa hivyo bendera inayokosekana ina maana "haijaanzishwa", haijulikani "kukutoza".** hali ya STRICT** (kinzi cha uelekezaji `freeAccessPolicy=strict` ) huamini tu maingizo yanayobeba bendera; kila daraja lingine huru limetengwa kama `no-hard-stop` (tazama `open-sse/services/autoCombo/strictZeroCostFilter.ts`). Wakati mlinzi anachuja dimbwi, logi inayoonekana na mwendeshaji huripoti hesabu ya kutengwa na sehemu yake ya `no-hard-stop`.
+- **Ni kiingilio gani kinathibitisha.** Hakuna ingizo linalobeba ukadiriaji wa uaminifu kwa kila safu, na API haitumii — yoyote inayochukulia kila takwimu iliyo hapo juu kama makadirio ya ubora sawa, ambao haujatajwa. Mambo mawili ni tofauti, kwa sababu yameratibiwa kwa mkono badala ya kukisiwa: Maingizo 44 yana sehemu ngumu iliyo na kumbukumbu inayojitegemea (39 kati yao safu mlalo xKiro, ambazo zote hushiriki posho moja ya kila siku), na maingizo 22 yana ufichuzi wa mafunzo ya haraka. `hardStopGuaranteed` huwekwa tu wakati masharti ya mtoa huduma mwenyewe yanasema kwamba kuzidi posho ya bure kunakataa ombi badala ya kuanza kukutoza kimya kimya, na chanzo kwenye maoni karibu na ingizo; haijawahi kuwa chaguomsingi `true`, na ingizo ambalo hakuna mtu ameithibitisha halijawekwa. Kwa hivyo bendera inayokosekana ina maana "haijaanzishwa", haijulikani "kukutoza".** hali ya STRICT** (kinzi cha uelekezaji `freeAccessPolicy=strict` ) huamini tu maingizo yanayobeba bendera; kila daraja lingine huru limetengwa kama `no-hard-stop` (tazama `open-sse/services/autoCombo/strictZeroCostFilter.ts`). Wakati mlinzi anachuja dimbwi, logi inayoonekana na mwendeshaji huripoti hesabu ya kutengwa na sehemu yake ya `no-hard-stop`.
 - `estMonthlyFreeTokens` = tokeni zinazorudiwa za kila mwezi pekee.** Salio za kujisajili mara moja hazijirudii** na kuhesabu kama 0. Viwango vilivyosimamishwa pia ni 0.
 - Kikomo cha tokeni ya kila siku → `monthly = daily × 30`. Ni RPD pekee iliyoandikwa → `RPD × ~800 output tokens × 30`. RPM/TPM pekee (hakuna kofia ya kila siku) →** haijafungwa** (tazama hapa chini).
-- **Bure kabisa, lakini hakuna kofia ya tokeni iliyochapishwa** (`glm-cn`, `tencent`, `baidu`, `kilo-gateway`, `opencode-zen`, `gemini`, `ollama-cloud`): hizi ni ufikiaji wa bure wa mara kwa mara, rate/concurrency-limited. Tunaziainisha `recurring-uncapped` na** usiwahi kuzijumlisha** — kuzidisha `RPM × 24/7 × 30d` kunaweza kutoa dari ya ajabu (mfumko wa bei tunaokataa). Zimeorodheshwa ili ujue zipo.
+- **Ufikiaji bila malipo, lakini hakuna kifuniko cha tokeni kilichochapishwa** (`glm-cn`, `tencent`, `baidu`, `kilo-gateway`, `opencode-zen`, `gemini`, `ollama-cloud`, `nvidia`): hizi ni rate/concurrency-limited. Tunaziainisha `recurring-uncapped` na** usiwahi kuzijumlisha** — kuzidisha `RPM × 24/7 × 30d` kungetoa dari ya ajabu (mfumko wa bei tunaokataa). NVIDIA's API ni matumizi ya majaribio tu; tazama pango lake la ToS hapa chini.
 - **Kukuza-kufungua kwa amana:** nyongeza ndogo ya mara moja ambayo huongeza nafasi ya bure kabisa (OpenRouter: $10 → 1000 req/day ≈ +24M/mo). Imeripotiwa kama takwimu tofauti, iliyohifadhiwa nje ya kichwa cha habari thabiti.
 - **Viwango vilivyo na milango ya kustahiki** (`eligibilityGate: "regional-identity"`): kiasi halisi kinachojirudia ambacho hufunguliwa tu baada ya ukaguzi wa utambulisho wa eneo (uthibitishaji wa jina halisi la China bara leo). Imehesabiwa kwa kanuni sawa ya pool-dedupe katika takwimu tofauti (`gatedRecurringTokens`), kamwe katika kichwa cha habari thabiti. Utawala (`freeType`) haujabadilika, kwa hivyo uelekezaji haujabadilika.
 - **Madarasa ya ushahidi.** Sheria: nambari katika katalogi inataja chanzo chake katika maoni ya `// evidence:` karibu na ingizo — `public-page` (ukurasa wa mtoa huduma ambao mtu yeyote anaweza kusoma), `api-public` (mwisho ambao haujaidhinishwa wa mtoa huduma, kwa mfano, mwisho wa mipango ya NaraRouter kwenye router.bynara.id), au `console-verified <date> por <who>` (takwimu inaonekana tu ndani ya rekodi ya ukurasa, rekodi ya ukurasa inapoona na kuweka maoni kwa umma). Jimbo leo: vitalu vitano vilivyokaguliwa tena mnamo 2026-09-02 vinabeba (`gemini`, `groq`, `mistral`, `ollama-cloud`, `nara`); maingizo yaliyotangulia ukaguzi wa upya wa 2026-09-02 hurithi utafiti wa awali hadi yatakapoguswa; yoyote** mpya au kubadilishwa** nambari bila maoni ya ushahidi ni mdudu. Leo ni `mistral` pekee ndiyo imethibitishwa-console.
@@ -239,75 +239,75 @@ Idadi nyingi za "tokeni zisizolipishwa kwa mwezi" katika eneo hili ni jumla ya v
 
 ---
 
-## Kiwango cha bure kwa kila mtoa huduma (Bytez/Nous kilikaguliwa 2026-10-15; safu zilizokaguliwa tena 2026-09-02; mingine 2026-06-17)
+## Kiwango cha bure cha mtoa huduma kwa kila (Bytez/Nous imechaguliwa 2026-10-15; safumlalo zilizokaguliwa upya 2026-09-02; zingine 2026-06-17)
 
-> Imetengenezwa upya kutoka kwenye katalogi ya kila modeli (`open-sse/config/freeModelCatalog.ts`), huku marudio ya hifadhi yakiondolewa. Imepangwa kwa kuzingatia tokeni za kawaida zinazorudiwa kwa mwezi. `uncapped*` = bure kabisa lakini hakuna kikomo cha tokeni kilichochapishwa (imewekewa kikomo cha kasi/miunganisho kwa wakati mmoja) — ufikiaji halisi, **haijajumlishwa katika jumla kuu**. `—` = ni ya salio pekee / haina ufunguo / haiwezi kupimwa kwa tokeni.
+> Imetolewa upya kutoka kwa orodha ya kila modeli (`open-sse/config/freeModelCatalog.ts`), imetolewa kwenye bwawa. Imepangwa kwa tokens/mo. `uncapped*` = inayojirudia bila malipo kabisa lakini hakuna kifuniko cha tokeni kilichochapishwa (rate/concurrency-limited) — ufikiaji halisi,** sivyo** muhtasari wa kichwa cha habari. `—` = ya mkopo pekee / isiyo na ufunguo / isiyoweza kukadiriwa.
 
-| Mtoa huduma      | Aina ya bila malipo   | Tokeni thabiti/mwezi | Salio la mwezi wa kwanza | Masharti ya Huduma | Miundo |
-| ---------------- | --------------------- | -------------------- | ------------------------ | ------------------ | ------ |
-| `mistral`        | inayojirudia          | ~1.00B               | —                        | tahadhari          | 5      |
-| `nara`           | inayojirudia          | ~210M                | —                        | tahadhari          | 8      |
-| `llm7`           | inayojirudia          | ~150M                | —                        | tahadhari          | 4      |
-| `xkiro`          | inayojirudia          | ~150M                | —                        | tahadhari          | 39     |
-| `longcat`        | mara moja             | —                    | 10M                      | tahadhari          | 1      |
-| `cerebras`       | mara moja             | —                    | $5 ya salio              | tahadhari          | 2      |
-| `cloudflare-ai`  | inayojirudia          | ~30M                 | —                        | tahadhari          | 9      |
-| `groq`           | inayojirudia          | ~30M                 | —                        | tahadhari          | 5      |
-| `api-airforce`   | inayojirudia          | ~24M                 | —                        | tahadhari          | 7      |
-| `bluesminds`     | inayojirudia          | ~7M                  | —                        | isiyo wazi         | 22     |
-| `sambanova`      | inayojirudia          | ~6M                  | —                        | tahadhari          | 5      |
-| `arcee-ai`       | inayojirudia          | ~5M                  | —                        | tahadhari          | 1      |
-| `bazaarlink`     | inayojirudia          | ~4M                  | —                        | tahadhari          | 32     |
-| `openrouter`     | inayojirudia          | ~1M                  | —                        | tahadhari          | 1      |
-| `cohere`         | inayojirudia          | ~800K                | —                        | tahadhari          | 6      |
-| `huggingchat`    | inayojirudia          | ~500K                | —                        | tahadhari          | 4      |
-| `morph`          | inayojirudia          | ~400K                | —                        | sawa               | 2      |
-| `huggingface`    | inayojirudia          | ~200K                | —                        | tahadhari          | 6      |
-| `kiro`           | inayojirudia          | ~25K                 | —                        | epuka              | 12     |
-| `glm-cn`         | isiyo na kikomo       | isiyo na kikomo\*    | ~20M                     | sawa               | 4      |
-| `baidu`          | isiyo na kikomo       | isiyo na kikomo\*    | —                        | tahadhari          | 1      |
-| `gemini`         | isiyo na kikomo       | isiyo na kikomo\*    | —                        | tahadhari          | 4      |
-| `kilo-gateway`   | isiyo na kikomo       | isiyo na kikomo\*    | —                        | tahadhari          | 7      |
-| `ollama-cloud`   | isiyo na kikomo       | isiyo na kikomo\*    | —                        | isiyo wazi         | 8      |
-| `opencode-zen`   | isiyo na kikomo       | isiyo na kikomo\*    | —                        | tahadhari          | 10     |
-| `tencent`        | isiyo na kikomo       | isiyo na kikomo\*    | —                        | tahadhari          | 1      |
-| `vertex`         | salio la kujisajili   | —                    | ~300M                    | tahadhari          | 10     |
-| `agentrouter`    | salio la kujisajili   | —                    | ~200M                    | tahadhari          | 4      |
-| `predibase`      | salio la kujisajili   | —                    | ~25M                     | tahadhari          | 1      |
-| `doubao`         | salio la kujisajili   | —                    | ~15M                     | isiyo wazi         | 1      |
-| `ai21`           | salio la kujisajili   | —                    | ~10M                     | epuka              | 2      |
-| `deepseek`       | salio la kujisajili   | —                    | ~5M                      | sawa               | 2      |
-| `hyperbolic`     | salio la kujisajili   | —                    | ~5M                      | sawa               | 8      |
-| `nscale`         | salio la kujisajili   | —                    | ~5M                      | tahadhari          | 6      |
-| `bytez`          | salio (linalojirudia) | —                    | haijulikani              | isiyo wazi         | 1      |
-| `deepinfra`      | salio la kujisajili   | —                    | ~1M                      | tahadhari          | 22     |
-| `fireworks`      | salio la kujisajili   | —                    | ~1M                      | epuka              | 10     |
-| `nebius`         | salio la kujisajili   | —                    | ~1M                      | tahadhari          | 1      |
-| `qoder`          | salio la kujisajili   | —                    | ~1M                      | tahadhari          | 14     |
-| `scaleway`       | salio la kujisajili   | —                    | ~1M                      | sawa               | 6      |
-| `novita`         | salio la kujisajili   | —                    | ~500K                    | tahadhari          | 1      |
-| `agy`            | bila ufunguo          | —                    | —                        | epuka              | 16     |
-| `baichuan`       | bila ufunguo          | —                    | —                        | isiyo wazi         | 1      |
-| `blackbox`       | bila ufunguo          | —                    | —                        | epuka              | 6      |
-| `coze`           | bila ufunguo          | —                    | —                        | epuka              | 1      |
-| `duckduckgo-web` | bila ufunguo          | —                    | —                        | epuka              | 6      |
-| `freemodel-dev`  | bila ufunguo          | —                    | —                        | haijulikani        | 4      |
-| `friendliai`     | bila ufunguo          | —                    | —                        | epuka              | 2      |
-| `iflytek`        | bila ufunguo          | —                    | —                        | epuka              | 1      |
-| `inference-net`  | bila ufunguo          | —                    | —                        | tahadhari          | 3      |
-| `liquid`         | bila ufunguo          | —                    | —                        | haijulikani        | 1      |
-| `monsterapi`     | bila ufunguo          | —                    | —                        | isiyo wazi         | 1      |
-| `muse-spark-web` | bila ufunguo          | —                    | —                        | epuka              | 3      |
-| `nlpcloud`       | bila ufunguo          | —                    | —                        | epuka              | 1      |
-| `nvidia`         | isiyo na kikomo       | isiyo na kikomo\*    | —                        | tahadhari          | 2      |
-| `pollinations`   | bila ufunguo          | —                    | —                        | tahadhari          | 31     |
-| `publicai`       | bila ufunguo          | —                    | —                        | tahadhari          | 3      |
-| `reka`           | bila ufunguo          | —                    | —                        | tahadhari          | 2      |
-| `sensenova`      | bila ufunguo          | —                    | —                        | tahadhari          | 1      |
-| `sparkdesk`      | keyless               | —                    | —                        | tahadhari          | 1      |
-| `stepfun`        | keyless               | —                    | —                        | sawa               | 1      |
-| `t3-web`         | keyless               | —                    | —                        | epuka              | 23     |
-| `uncloseai`      | keyless               | —                    | —                        | tahadhari          | 3      |
+| Mtoa huduma      | Aina ya bure     | Imara tokens/mo | Mkopo wa mwezi wa kwanza | ToS         | Mifano |
+| ---------------- | ---------------- | --------------- | ------------------------ | ----------- | ------ |
+| `mistral`        | inayojirudia     | ~ 1.00B         | —                        | tahadhari   | 5      |
+| `nara`           | inayojirudia     | ~ 210M          | —                        | tahadhari   | 8      |
+| `llm7`           | inayojirudia     | ~ 150M          | —                        | tahadhari   | 4      |
+| `xkiro`          | inayojirudia     | ~ 150M          | —                        | tahadhari   | 39     |
+| `longcat`        | mara moja        | —               | 10M                      | tahadhari   | 1      |
+| `cerebras`       | mara moja        | —               | mkopo wa $5              | tahadhari   | 2      |
+| `cloudflare-ai`  | inayojirudia     | ~ 30M           | —                        | tahadhari   | 9      |
+| `groq`           | inayojirudia     | ~ 30M           | —                        | tahadhari   | 5      |
+| `api-airforce`   | inayojirudia     | ~ 24M           | —                        | tahadhari   | 7      |
+| `bluesminds`     | inayojirudia     | ~ 7m            | —                        | utata       | 22     |
+| `sambanova`      | inayojirudia     | ~ 6M            | —                        | tahadhari   | 5      |
+| `arcee-ai`       | inayojirudia     | ~ 5m            | —                        | tahadhari   | 1      |
+| `bazaarlink`     | inayojirudia     | ~ 4m            | —                        | tahadhari   | 32     |
+| `openrouter`     | inayojirudia     | ~ 1M            | —                        | tahadhari   | 1      |
+| `cohere`         | inayojirudia     | ~               | —                        | tahadhari   | 6      |
+| `huggingchat`    | inayojirudia     | ~ 500K          | —                        | tahadhari   | 4      |
+| `morph`          | inayojirudia     | ~ 400K          | —                        | sawa        | 2      |
+| `huggingface`    | inayojirudia     | ~ 200K          | —                        | tahadhari   | 6      |
+| `kiro`           | inayojirudia     | ~ 25k           | —                        | kuepuka     | 12     |
+| `glm-cn`         | haijafungwa      | haijafungwa\*   | ~ 20M                    | sawa        | 4      |
+| `baidu`          | haijafungwa      | haijafungwa\*   | —                        | tahadhari   | 1      |
+| `gemini`         | haijafungwa      | haijafungwa\*   | —                        | tahadhari   | 4      |
+| `kilo-gateway`   | haijafungwa      | haijafungwa\*   | —                        | tahadhari   | 7      |
+| `ollama-cloud`   | haijafungwa      | haijafungwa\*   | —                        | utata       | 8      |
+| `opencode-zen`   | haijafungwa      | haijafungwa\*   | —                        | tahadhari   | 10     |
+| `tencent`        | haijafungwa      | haijafungwa\*   | —                        | tahadhari   | 1      |
+| `vertex`         | mkopo wa usajili | —               | ~ 300M                   | tahadhari   | 10     |
+| `agentrouter`    | mkopo wa usajili | —               | ~ 200M                   | tahadhari   | 4      |
+| `predibase`      | mkopo wa usajili | —               | ~ 25M                    | tahadhari   | 1      |
+| `doubao`         | mkopo wa usajili | —               | ~ 15M                    | utata       | 1      |
+| `ai21`           | mkopo wa usajili | —               | ~ 10M                    | kuepuka     | 2      |
+| `deepseek`       | mkopo wa usajili | —               | ~ 5m                     | sawa        | 2      |
+| `hyperbolic`     | mkopo wa usajili | —               | ~ 5m                     | sawa        | 8      |
+| `nscale`         | mkopo wa usajili | —               | ~ 5m                     | tahadhari   | 6      |
+| `bytez`          | mkopo (rec.)     | —               | haijulikani              | utata       | 1      |
+| `deepinfra`      | mkopo wa usajili | —               | ~ 1M                     | tahadhari   | 22     |
+| `fireworks`      | mkopo wa usajili | —               | ~ 1M                     | kuepuka     | 10     |
+| `nebius`         | mkopo wa usajili | —               | ~ 1M                     | tahadhari   | 1      |
+| `qoder`          | mkopo wa usajili | —               | ~ 1M                     | tahadhari   | 14     |
+| `scaleway`       | mkopo wa usajili | —               | ~ 1M                     | sawa        | 6      |
+| `novita`         | mkopo wa usajili | —               | ~ 500K                   | tahadhari   | 1      |
+| `agy`            | bila ufunguo     | —               | —                        | kuepuka     | 16     |
+| `baichuan`       | bila ufunguo     | —               | —                        | utata       | 1      |
+| `blackbox`       | bila ufunguo     | —               | —                        | kuepuka     | 6      |
+| `coze`           | bila ufunguo     | —               | —                        | kuepuka     | 1      |
+| `duckduckgo-web` | bila ufunguo     | —               | —                        | kuepuka     | 6      |
+| `freemodel-dev`  | bila ufunguo     | —               | —                        | haijulikani | 4      |
+| `friendliai`     | bila ufunguo     | —               | —                        | kuepuka     | 2      |
+| `iflytek`        | bila ufunguo     | —               | —                        | kuepuka     | 1      |
+| `inference-net`  | bila ufunguo     | —               | —                        | tahadhari   | 3      |
+| `liquid`         | bila ufunguo     | —               | —                        | haijulikani | 1      |
+| `monsterapi`     | bila ufunguo     | —               | —                        | utata       | 1      |
+| `muse-spark-web` | bila ufunguo     | —               | —                        | kuepuka     | 3      |
+| `nlpcloud`       | bila ufunguo     | —               | —                        | kuepuka     | 1      |
+| `nvidia`         | haijafungwa      | haijafungwa\*   | —                        | tahadhari   | 3      |
+| `pollinations`   | bila ufunguo     | —               | —                        | tahadhari   | 31     |
+| `publicai`       | bila ufunguo     | —               | —                        | tahadhari   | 3      |
+| `reka`           | bila ufunguo     | —               | —                        | tahadhari   | 2      |
+| `sensenova`      | bila ufunguo     | —               | —                        | tahadhari   | 1      |
+| `sparkdesk`      | bila ufunguo     | —               | —                        | tahadhari   | 1      |
+| `stepfun`        | bila ufunguo     | —               | —                        | sawa        | 1      |
+| `t3-web`         | bila ufunguo     | —               | —                        | kuepuka     | 23     |
+| `uncloseai`      | bila ufunguo     | —               | —                        | tahadhari   | 3      |
 
 ---
 

@@ -488,7 +488,7 @@ Wannan yana sarrafa:
 
 | Fayil                         | Manufar                                          |
 | ----------------------------- | ------------------------------------------------ |
-| `providerRegistry.ts`         | Rijista-samfurin taɗi akan kundin masu ba da 381 |
+| `providerRegistry.ts`         | Rijista-samfurin taɗi akan kundin masu ba da 393 |
 | `providerModels.ts`           | Laƙabin ƙira, tsara taswira                      |
 | `constants.ts`                | Ƙayyadaddun lokaci, iyaka, lambobin matsayi      |
 | `defaultThinkingSignature.ts` | Claude hannu na tunani na asali                  |
@@ -509,7 +509,7 @@ interface ProviderConfig {
 }
 ```
 
-Ingancin Zod a nauyin kayan aiki yana tabbatar da duk saitin mai bada sabis yana aiki.
+Ingancin Zod a nauyin kayan masarufi yana tabbatar da duk saitin mai bada sabis na aiki.
 
 ---
 

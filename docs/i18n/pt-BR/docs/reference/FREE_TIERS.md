@@ -112,10 +112,10 @@ intencionalmente.
 ## Metodologia e advertências
 
 - Os números são** estimativas de limite superior** dos limites de nível gratuito documentados de cada provedor a partir de** 17/06/2026** , coletados por pesquisa na web. Os níveis gratuitos mudam constantemente — verificam novamente antes de confiar em um valor.
-- **O que uma entrada realmente atesta.** Nenhuma entrada carrega uma classificação de confiança por linha, e o API não serve para nenhum. — trata cada valor acima como uma estimativa da mesma qualidade não declarada. Dois fatos são diferentes, porque são selecionados manualmente e não inferidos: 44 entradas trazem uma parada brusca documentada de forma independente (39 delas são as linhas xKiro, que compartilham uma diária), e 21 entradas trazem uma divulgação de treinamento imediato. `hardStopGuaranteed` é definido apenas quando os próprios termos do provedor dizem que exceder o limite gratuito recusa a solicitação, em vez de começar a cobrar silenciosamente, com a fonte em um comentário ao lado da entrada; nunca é padronizado como `true` e uma entrada que ninguém verificou permanece não definida. Portanto, um sinalizador de parada brusca ausente significa "não estabelecido", não "conhecido por cobrar de você".** modo STRICT** (o guarda de roteamento `freeAccessPolicy=strict` opcional) confia apenas em entradas que carregam o sinalizador; todos os outros níveis gratuitos são excluídos como `no-hard-stop` (consulte `open-sse/services/autoCombo/strictZeroCostFilter.ts`). Quando o guarda filtra um pool, o log visível ao operador relata a contagem de exclusões e seu compartilhamento `no-hard-stop`.
+- **O que uma entrada realmente atesta.** Nenhuma entrada carrega uma classificação de confiança por linha, e o API não serve para nenhum. — trata cada valor acima como uma estimativa da mesma qualidade não declarada. Dois fatos são diferentes, porque são selecionados manualmente e não inferidos: 44 entradas trazem uma parada brusca documentada de forma independente (39 delas são as linhas xKiro, que compartilham uma diária), e 22 entradas trazem uma divulgação de treinamento imediato. `hardStopGuaranteed` é definido apenas quando os próprios termos do provedor dizem que exceder o limite gratuito recusa a solicitação, em vez de começar a cobrar silenciosamente, com a fonte em um comentário ao lado da entrada; nunca é padronizado como `true` e uma entrada que ninguém verificou permanece não definida. Portanto, um sinalizador de parada brusca ausente significa "não estabelecido", não "conhecido por cobrar de você".** modo STRICT** (o guarda de roteamento `freeAccessPolicy=strict` opcional) confia apenas nas entradas que carregam o sinalizador; todos os outros níveis gratuitos são excluídos como `no-hard-stop` (consulte `open-sse/services/autoCombo/strictZeroCostFilter.ts`). Quando o guarda filtra um pool, o log visível ao operador relata a contagem de exclusões e seu compartilhamento `no-hard-stop`.
 - apenas tokens mensais recorrentes `estMonthlyFreeTokens` =.** Os créditos de inscrição única não são recorrentes** e conte como 0. Os níveis descontinuados também são 0.
 - Limite de token diário → `monthly = daily × 30`. Somente RPD documentou → `RPD × ~800 output tokens × 30`. Apenas RPM/TPM (sem limite diário) →** destampado** (Veja abaixo).
-- **Permanentemente gratuito, mas sem limite de token publicado** (`glm-cn`, `tencent`, `baidu`, `kilo-gateway`, `opencode-zen`, `gemini`, `ollama-cloud`): estes são acessos livres recorrentes reais, rate/concurrency-limited. Nós os classificamos `recurring-uncapped` e** nunca os some** — multiplicar `RPM × 24/7 × 30d` produziria um teto fantasioso (a inflação que rejeitamos). Eles estão listados para que você saiba que eles existem.
+- **Acesso gratuito, mas sem limite de token publicado** (`glm-cn`, `tencent`, `baidu`, `kilo-gateway`, `opencode-zen`, `gemini`, `ollama-cloud`, `nvidia`): estes são rate/concurrency-limited. Nós os classificamos `recurring-uncapped` e** nunca os some** — multiplicar `RPM × 24/7 × 30d` produziria um teto fantasioso (a inflação que rejeitamos). NVIDIA's API é apenas para uso experimental; veja sua advertência ToS abaixo.
 - **Aumento de desbloqueio de depósito:** uma pequena recarga única que aumenta permanentemente uma cota gratuita (OpenRouter: $ 10 → 1000 req/day ≈ +24M/mo). Relatado como um número separado, mantido fora do título constante.
 - **Cotas controladas por elegibilidade** (`eligibilityGate: "regional-identity"`): uma cota recorrente real que só abre após uma verificação de identidade regional (hoje, verificação de nome real na China continental). Contado com a mesma regra de desduplicação do pool em uma figura separada (`gatedRecurringTokens`), nunca no título constante. O regime (`freeType`) permanece inalterado, portanto o roteamento permanece inalterado.
 - **Aulas de evidências.** A regra: um número no catálogo cita sua fonte em um comentário `// evidence:` próximo à entrada — `public-page` (uma página do provedor que qualquer um pode ler), `api-public` (um endpoint não autenticado do provedor, por exemplo, o endpoint de planos públicos de NaraRouter em router.bynara.id) ou `console-verified <date> por <who>` (a figura só é visível dentro de um console de conta; o comentário registra quem o viu e quando, e a página pública que diz que o limite existe). O estado hoje: os cinco blocos auditados novamente em 02/09/2026 o carregam (`gemini`, `groq`, `mistral`, `ollama-cloud`, `nara`); as entradas anteriores à nova auditoria de 02/09/2026 herdam a pesquisa anterior até serem tocadas; qualquer** novo ou alterado** número sem um comentário de evidência é um bug. Hoje, apenas `mistral` é verificado pelo console.
@@ -240,53 +240,53 @@ A maioria dos números de "tokens gratuitos por mês" nesse espaço é a soma do
 
 ---
 
-## Nível gratuito por provedor (Bytez/Nous verificados em 2026-10-15; linhas reauditadas em 2026-09-02; outros em 2026-06-17)
+## Nível gratuito por provedor (Bytez/Nous verificado em 15/10/2026; linhas auditadas novamente em 02/09/2026; outros em 17/06/2026)
 
-> Regenerado a partir do catálogo por modelo (`open-sse/config/freeModelCatalog.ts`), com deduplicação por pool. Ordenado por tokens recorrentes estáveis/mês. `uncapped*` = permanentemente gratuito, mas sem limite de tokens publicado (limitado por taxa/concorrência) — acesso real, **não somado ao total principal**. `—` = somente crédito / sem chave / não quantificável em tokens.
+> Regerado a partir do catálogo por modelo (`open-sse/config/freeModelCatalog.ts`), deduplicado do pool. Classificado por tokens/mo. constante `uncapped*` = recorrente permanentemente gratuito, mas sem limite de token publicado (rate/concurrency-limited) — acesso real,** não** resumido no título. `—` = somente crédito/sem chave/não quantificável por token.
 
-| Provedor         | Tipo de gratuidade   | Tokens estáveis/mês | Crédito no primeiro mês | ToS          | Modelos |
+| Provedor         | Tipo grátis          | tokens/mo constante | Crédito do primeiro mês | ToS          | Modelos |
 | ---------------- | -------------------- | ------------------- | ----------------------- | ------------ | ------- |
-| `mistral`        | recorrente           | ~1.00B              | —                       | cautela      | 5       |
-| `nara`           | recorrente           | ~210M               | —                       | cautela      | 8       |
-| `llm7`           | recorrente           | ~150M               | —                       | cautela      | 4       |
-| `xkiro`          | recorrente           | ~150M               | —                       | cautela      | 39      |
-| `longcat`        | uma vez              | —                   | 10M                     | cautela      | 1       |
-| `cerebras`       | uma vez              | —                   | crédito de $5           | cautela      | 2       |
-| `cloudflare-ai`  | recorrente           | ~30M                | —                       | cautela      | 9       |
-| `groq`           | recorrente           | ~30M                | —                       | cautela      | 5       |
-| `api-airforce`   | recorrente           | ~24M                | —                       | cautela      | 7       |
-| `bluesminds`     | recorrente           | ~7M                 | —                       | ambíguo      | 22      |
-| `sambanova`      | recorrente           | ~6M                 | —                       | cautela      | 5       |
-| `arcee-ai`       | recorrente           | ~5M                 | —                       | cautela      | 1       |
-| `bazaarlink`     | recorrente           | ~4M                 | —                       | cautela      | 32      |
-| `openrouter`     | recorrente           | ~1M                 | —                       | cautela      | 1       |
-| `cohere`         | recorrente           | ~800K               | —                       | cautela      | 6       |
-| `huggingchat`    | recorrente           | ~500K               | —                       | cautela      | 4       |
-| `morph`          | recorrente           | ~400K               | —                       | ok           | 2       |
-| `huggingface`    | recorrente           | ~200K               | —                       | cautela      | 6       |
-| `kiro`           | recorrente           | ~25K                | —                       | evitar       | 12      |
-| `glm-cn`         | sem limite           | sem limite\*        | ~20M                    | ok           | 4       |
-| `baidu`          | sem limite           | sem limite\*        | —                       | cautela      | 1       |
-| `gemini`         | sem limite           | sem limite\*        | —                       | cautela      | 4       |
-| `kilo-gateway`   | sem limite           | sem limite\*        | —                       | cautela      | 7       |
-| `ollama-cloud`   | sem limite           | sem limite\*        | —                       | ambíguo      | 8       |
-| `opencode-zen`   | sem limite           | sem limite\*        | —                       | cautela      | 10      |
-| `tencent`        | sem limite           | sem limite\*        | —                       | cautela      | 1       |
-| `vertex`         | crédito por cadastro | —                   | ~300M                   | cautela      | 10      |
-| `agentrouter`    | crédito por cadastro | —                   | ~200M                   | cautela      | 4       |
-| `predibase`      | crédito por cadastro | —                   | ~25M                    | cautela      | 1       |
-| `doubao`         | crédito por cadastro | —                   | ~15M                    | ambíguo      | 1       |
-| `ai21`           | crédito por cadastro | —                   | ~10M                    | evitar       | 2       |
-| `deepseek`       | crédito por cadastro | —                   | ~5M                     | ok           | 2       |
-| `hyperbolic`     | crédito por cadastro | —                   | ~5M                     | ok           | 8       |
-| `nscale`         | crédito por cadastro | —                   | ~5M                     | cautela      | 6       |
+| `mistral`        | recorrente           | ~ 1,00B             | —                       | Cuidado      | 5       |
+| `nara`           | recorrente           | ~ 210M              | —                       | Cuidado      | 8       |
+| `llm7`           | recorrente           | ~ 150M              | —                       | Cuidado      | 4       |
+| `xkiro`          | recorrente           | ~ 150M              | —                       | Cuidado      | 39      |
+| `longcat`        | uma vez              | —                   | 10 milhões              | Cuidado      | 1       |
+| `cerebras`       | uma vez              | —                   | Crédito de US$ 5        | Cuidado      | 2       |
+| `cloudflare-ai`  | recorrente           | ~ 30M               | —                       | Cuidado      | 9       |
+| `groq`           | recorrente           | ~ 30M               | —                       | Cuidado      | 5       |
+| `api-airforce`   | recorrente           | ~ 24M               | —                       | Cuidado      | 7       |
+| `bluesminds`     | recorrente           | ~ 7M                | —                       | ambíguo      | 22      |
+| `sambanova`      | recorrente           | ~ 6M                | —                       | Cuidado      | 5       |
+| `arcee-ai`       | recorrente           | ~ 5M                | —                       | Cuidado      | 1       |
+| `bazaarlink`     | recorrente           | ~ 4M                | —                       | Cuidado      | 32      |
+| `openrouter`     | recorrente           | ~ 1M                | —                       | Cuidado      | 1       |
+| `cohere`         | recorrente           | ~ 800K              | —                       | Cuidado      | 6       |
+| `huggingchat`    | recorrente           | ~ 500K              | —                       | Cuidado      | 4       |
+| `morph`          | recorrente           | ~ 400K              | —                       | OK           | 2       |
+| `huggingface`    | recorrente           | ~ 200K              | —                       | Cuidado      | 6       |
+| `kiro`           | recorrente           | ~ 25K               | —                       | evitar       | 12      |
+| `glm-cn`         | destampado           | ilimitado\*         | ~ 20M                   | OK           | 4       |
+| `baidu`          | destampado           | ilimitado\*         | —                       | Cuidado      | 1       |
+| `gemini`         | destampado           | ilimitado\*         | —                       | Cuidado      | 4       |
+| `kilo-gateway`   | destampado           | ilimitado\*         | —                       | Cuidado      | 7       |
+| `ollama-cloud`   | destampado           | ilimitado\*         | —                       | ambíguo      | 8       |
+| `opencode-zen`   | destampado           | ilimitado\*         | —                       | Cuidado      | 10      |
+| `tencent`        | destampado           | ilimitado\*         | —                       | Cuidado      | 1       |
+| `vertex`         | crédito de inscrição | —                   | ~ 300M                  | Cuidado      | 10      |
+| `agentrouter`    | crédito de inscrição | —                   | ~ 200M                  | Cuidado      | 4       |
+| `predibase`      | crédito de inscrição | —                   | ~ 25M                   | Cuidado      | 1       |
+| `doubao`         | crédito de inscrição | —                   | ~ 15M                   | ambíguo      | 1       |
+| `ai21`           | crédito de inscrição | —                   | ~ 10M                   | evitar       | 2       |
+| `deepseek`       | crédito de inscrição | —                   | ~ 5M                    | OK           | 2       |
+| `hyperbolic`     | crédito de inscrição | —                   | ~ 5M                    | OK           | 8       |
+| `nscale`         | crédito de inscrição | —                   | ~ 5M                    | Cuidado      | 6       |
 | `bytez`          | crédito (rec.)       | —                   | desconhecido            | ambíguo      | 1       |
-| `deepinfra`      | crédito por cadastro | —                   | ~1M                     | cautela      | 22      |
-| `fireworks`      | crédito por cadastro | —                   | ~1M                     | evitar       | 10      |
-| `nebius`         | crédito por cadastro | —                   | ~1M                     | cautela      | 1       |
-| `qoder`          | crédito por cadastro | —                   | ~1M                     | cautela      | 14      |
-| `scaleway`       | crédito por cadastro | —                   | ~1M                     | ok           | 6       |
-| `novita`         | crédito por cadastro | —                   | ~500K                   | cautela      | 1       |
+| `deepinfra`      | crédito de inscrição | —                   | ~ 1M                    | Cuidado      | 22      |
+| `fireworks`      | crédito de inscrição | —                   | ~ 1M                    | evitar       | 10      |
+| `nebius`         | crédito de inscrição | —                   | ~ 1M                    | Cuidado      | 1       |
+| `qoder`          | crédito de inscrição | —                   | ~ 1M                    | Cuidado      | 14      |
+| `scaleway`       | crédito de inscrição | —                   | ~ 1M                    | OK           | 6       |
+| `novita`         | crédito de inscrição | —                   | ~ 500K                  | Cuidado      | 1       |
 | `agy`            | sem chave            | —                   | —                       | evitar       | 16      |
 | `baichuan`       | sem chave            | —                   | —                       | ambíguo      | 1       |
 | `blackbox`       | sem chave            | —                   | —                       | evitar       | 6       |
@@ -295,20 +295,20 @@ A maioria dos números de "tokens gratuitos por mês" nesse espaço é a soma do
 | `freemodel-dev`  | sem chave            | —                   | —                       | desconhecido | 4       |
 | `friendliai`     | sem chave            | —                   | —                       | evitar       | 2       |
 | `iflytek`        | sem chave            | —                   | —                       | evitar       | 1       |
-| `inference-net`  | sem chave            | —                   | —                       | cautela      | 3       |
+| `inference-net`  | sem chave            | —                   | —                       | Cuidado      | 3       |
 | `liquid`         | sem chave            | —                   | —                       | desconhecido | 1       |
 | `monsterapi`     | sem chave            | —                   | —                       | ambíguo      | 1       |
 | `muse-spark-web` | sem chave            | —                   | —                       | evitar       | 3       |
 | `nlpcloud`       | sem chave            | —                   | —                       | evitar       | 1       |
-| `nvidia`         | sem limite           | sem limite\*        | —                       | cautela      | 2       |
-| `pollinations`   | sem chave            | —                   | —                       | cautela      | 31      |
-| `publicai`       | sem chave            | —                   | —                       | cautela      | 3       |
-| `reka`           | sem chave            | —                   | —                       | cautela      | 2       |
-| `sensenova`      | sem chave            | —                   | —                       | cautela      | 1       |
-| `sparkdesk`      | sem chave            | —                   | —                       | cautela      | 1       |
-| `stepfun`        | sem chave            | —                   | —                       | certo        | 1       |
+| `nvidia`         | destampado           | ilimitado\*         | —                       | Cuidado      | 3       |
+| `pollinations`   | sem chave            | —                   | —                       | Cuidado      | 31      |
+| `publicai`       | sem chave            | —                   | —                       | Cuidado      | 3       |
+| `reka`           | sem chave            | —                   | —                       | Cuidado      | 2       |
+| `sensenova`      | sem chave            | —                   | —                       | Cuidado      | 1       |
+| `sparkdesk`      | sem chave            | —                   | —                       | Cuidado      | 1       |
+| `stepfun`        | sem chave            | —                   | —                       | OK           | 1       |
 | `t3-web`         | sem chave            | —                   | —                       | evitar       | 23      |
-| `uncloseai`      | sem chave            | —                   | —                       | cautela      | 3       |
+| `uncloseai`      | sem chave            | —                   | —                       | Cuidado      | 3       |
 
 ---
 

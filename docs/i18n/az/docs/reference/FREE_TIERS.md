@@ -111,10 +111,10 @@ qəsdən saxlanılır.
 ## Metodologiya və xəbərdarlıqlar
 
 - Nömrələrdir** yuxarı həddə olan təxminlər** hər bir provayderin sənədləşdirilmiş pulsuz səviyyə limitlərindən** 17-06-2026** , veb araşdırması ilə toplanmışdır. Pulsuz səviyyələr daim dəyişir — rəqəmə etibar etməzdən əvvəl yenidən yoxlayın.
-- **Bir giriş əslində nəyə zəmanət verir.** Heç bir giriş hər sətir üçün etibarlılıq reytinqi daşımır və API heç bir — xidmət etmir. Yuxarıdakı hər rəqəmi eyni, qeyd olunmamış keyfiyyətin təxmini kimi qəbul edin. İki fakt fərqlidir, çünki onlar nəticə çıxarmaq əvəzinə əl ilə tərtib edilir: 44 giriş müstəqil şəkildə sənədləşdirilmiş sərt dayanma nöqtəsini daşıyır (onlardan 39-u xKiro sətirləridir, hamısı bir gündəlik müavinəti bölüşür) və 21 giriş təcili təlim açıqlamasını daşıyır. `hardStopGuaranteed` yalnız provayderin öz şərtləri dedikdə təyin edilir ki, pulsuz müavinətin aşılması səssizcə sizə hesab verməyə başlamaq əvəzinə sorğunu rədd edir, mənbə girişin yanında şərhdə; o, heç vaxt `true`-ə defolt edilmir və heç kimin təsdiq etmədiyi giriş təyin olunmamış qalır. Belə ki, itkin sərt dayanma bayrağı "müəyyən edilməmiş" mənasını verir, "sizə ödəniş üçün məlum deyil".**STRICT rejimi** (seçilmiş `freeAccessPolicy=strict` marşrutlaşdırma qoruyucusu) yalnız bayrağı daşıyan qeydlərə etibar edir; hər bir digər pulsuz səviyyə `no-hard-stop` kimi xaric edilir (bax `open-sse/services/autoCombo/strictZeroCostFilter.ts`). Mühafizəçi hovuzu süzgəcdən keçirdikdə, operator tərəfindən görünən jurnal həm istisnaların sayını, həm də onun `no-hard-stop` payını bildirir.
+- **Bir giriş əslində nəyə zəmanət verir.** Heç bir giriş hər sətir üçün etibarlılıq reytinqi daşımır və API heç bir — xidmət etmir. Yuxarıdakı hər rəqəmi eyni, qeyd olunmamış keyfiyyətin təxmini kimi qəbul edin. İki fakt fərqlidir, çünki onlar nəticə çıxarmaq əvəzinə əl ilə tərtib olunur: 44 giriş müstəqil şəkildə sənədləşdirilmiş sərt dayanma nöqtəsini daşıyır (onlardan 39-u xKiro sıralarıdır, hamısı bir gündəlik müavinəti bölüşür) və 22 giriş tez bir təlim açıqlamasını daşıyır. `hardStopGuaranteed` yalnız provayderin öz şərtləri dedikdə təyin edilir ki, pulsuz müavinətin aşılması səssizcə sizə hesab verməyə başlamaq əvəzinə sorğunu rədd edir, mənbə girişin yanında şərhdə; o, heç vaxt `true`-ə defolt edilmir və heç kimin təsdiq etmədiyi giriş təyin olunmamış qalır. Belə ki, itkin sərt dayanma bayrağı "müəyyən edilməmiş" mənasını verir, "sizə ödəniş üçün məlum deyil".**STRICT rejimi** (seçilmiş `freeAccessPolicy=strict` marşrutlaşdırma qoruyucusu) yalnız bayrağı daşıyan qeydlərə etibar edir; hər bir digər pulsuz səviyyə `no-hard-stop` kimi xaric edilir (bax `open-sse/services/autoCombo/strictZeroCostFilter.ts`). Mühafizəçi hovuzu süzgəcdən keçirdikdə, operator tərəfindən görünən jurnal həm istisnaların sayını, həm də onun `no-hard-stop` payını bildirir.
 - `estMonthlyFreeTokens` = yalnız təkrarlanan aylıq tokenlər.** Birdəfəlik qeydiyyat kreditləri təkrarlanmır** və 0 hesab edin. Dayandırılmış səviyyələr də 0-dır.
 - Gündəlik token qapağı → `monthly = daily × 30`. Yalnız RPD sənədləşdirilmiş → `RPD × ~800 output tokens × 30`. Yalnız RPM/TPM (gündəlik məhdudiyyət yoxdur) →** qapaqsız** (aşağıya bax).
-- **Daimi pulsuzdur, lakin dərc edilmiş nişan qapağı yoxdur** (`glm-cn`, `tencent`, `baidu`, `kilo-gateway`, `opencode-zen`, `gemini`, `ollama-cloud`): bunlar real təkrarlanan sərbəst girişdir, rate/concurrency-limited. Biz onları `recurring-uncapped` və təsnif edirik** onları heç vaxt cəmləmə** — çarpan `RPM × 24/7 × 30d` fantaziya tavanı (inflyasiyanı rədd etdiyimiz) yaradar. Onlar siyahıya salınıb ki, onların mövcud olduğunu biləsiniz.
+- **Pulsuz giriş, lakin dərc edilmiş nişan qapağı yoxdur** (`glm-cn`, `tencent`, `baidu`, `kilo-gateway`, `opencode-zen`, `gemini`, `ollama-cloud`, `nvidia`): bunlar rate/concurrency-limited. Biz onları `recurring-uncapped` və təsnif edirik.** onları heç vaxt cəmləmə** — çarpan `RPM × 24/7 × 30d` bir fantaziya tavanı (rədd etdiyimiz inflyasiya) yaradar. NVIDIA's API yalnız sınaq üçün istifadə olunur; aşağıda onun ToS xəbərdarlıqına baxın.
 - **Depozitin kilidini açan sürət:** pulsuz kvotanı daimi olaraq artıran birdəfəlik kiçik əlavə (OpenRouter: $10 → 1000 req/day ≈ +24M/mo). Ayrı bir rəqəm olaraq bildirildi, sabit başlıq xaricində tutuldu.
 - **Uyğunluq qapalı kvotalar** (`eligibilityGate: "regional-identity"`): yalnız bölgəyə bağlı şəxsiyyət yoxlanışından sonra açılan real təkrarlanan kvota (bu gün materik-Çin real adın yoxlanılması). Eyni hovuz-dedupe qaydası ilə ayrı bir rəqəmə (`gatedRecurringTokens`) hesablanır, heç vaxt sabit başlığa daxil edilmir. Rejim (`freeType`) dəyişməz, ona görə də marşrutlaşdırma dəyişməzdir.
 - **Sübut sinifləri.** Qayda: kataloqdakı nömrə mənbəsini girişin yanındakı `// evidence:` şərhində göstərir — `public-page` (hər kəsin oxuya biləcəyi provayder səhifəsi), `api-public` (provayderin təsdiqlənməmiş son nöqtəsi, məsələn, NaraRouter-nin router.bynara.id saytındakı ictimai planlarının son nöqtəsi) və ya `console-verified <date> por <who>` (şərh yalnız onu görən və kimin görə biləcəyini görür) qapağın mövcud olduğunu bildirən ictimai səhifə). Bu gün dövlət: 2026-09-02 tarixində yenidən yoxlanılan beş blok onu daşıyır (`gemini`, `groq`, `mistral`, `ollama-cloud`, `nara`); 2026-09-02 təkrar auditdən əvvəl olan qeydlər onlara toxunana qədər əvvəlki tədqiqatı miras alır; hər hansı** yeni və ya dəyişdirilmiş** dəlil şərhi olmayan nömrə bir səhvdir. Bu gün yalnız `mistral` konsol tərəfindən təsdiqlənir.
@@ -239,75 +239,75 @@ Bu sahədəki əksər "aylıq pulsuz token" göstəriciləri model üzrə etiket
 
 ---
 
-## Provayder üzrə pulsuz səviyyə (Bytez/Nous 2026-10-15 tarixində yoxlanılıb; sətirlər 2026-09-02 tarixində yenidən yoxlanılıb; digərləri 2026-06-17 tarixində)
+## Hər provayder üçün pulsuz səviyyə (Bytez/Nous yoxlanılıb 2026-10-15; yenidən yoxlanılmış sətirlər 2026-09-02; digərləri 2026-06-17)
 
-> Modellər üzrə kataloqdan (`open-sse/config/freeModelCatalog.ts`) yenidən yaradılıb və hovuz üzrə təkrarlananlar çıxarılıb. Aylıq təkrarlanan sabit token sayına görə sıralanıb. `uncapped*` = daimi olaraq pulsuzdur, lakin dərc edilmiş token limiti yoxdur (sürət/müştərək icra məhdudiyyətlidir) — real girişdir, başlıqdakı cəmə **daxil edilməyib**. `—` = yalnız kreditlə / açarsız / tokenlə ölçülə bilməz.
+> Hər model kataloqundan (`open-sse/config/freeModelCatalog.ts`) bərpa edilib, hovuzdan silinib. Təkrarlanan sabit tokens/mo. `uncapped*` = daimi pulsuz, lakin dərc edilmiş nişan qapağı (rate/concurrency-limited) — real girişi ilə çeşidlənib,** yox** başlıqda cəmlənir. `—` = yalnız kredit / açarsız / mö'cüzə ilə ölçülə bilməz.
 
-| Provayder        | Pulsuz növü       | Stabil token/ay | İlk ay krediti | İstifadə şərtləri | Modellər |
-| ---------------- | ----------------- | --------------- | -------------- | ----------------- | -------- |
-| `mistral`        | təkrarlanan       | ~1.00B          | —              | ehtiyatlı olun    | 5        |
-| `nara`           | təkrarlanan       | ~210M           | —              | ehtiyatlı olun    | 8        |
-| `llm7`           | təkrarlanan       | ~150M           | —              | ehtiyatlı olun    | 4        |
-| `xkiro`          | təkrarlanan       | ~150M           | —              | ehtiyatlı olun    | 39       |
-| `longcat`        | birdəfəlik        | —               | 10M            | ehtiyatlı olun    | 1        |
-| `cerebras`       | birdəfəlik        | —               | $5 kredit      | ehtiyatlı olun    | 2        |
-| `cloudflare-ai`  | təkrarlanan       | ~30M            | —              | ehtiyatlı olun    | 9        |
-| `groq`           | təkrarlanan       | ~30M            | —              | ehtiyatlı olun    | 5        |
-| `api-airforce`   | təkrarlanan       | ~24M            | —              | ehtiyatlı olun    | 7        |
-| `bluesminds`     | təkrarlanan       | ~7M             | —              | qeyri-müəyyən     | 22       |
-| `sambanova`      | təkrarlanan       | ~6M             | —              | ehtiyatlı olun    | 5        |
-| `arcee-ai`       | təkrarlanan       | ~5M             | —              | ehtiyatlı olun    | 1        |
-| `bazaarlink`     | təkrarlanan       | ~4M             | —              | ehtiyatlı olun    | 32       |
-| `openrouter`     | təkrarlanan       | ~1M             | —              | ehtiyatlı olun    | 1        |
-| `cohere`         | təkrarlanan       | ~800K           | —              | ehtiyatlı olun    | 6        |
-| `huggingchat`    | təkrarlanan       | ~500K           | —              | ehtiyatlı olun    | 4        |
-| `morph`          | təkrarlanan       | ~400K           | —              | uyğundur          | 2        |
-| `huggingface`    | təkrarlanan       | ~200K           | —              | ehtiyatlı olun    | 6        |
-| `kiro`           | təkrarlanan       | ~25K            | —              | çəkinin           | 12       |
-| `glm-cn`         | limitsiz          | limitsiz\*      | ~20M           | uyğundur          | 4        |
-| `baidu`          | limitsiz          | limitsiz\*      | —              | ehtiyatlı olun    | 1        |
-| `gemini`         | limitsiz          | limitsiz\*      | —              | ehtiyatlı olun    | 4        |
-| `kilo-gateway`   | limitsiz          | limitsiz\*      | —              | ehtiyatlı olun    | 7        |
-| `ollama-cloud`   | limitsiz          | limitsiz\*      | —              | qeyri-müəyyən     | 8        |
-| `opencode-zen`   | limitsiz          | limitsiz\*      | —              | ehtiyatlı olun    | 10       |
-| `tencent`        | limitsiz          | limitsiz\*      | —              | ehtiyatlı olun    | 1        |
-| `vertex`         | qeydiyyat krediti | —               | ~300M          | ehtiyatlı olun    | 10       |
-| `agentrouter`    | qeydiyyat krediti | —               | ~200M          | ehtiyatlı olun    | 4        |
-| `predibase`      | qeydiyyat krediti | —               | ~25M           | ehtiyatlı olun    | 1        |
-| `doubao`         | qeydiyyat krediti | —               | ~15M           | qeyri-müəyyən     | 1        |
-| `ai21`           | qeydiyyat krediti | —               | ~10M           | çəkinin           | 2        |
-| `deepseek`       | qeydiyyat krediti | —               | ~5M            | uyğundur          | 2        |
-| `hyperbolic`     | qeydiyyat krediti | —               | ~5M            | uyğundur          | 8        |
-| `nscale`         | qeydiyyat krediti | —               | ~5M            | ehtiyatlı olun    | 6        |
-| `bytez`          | kredit (təkr.)    | —               | naməlum        | qeyri-müəyyən     | 1        |
-| `deepinfra`      | qeydiyyat krediti | —               | ~1M            | ehtiyatlı olun    | 22       |
-| `fireworks`      | qeydiyyat krediti | —               | ~1M            | çəkinin           | 10       |
-| `nebius`         | qeydiyyat krediti | —               | ~1M            | ehtiyatlı olun    | 1        |
-| `qoder`          | qeydiyyat krediti | —               | ~1M            | ehtiyatlı olun    | 14       |
-| `scaleway`       | qeydiyyat krediti | —               | ~1M            | uyğundur          | 6        |
-| `novita`         | qeydiyyat krediti | —               | ~500K          | ehtiyatlı olun    | 1        |
-| `agy`            | açarsız           | —               | —              | çəkinin           | 16       |
-| `baichuan`       | açarsız           | —               | —              | qeyri-müəyyən     | 1        |
-| `blackbox`       | açarsız           | —               | —              | çəkinin           | 6        |
-| `coze`           | açarsız           | —               | —              | çəkinin           | 1        |
-| `duckduckgo-web` | açarsız           | —               | —              | çəkinin           | 6        |
-| `freemodel-dev`  | açarsız           | —               | —              | naməlum           | 4        |
-| `friendliai`     | açarsız           | —               | —              | çəkinin           | 2        |
-| `iflytek`        | açarsız           | —               | —              | çəkinin           | 1        |
-| `inference-net`  | açarsız           | —               | —              | ehtiyatlı olun    | 3        |
-| `liquid`         | açarsız           | —               | —              | naməlum           | 1        |
-| `monsterapi`     | açarsız           | —               | —              | qeyri-müəyyən     | 1        |
-| `muse-spark-web` | açarsız           | —               | —              | çəkinin           | 3        |
-| `nlpcloud`       | açarsız           | —               | —              | çəkinin           | 1        |
-| `nvidia`         | limitsiz          | limitsiz\*      | —              | ehtiyatlı olun    | 2        |
-| `pollinations`   | açarsız           | —               | —              | ehtiyatlı olun    | 31       |
-| `publicai`       | açarsız           | —               | —              | ehtiyatlı olun    | 3        |
-| `reka`           | açarsız           | —               | —              | ehtiyatlı olun    | 2        |
-| `sensenova`      | açarsız           | —               | —              | ehtiyatlı olun    | 1        |
-| `sparkdesk`      | açarsız           | —               | —              | ehtiyat           | 1        |
-| `stepfun`        | açarsız           | —               | —              | uyğun             | 1        |
-| `t3-web`         | açarsız           | —               | —              | çəkinin           | 23       |
-| `uncloseai`      | açarsız           | —               | —              | ehtiyat           | 3        |
+| Provayder        | Pulsuz növü       | Sabit tokens/mo | İlk aylıq kredit | ToS            | Modellər |
+| ---------------- | ----------------- | --------------- | ---------------- | -------------- | -------- |
+| `mistral`        | təkrarlanan       | ~ 1.00B         | —                | ehtiyatlı olun | 5        |
+| `nara`           | təkrarlanan       | ~ 210M          | —                | ehtiyatlı olun | 8        |
+| `llm7`           | təkrarlanan       | ~ 150M          | —                | ehtiyatlı olun | 4        |
+| `xkiro`          | təkrarlanan       | ~ 150M          | —                | ehtiyatlı olun | 39       |
+| `longcat`        | birdəfəlik        | —               | 10M              | ehtiyatlı olun | 1        |
+| `cerebras`       | birdəfəlik        | —               | 5 dollar kredit  | ehtiyatlı olun | 2        |
+| `cloudflare-ai`  | təkrarlanan       | ~ 30M           | —                | ehtiyatlı olun | 9        |
+| `groq`           | təkrarlanan       | ~ 30M           | —                | ehtiyatlı olun | 5        |
+| `api-airforce`   | təkrarlanan       | ~ 24M           | —                | ehtiyatlı olun | 7        |
+| `bluesminds`     | təkrarlanan       | ~ 7M            | —                | qeyri-müəyyən  | 22       |
+| `sambanova`      | təkrarlanan       | ~ 6M            | —                | ehtiyatlı olun | 5        |
+| `arcee-ai`       | təkrarlanan       | ~ 5M            | —                | ehtiyatlı olun | 1        |
+| `bazaarlink`     | təkrarlanan       | ~ 4M            | —                | ehtiyatlı olun | 32       |
+| `openrouter`     | təkrarlanan       | ~ 1M            | —                | ehtiyatlı olun | 1        |
+| `cohere`         | təkrarlanan       | ~ 800K          | —                | ehtiyatlı olun | 6        |
+| `huggingchat`    | təkrarlanan       | ~ 500K          | —                | ehtiyatlı olun | 4        |
+| `morph`          | təkrarlanan       | ~ 400K          | —                | tamam          | 2        |
+| `huggingface`    | təkrarlanan       | ~ 200K          | —                | ehtiyatlı olun | 6        |
+| `kiro`           | təkrarlanan       | ~ 25K           | —                | çəkinin        | 12       |
+| `glm-cn`         | qapaqsız          | qapaqsız\*      | ~ 20M            | tamam          | 4        |
+| `baidu`          | qapaqsız          | qapaqsız\*      | —                | ehtiyatlı olun | 1        |
+| `gemini`         | qapaqsız          | qapaqsız\*      | —                | ehtiyatlı olun | 4        |
+| `kilo-gateway`   | qapaqsız          | qapaqsız\*      | —                | ehtiyatlı olun | 7        |
+| `ollama-cloud`   | qapaqsız          | qapaqsız\*      | —                | qeyri-müəyyən  | 8        |
+| `opencode-zen`   | qapaqsız          | qapaqsız\*      | —                | ehtiyatlı olun | 10       |
+| `tencent`        | qapaqsız          | qapaqsız\*      | —                | ehtiyatlı olun | 1        |
+| `vertex`         | qeydiyyat krediti | —               | ~ 300M           | ehtiyatlı olun | 10       |
+| `agentrouter`    | qeydiyyat krediti | —               | ~ 200M           | ehtiyatlı olun | 4        |
+| `predibase`      | qeydiyyat krediti | —               | ~ 25M            | ehtiyatlı olun | 1        |
+| `doubao`         | qeydiyyat krediti | —               | ~ 15M            | qeyri-müəyyən  | 1        |
+| `ai21`           | qeydiyyat krediti | —               | ~ 10M            | çəkinin        | 2        |
+| `deepseek`       | qeydiyyat krediti | —               | ~ 5M             | tamam          | 2        |
+| `hyperbolic`     | qeydiyyat krediti | —               | ~ 5M             | tamam          | 8        |
+| `nscale`         | qeydiyyat krediti | —               | ~ 5M             | ehtiyatlı olun | 6        |
+| `bytez`          | kredit (rec.)     | —               | naməlum          | qeyri-müəyyən  | 1        |
+| `deepinfra`      | qeydiyyat krediti | —               | ~ 1M             | ehtiyatlı olun | 22       |
+| `fireworks`      | qeydiyyat krediti | —               | ~ 1M             | çəkinin        | 10       |
+| `nebius`         | qeydiyyat krediti | —               | ~ 1M             | ehtiyatlı olun | 1        |
+| `qoder`          | qeydiyyat krediti | —               | ~ 1M             | ehtiyatlı olun | 14       |
+| `scaleway`       | qeydiyyat krediti | —               | ~ 1M             | tamam          | 6        |
+| `novita`         | qeydiyyat krediti | —               | ~ 500K           | ehtiyatlı olun | 1        |
+| `agy`            | açarsız           | —               | —                | çəkinin        | 16       |
+| `baichuan`       | açarsız           | —               | —                | qeyri-müəyyən  | 1        |
+| `blackbox`       | açarsız           | —               | —                | çəkinin        | 6        |
+| `coze`           | açarsız           | —               | —                | çəkinin        | 1        |
+| `duckduckgo-web` | açarsız           | —               | —                | çəkinin        | 6        |
+| `freemodel-dev`  | açarsız           | —               | —                | naməlum        | 4        |
+| `friendliai`     | açarsız           | —               | —                | çəkinin        | 2        |
+| `iflytek`        | açarsız           | —               | —                | çəkinin        | 1        |
+| `inference-net`  | açarsız           | —               | —                | ehtiyatlı olun | 3        |
+| `liquid`         | açarsız           | —               | —                | naməlum        | 1        |
+| `monsterapi`     | açarsız           | —               | —                | qeyri-müəyyən  | 1        |
+| `muse-spark-web` | açarsız           | —               | —                | çəkinin        | 3        |
+| `nlpcloud`       | açarsız           | —               | —                | çəkinin        | 1        |
+| `nvidia`         | qapaqsız          | qapaqsız\*      | —                | ehtiyatlı olun | 3        |
+| `pollinations`   | açarsız           | —               | —                | ehtiyatlı olun | 31       |
+| `publicai`       | açarsız           | —               | —                | ehtiyatlı olun | 3        |
+| `reka`           | açarsız           | —               | —                | ehtiyatlı olun | 2        |
+| `sensenova`      | açarsız           | —               | —                | ehtiyatlı olun | 1        |
+| `sparkdesk`      | açarsız           | —               | —                | ehtiyatlı olun | 1        |
+| `stepfun`        | açarsız           | —               | —                | tamam          | 1        |
+| `t3-web`         | açarsız           | —               | —                | çəkinin        | 23       |
+| `uncloseai`      | açarsız           | —               | —                | ehtiyatlı olun | 3        |
 
 ---
 

@@ -111,13 +111,13 @@ da gangan.
 ## Hanyar & faɗakarwa
 
 - Lambobi ne** kimomi na sama** daga kowane ma'auni na iyakoki na kyauta na kowane mai bayarwa kamar na** 2026-06-17** , wanda aka tattara ta binciken yanar gizo. Matakan kyauta suna canzawa koyaushe — sake tabbatarwa kafin dogaro da adadi.
-- **Abin da shigarwa a zahiri vouches domin.** Babu shigarwar da ke ɗauke da ƙimar amincewar kowane jeri, kuma API ba ta yin amfani da — da ke kula da kowane adadi a sama a matsayin ƙididdigewa iri ɗaya, ingancin da ba a bayyana ba. Gaskiya guda biyu sun bambanta, saboda ana sarrafa su da hannu maimakon a fayyace su: shigarwar 44 suna ɗauke da tasha mai ƙarfi (39 daga cikinsu layuka xKiro, waɗanda duk ke raba izinin yau da kullun), kuma shigarwar 21 suna ɗauke da sanarwar horon gaggawa. An saita `hardStopGuaranteed` ne kawai lokacin da sharuɗɗan mai bayarwa suka faɗi cewa wuce gona da iri na kyauta ya ƙi buƙatar maimakon yin shiru da fara lissafin ku, tare da tushen a cikin sharhi kusa da shigarwar; ba a taɓa ƙetare shi zuwa `true` ba, kuma shigarwar ba wanda ya tabbatar ya tsaya ba a saita ba. Don haka tuta mai wuyar tsayawa tana nufin "ba a kafa ba", ba "an san ku ba".** yanayin STRICT** (mai gadi na zaɓen `freeAccessPolicy=strict` ) yana dogara ne kawai da shigarwar da ke ɗauke da tuta; kowane matakin kyauta an cire shi azaman `no-hard-stop` (duba `open-sse/services/autoCombo/strictZeroCostFilter.ts`). Lokacin da mai gadi ya tace tafki, gunkin ganuwa mai aiki yana ba da rahoton ƙididdiga na keɓancewa da rabonsa `no-hard-stop`.
+- **Abin da shigarwa a zahiri vouches domin.** Babu shigarwar da ke ɗauke da ƙimar amincewar kowane jeri, kuma API ba ta yin amfani da — da ke kula da kowane adadi a sama a matsayin ƙididdigewa iri ɗaya, ingancin da ba a bayyana ba. Gaskiya guda biyu sun bambanta, saboda ana sarrafa su da hannu maimakon a fayyace su: shigarwar 44 suna ɗauke da tasha mai ƙarfi (39 daga cikinsu layuka xKiro, waɗanda duk ke raba izinin yau da kullun), shigarwar 22 suna ɗauke da sanarwar horon gaggawa. An saita `hardStopGuaranteed` ne kawai lokacin da sharuɗɗan mai bayarwa suka faɗi cewa wuce gona da iri na kyauta ya ƙi buƙatar maimakon yin shiru da fara lissafin ku, tare da tushen a cikin sharhi kusa da shigarwar; ba a taɓa ƙetare shi zuwa `true` ba, kuma shigarwar ba wanda ya tabbatar ya tsaya ba a saita ba. Don haka tuta mai wuyar tsayawa tana nufin "ba a kafa ba", ba "an san ku ba".** yanayin STRICT** (mai gadi na zaɓen `freeAccessPolicy=strict` ) yana dogara ne kawai da shigarwar da ke ɗauke da tuta; kowane matakin kyauta an cire shi azaman `no-hard-stop` (duba `open-sse/services/autoCombo/strictZeroCostFilter.ts`). Lokacin da mai gadi ya tace tafki, gunkin ganuwa mai aiki yana ba da rahoton ƙididdiga na keɓancewa da rabonsa `no-hard-stop`.
 - `estMonthlyFreeTokens` = alamu na kowane wata kawai.** Ƙididdigar rajista na lokaci ɗaya ba sa maimaitawa** kuma a ƙidaya kamar 0. Tiers ɗin da aka dakatar su ma 0 ne.
 - Daily token cap → `monthly = daily × 30`. RPD kawai an rubuta → `RPD × ~800 output tokens × 30`. RPM/TPM kawai (babu kullun yau da kullun) →** wanda ba a rufe ba** (duba ƙasa).
-- **Kyauta na dindindin, amma babu bugun alamar da aka buga** (`glm-cn`, `tencent`, `baidu`, `kilo-gateway`, `opencode-zen`, `gemini`, `ollama-cloud`): Waɗannan su ne ainihin samun damar shiga kyauta, rate/concurrency-limited. Mun rarraba su `recurring-uncapped` da** kar a taqaita su** — ninka `RPM × 24/7 × 30d` zai haifar da rufin fantasy (farashin farashin da muka ƙi). An jera su don ku san akwai su.
+- **Samun damar kyauta, amma babu alamar alamar da aka buga** (`glm-cn`, `tencent`, `baidu`, `kilo-gateway`, `opencode-zen`, `gemini`, `ollama-cloud`, `nvidia`): Waɗannan su ne rate/concurrency-limited. Mun rarraba su `recurring-uncapped` da** kar a taqaita su** — ninka `RPM × 24/7 × 30d` zai samar da rufin fantasy (farashin farashin da muka ƙi). NVIDIA's API gwaji ne kawai; duba ta ToS caveat a kasa.
 - **Haɓaka buɗe ajiya:** ƙaramin ƙarami na lokaci ɗaya wanda ke ɗaga adadin kyauta (OpenRouter: $10 → 1000 req/day ≈ +24M/mo). An ba da rahoto azaman adadi daban, an kiyaye shi daga kanun labarai masu tsayi.
 - **Ƙididdigar cancanta** (`eligibilityGate: "regional-identity"`): ƙa'ida ta gaske mai maimaitawa wacce ke buɗewa kawai bayan an bincika ainihin yankin da ke da alaƙa (tabbacin suna na ainihi na ƙasar Sin a yau). Ƙididdigewa tare da ƙa'idar tazarar tafki ɗaya zuwa wani adadi daban (`gatedRecurringTokens`), ba a taɓa shiga cikin kanun labarai tsayayye ba. Tsarin tsarin (`freeType`) ba ya canzawa, don haka hanyar ba ta canzawa.
-- **Darussan shaida.** Ka'idar: lamba a cikin kasidar ta buga tushenta a cikin sharhin `// evidence:` kusa da shigarwar — `public-page` (shafin mai ba da sabis wanda kowa zai iya karantawa), `api-public` (madaidaicin ƙarshen mai bayarwa, misali NaraRouter's tsare-tsaren jama'a na ƙarshe a router.bynara.id), ko `console-verified <date> por <who>` ( adadi yana bayyane ne kawai a cikin na'ura mai ba da hanya tsakanin hanyoyin sadarwa; sharhin ya rubuta bayanan da suka gan shi da kuma lokacin da jama'a ke faɗi). Jihar a yau: tubalan biyar da aka sake tantance su a kan 2026-09-02 suna ɗauke da shi (`gemini`, `groq`, `mistral`, `ollama-cloud`, `nara`); abubuwan da suka gabata kafin sake duba 2026-09-02 sun gaji binciken farko har sai an taba su; kowane** sabo ko canza** lamba ba tare da sharhin shaida ba kwaro ne. Yau `mistral` ne kawai aka tabbatar.
+- **Darussan shaida.** Ka'idar: lamba a cikin kasidar ta buga tushenta a cikin sharhin `// evidence:` kusa da shigarwar — `public-page` (shafin mai ba da sabis wanda kowa zai iya karantawa), `api-public` (madaidaicin ƙarshen mai bayarwa, misali NaraRouter's tsare-tsaren jama'a na ƙarshe a router.bynara.id), ko `console-verified <date> por <who>` ( adadi yana bayyane ne kawai a cikin na'ura mai ba da hanya tsakanin hanyoyin sadarwa; sharhin ya rubuta bayanan da suka gan shi da kuma lokacin da jama'a ke faɗi). Jihar a yau: tubalan biyar da aka sake tantance su a kan 2026-09-02 suna ɗauke da shi (`gemini`, `groq`, `mistral`, `ollama-cloud`, `nara`); abubuwan da suka gabata kafin sake duba 2026-09-02 sun gaji binciken farko har sai an taba su; kowane** sabo ko canza** lamba ba tare da bayanin shaida ba bug ne. Yau `mistral` ne kawai aka tabbatar.
 
 ---
 
@@ -239,75 +239,75 @@ Yawancin alkaluman "free tokens per month" a wannan fanni jimillar lambobin da a
 
 ---
 
-## Matakin kyauta ga kowane mai samarwa (Bytez/Nous an bincika 2026-10-15; an sake duba layuka 2026-09-02; sauran su 2026-06-17)
+## Kowane mai ba da kyauta (Bytez/Nous duba 2026-10-15; sake duba layuka 2026-09-02; wasu 2026-06-17)
 
-> An sake samar da shi daga kundin tsarin kowane samfuri (`open-sse/config/freeModelCatalog.ts`), an cire maimaitawar tafki. An jera su bisa ga yawan token/mo na yau da kullum mai maimaituwa. `uncapped*` = kyauta har abada amma ba a wallafa iyakar token ba (ana iyakance ta sauri/yawan haɗuwa) — damar amfani ta gaske ce, **ba a haɗa ta cikin jimillar da aka nuna a kan gaba ba**. `—` = ƙiredit kawai / babu maɓalli / ba za a iya ƙididdige token ba.
+> An sabunta shi daga kundin tsarin kowane nau'i (`open-sse/config/freeModelCatalog.ts`), wanda aka cire daga tafkin. An ware ta ta maimaita tokens/mo. `uncapped*` = kyauta na dindindin amma ba a buga alamar alamar (rate/concurrency-limited) — isa ga gaske,** ba** a takaice cikin kanun labarai. `—` = bashi-kawai / maɓalli / ba alamar-ƙididdigewa.
 
-| Mai bayarwa      | Nau'in kyauta            | Token na wata-wata masu ɗorewa | Kiredit na watan farko | Sharuɗɗan Sabis | Samfura |
-| ---------------- | ------------------------ | ------------------------------ | ---------------------- | --------------- | ------- |
-| `mistral`        | mai maimaituwa           | ~1.00B                         | —                      | taka-tsantsan   | 5       |
-| `nara`           | mai maimaituwa           | ~210M                          | —                      | taka-tsantsan   | 8       |
-| `llm7`           | mai maimaituwa           | ~150M                          | —                      | taka-tsantsan   | 4       |
-| `xkiro`          | mai maimaituwa           | ~150M                          | —                      | taka-tsantsan   | 39      |
-| `longcat`        | sau ɗaya                 | —                              | 10M                    | taka-tsantsan   | 1       |
-| `cerebras`       | sau ɗaya                 | —                              | Kiredit na $5          | taka-tsantsan   | 2       |
-| `cloudflare-ai`  | mai maimaituwa           | ~30M                           | —                      | taka-tsantsan   | 9       |
-| `groq`           | mai maimaituwa           | ~30M                           | —                      | taka-tsantsan   | 5       |
-| `api-airforce`   | mai maimaituwa           | ~24M                           | —                      | taka-tsantsan   | 7       |
-| `bluesminds`     | mai maimaituwa           | ~7M                            | —                      | maras tabbas    | 22      |
-| `sambanova`      | mai maimaituwa           | ~6M                            | —                      | taka-tsantsan   | 5       |
-| `arcee-ai`       | mai maimaituwa           | ~5M                            | —                      | taka-tsantsan   | 1       |
-| `bazaarlink`     | mai maimaituwa           | ~4M                            | —                      | taka-tsantsan   | 32      |
-| `openrouter`     | mai maimaituwa           | ~1M                            | —                      | taka-tsantsan   | 1       |
-| `cohere`         | mai maimaituwa           | ~800K                          | —                      | taka-tsantsan   | 6       |
-| `huggingchat`    | mai maimaituwa           | ~500K                          | —                      | taka-tsantsan   | 4       |
-| `morph`          | mai maimaituwa           | ~400K                          | —                      | lafiya          | 2       |
-| `huggingface`    | mai maimaituwa           | ~200K                          | —                      | taka-tsantsan   | 6       |
-| `kiro`           | mai maimaituwa           | ~25K                           | —                      | guje wa         | 12      |
-| `glm-cn`         | babu iyaka               | babu iyaka\*                   | ~20M                   | lafiya          | 4       |
-| `baidu`          | babu iyaka               | babu iyaka\*                   | —                      | taka-tsantsan   | 1       |
-| `gemini`         | babu iyaka               | babu iyaka\*                   | —                      | taka-tsantsan   | 4       |
-| `kilo-gateway`   | babu iyaka               | babu iyaka\*                   | —                      | taka-tsantsan   | 7       |
-| `ollama-cloud`   | babu iyaka               | babu iyaka\*                   | —                      | maras tabbas    | 8       |
-| `opencode-zen`   | babu iyaka               | babu iyaka\*                   | —                      | taka-tsantsan   | 10      |
-| `tencent`        | babu iyaka               | babu iyaka\*                   | —                      | taka-tsantsan   | 1       |
-| `vertex`         | kiredit na rajista       | —                              | ~300M                  | taka-tsantsan   | 10      |
-| `agentrouter`    | kiredit na rajista       | —                              | ~200M                  | taka-tsantsan   | 4       |
-| `predibase`      | kiredit na rajista       | —                              | ~25M                   | taka-tsantsan   | 1       |
-| `doubao`         | kiredit na rajista       | —                              | ~15M                   | maras tabbas    | 1       |
-| `ai21`           | kiredit na rajista       | —                              | ~10M                   | guje wa         | 2       |
-| `deepseek`       | kiredit na rajista       | —                              | ~5M                    | lafiya          | 2       |
-| `hyperbolic`     | kiredit na rajista       | —                              | ~5M                    | lafiya          | 8       |
-| `nscale`         | kiredit na rajista       | —                              | ~5M                    | taka-tsantsan   | 6       |
-| `bytez`          | kiredit (mai maimaituwa) | —                              | ba a sani ba           | maras tabbas    | 1       |
-| `deepinfra`      | kiredit na rajista       | —                              | ~1M                    | taka-tsantsan   | 22      |
-| `fireworks`      | kiredit na rajista       | —                              | ~1M                    | guje wa         | 10      |
-| `nebius`         | kiredit na rajista       | —                              | ~1M                    | taka-tsantsan   | 1       |
-| `qoder`          | kiredit na rajista       | —                              | ~1M                    | taka-tsantsan   | 14      |
-| `scaleway`       | kiredit na rajista       | —                              | ~1M                    | lafiya          | 6       |
-| `novita`         | kiredit na rajista       | —                              | ~500K                  | taka-tsantsan   | 1       |
-| `agy`            | marar maɓalli            | —                              | —                      | guje wa         | 16      |
-| `baichuan`       | marar maɓalli            | —                              | —                      | maras tabbas    | 1       |
-| `blackbox`       | marar maɓalli            | —                              | —                      | guje wa         | 6       |
-| `coze`           | marar maɓalli            | —                              | —                      | guje wa         | 1       |
-| `duckduckgo-web` | marar maɓalli            | —                              | —                      | guje wa         | 6       |
-| `freemodel-dev`  | marar maɓalli            | —                              | —                      | ba a sani ba    | 4       |
-| `friendliai`     | marar maɓalli            | —                              | —                      | guje wa         | 2       |
-| `iflytek`        | marar maɓalli            | —                              | —                      | guje wa         | 1       |
-| `inference-net`  | marar maɓalli            | —                              | —                      | taka-tsantsan   | 3       |
-| `liquid`         | marar maɓalli            | —                              | —                      | ba a sani ba    | 1       |
-| `monsterapi`     | marar maɓalli            | —                              | —                      | maras tabbas    | 1       |
-| `muse-spark-web` | marar maɓalli            | —                              | —                      | guje wa         | 3       |
-| `nlpcloud`       | marar maɓalli            | —                              | —                      | guje wa         | 1       |
-| `nvidia`         | babu iyaka               | babu iyaka\*                   | —                      | taka-tsantsan   | 2       |
-| `pollinations`   | marar maɓalli            | —                              | —                      | taka-tsantsan   | 31      |
-| `publicai`       | marar maɓalli            | —                              | —                      | taka-tsantsan   | 3       |
-| `reka`           | marar maɓalli            | —                              | —                      | taka-tsantsan   | 2       |
-| `sensenova`      | marar maɓalli            | —                              | —                      | taka-tsantsan   | 1       |
-| `sparkdesk`      | marar maɓalli            | —                              | —                      | taka-tsantsan   | 1       |
-| `stepfun`        | marar maɓalli            | —                              | —                      | lafiya          | 1       |
-| `t3-web`         | marar maɓalli            | —                              | —                      | guje wa         | 23      |
-| `uncloseai`      | marar maɓalli            | —                              | —                      | taka-tsantsan   | 3       |
+| Mai bayarwa      | Nau'in kyauta      | Tsayuwar tokens/mo | Kiredit na watan farko | ToS                | Samfura |
+| ---------------- | ------------------ | ------------------ | ---------------------- | ------------------ | ------- |
+| `mistral`        | maimaituwa         | ~ 1.00B            | —                      | taka tsantsan      | 5       |
+| `nara`           | maimaituwa         | ~ 210M             | —                      | taka tsantsan      | 8       |
+| `llm7`           | maimaituwa         | ~ 150M             | —                      | taka tsantsan      | 4       |
+| `xkiro`          | maimaituwa         | ~ 150M             | —                      | taka tsantsan      | 39      |
+| `longcat`        | lokaci daya        | —                  | 10M                    | taka tsantsan      | 1       |
+| `cerebras`       | lokaci daya        | —                  | $5 bashi               | taka tsantsan      | 2       |
+| `cloudflare-ai`  | maimaituwa         | ~ 30M              | —                      | taka tsantsan      | 9       |
+| `groq`           | maimaituwa         | ~ 30M              | —                      | taka tsantsan      | 5       |
+| `api-airforce`   | maimaituwa         | ~ 24M              | —                      | taka tsantsan      | 7       |
+| `bluesminds`     | maimaituwa         | ~ 7m               | —                      | m                  | 22      |
+| `sambanova`      | maimaituwa         | ~ 6m               | —                      | taka tsantsan      | 5       |
+| `arcee-ai`       | maimaituwa         | ~ 5m               | —                      | taka tsantsan      | 1       |
+| `bazaarlink`     | maimaituwa         | ~ 4M               | —                      | taka tsantsan      | 32      |
+| `openrouter`     | maimaituwa         | ~ 1M               | —                      | taka tsantsan      | 1       |
+| `cohere`         | maimaituwa         | ~ 800k             | —                      | taka tsantsan      | 6       |
+| `huggingchat`    | maimaituwa         | ~ 500k             | —                      | taka tsantsan      | 4       |
+| `morph`          | maimaituwa         | ~ 400k             | —                      | ko                 | 2       |
+| `huggingface`    | maimaituwa         | ~ 200k             | —                      | taka tsantsan      | 6       |
+| `kiro`           | maimaituwa         | ~ 25k              | —                      | kauce              | 12      |
+| `glm-cn`         | wanda ba a rufe ba | ba a rufe ba\*     | ~ 20M                  | ko                 | 4       |
+| `baidu`          | wanda ba a rufe ba | ba a rufe ba\*     | —                      | taka tsantsan      | 1       |
+| `gemini`         | wanda ba a rufe ba | ba a rufe ba\*     | —                      | taka tsantsan      | 4       |
+| `kilo-gateway`   | wanda ba a rufe ba | ba a rufe ba\*     | —                      | taka tsantsan      | 7       |
+| `ollama-cloud`   | wanda ba a rufe ba | ba a rufe ba\*     | —                      | m                  | 8       |
+| `opencode-zen`   | wanda ba a rufe ba | ba a rufe ba\*     | —                      | taka tsantsan      | 10      |
+| `tencent`        | wanda ba a rufe ba | ba a rufe ba\*     | —                      | taka tsantsan      | 1       |
+| `vertex`         | rajista bashi      | —                  | ~ 300M                 | taka tsantsan      | 10      |
+| `agentrouter`    | rajista bashi      | —                  | ~ 200M                 | taka tsantsan      | 4       |
+| `predibase`      | rajista bashi      | —                  | ~ 25M                  | taka tsantsan      | 1       |
+| `doubao`         | rajista bashi      | —                  | ~ 15M                  | m                  | 1       |
+| `ai21`           | rajista bashi      | —                  | ~ 10M                  | kauce              | 2       |
+| `deepseek`       | rajista bashi      | —                  | ~ 5m                   | ko                 | 2       |
+| `hyperbolic`     | rajista bashi      | —                  | ~ 5m                   | ko                 | 8       |
+| `nscale`         | rajista bashi      | —                  | ~ 5m                   | taka tsantsan      | 6       |
+| `bytez`          | bashi (rec.)       | —                  | wanda ba a sani ba     | m                  | 1       |
+| `deepinfra`      | rajista bashi      | —                  | ~ 1M                   | taka tsantsan      | 22      |
+| `fireworks`      | rajista bashi      | —                  | ~ 1M                   | kauce              | 10      |
+| `nebius`         | rajista bashi      | —                  | ~ 1M                   | taka tsantsan      | 1       |
+| `qoder`          | rajista bashi      | —                  | ~ 1M                   | taka tsantsan      | 14      |
+| `scaleway`       | rajista bashi      | —                  | ~ 1M                   | ko                 | 6       |
+| `novita`         | rajista bashi      | —                  | ~ 500k                 | taka tsantsan      | 1       |
+| `agy`            | mara key           | —                  | —                      | kauce              | 16      |
+| `baichuan`       | mara key           | —                  | —                      | m                  | 1       |
+| `blackbox`       | mara key           | —                  | —                      | kauce              | 6       |
+| `coze`           | mara key           | —                  | —                      | kauce              | 1       |
+| `duckduckgo-web` | mara key           | —                  | —                      | kauce              | 6       |
+| `freemodel-dev`  | mara key           | —                  | —                      | wanda ba a sani ba | 4       |
+| `friendliai`     | mara key           | —                  | —                      | kauce              | 2       |
+| `iflytek`        | mara key           | —                  | —                      | kauce              | 1       |
+| `inference-net`  | mara key           | —                  | —                      | taka tsantsan      | 3       |
+| `liquid`         | mara key           | —                  | —                      | wanda ba a sani ba | 1       |
+| `monsterapi`     | mara key           | —                  | —                      | m                  | 1       |
+| `muse-spark-web` | mara key           | —                  | —                      | kauce              | 3       |
+| `nlpcloud`       | mara key           | —                  | —                      | kauce              | 1       |
+| `nvidia`         | wanda ba a rufe ba | ba a rufe ba\*     | —                      | taka tsantsan      | 3       |
+| `pollinations`   | mara key           | —                  | —                      | taka tsantsan      | 31      |
+| `publicai`       | mara key           | —                  | —                      | taka tsantsan      | 3       |
+| `reka`           | mara key           | —                  | —                      | taka tsantsan      | 2       |
+| `sensenova`      | mara key           | —                  | —                      | taka tsantsan      | 1       |
+| `sparkdesk`      | mara key           | —                  | —                      | taka tsantsan      | 1       |
+| `stepfun`        | mara key           | —                  | —                      | ko                 | 1       |
+| `t3-web`         | mara key           | —                  | —                      | kauce              | 23      |
+| `uncloseai`      | mara key           | —                  | —                      | taka tsantsan      | 3       |
 
 ---
 

@@ -112,10 +112,10 @@ apzināti.
 ## Metodoloģija un brīdinājumi
 
 - Skaitļi ir** augšējās robežas aplēses** no katra pakalpojumu sniedzēja dokumentētajiem brīvā līmeņa limitiem** 2026-06-17** , kas apkopota tīmekļa izpētē. Bezmaksas līmeņi pastāvīgi mainās, pirms paļaušanās uz figūru — pārbaudiet.
-- **Par ko patiesībā garantē ieraksts.** Nevienam ierakstam nav norādīts katras rindas ticamības novērtējums, un API nesniedz nevienu — uzskata katru iepriekš minēto skaitli kā tādas pašas, nenoteiktas kvalitātes aprēķinu. Divi fakti atšķiras, jo tie ir atlasīti manuāli, nevis secināti: 44 ieraksti ietver neatkarīgi dokumentētu stingru apturēšanu (39 no tiem xKiro rindas, kurām visām ir viena dienas nauda), un 21 ierakstam ir tūlītēja apmācības atklāšana. `hardStopGuaranteed` tiek iestatīts tikai tad, ja paša pakalpojumu sniedzēja noteikumos ir teikts, ka, pārsniedzot bezmaksas kvotu, pieprasījums tiek noraidīts, nevis klusībā sāk izrakstīt jums rēķinu, norādot avotu komentārā blakus ierakstam; tas nekad nav iestatīts uz noklusējuma vērtību `true`, un ieraksts, kuru neviens nav pārbaudījis, paliek neiestatīts. Tātad trūkstošais cietā apturēšanas karodziņš nozīmē "nav izveidots", nevis "zināms, ka jums jāmaksā".**STRICT režīms** (izvēles `freeAccessPolicy=strict` maršrutēšanas aizsargs) uzticas tikai tiem ierakstiem, kuriem ir karodziņš; katrs otrais brīvais līmenis tiek izslēgts kā `no-hard-stop` (sk. `open-sse/services/autoCombo/strictZeroCostFilter.ts`). Kad aizsargs filtrē kopu, operatora redzamais žurnāls ziņo gan par izslēgšanas skaitu, gan tā `no-hard-stop` daļu.
+- **Par ko patiesībā garantē ieraksts.** Nevienam ierakstam nav norādīts katras rindas ticamības novērtējums, un API nesniedz nevienu — uzskata katru iepriekš minēto skaitli kā tādas pašas, nenoteiktas kvalitātes aprēķinu. Divi fakti atšķiras, jo tie ir atlasīti manuāli, nevis secināti: 44 ieraksti ietver neatkarīgi dokumentētu stingru apturēšanu (39 no tiem ir xKiro rindas, kurām visām ir viena dienas nauda), un 22 ierakstiem ir tūlītēja apmācības atklāšana. `hardStopGuaranteed` tiek iestatīts tikai tad, ja paša pakalpojumu sniedzēja noteikumos ir teikts, ka, pārsniedzot bezmaksas kvotu, pieprasījums tiek noraidīts, nevis klusībā sāk izrakstīt jums rēķinu, norādot avotu komentārā blakus ierakstam; tas nekad nav iestatīts uz noklusējuma vērtību `true`, un ieraksts, kuru neviens nav pārbaudījis, paliek neiestatīts. Tātad trūkstošais cietā apturēšanas karodziņš nozīmē "nav izveidots", nevis "zināms, ka jums jāmaksā".**STRICT režīms** (izvēles `freeAccessPolicy=strict` maršrutēšanas aizsargs) uzticas tikai tiem ierakstiem, kuriem ir karodziņš; katrs otrais brīvais līmenis tiek izslēgts kā `no-hard-stop` (sk. `open-sse/services/autoCombo/strictZeroCostFilter.ts`). Kad aizsargs filtrē kopu, operatora redzamajā žurnālā tiek ziņots gan par izslēgšanas skaitu, gan tā `no-hard-stop` daļu.
 - `estMonthlyFreeTokens` = tikai periodiski ikmēneša marķieri.** Vienreizējie pierakstīšanās kredīti netiek atkārtoti** un skaitīt kā 0. Pārtrauktie līmeņi arī ir 0.
 - Ikdienas marķiera vāciņš → `monthly = daily × 30`. Tikai RPD dokumentēts → `RPD × ~800 output tokens × 30`. Tikai RPM/TPM (bez dienas ierobežojuma) →** bez vāciņa** (skatīt zemāk).
-- **Pastāvīgi bez maksas, taču nav publicēta marķiera vāciņa** (`glm-cn`, `tencent`, `baidu`, `kilo-gateway`, `opencode-zen`, `gemini`, `ollama-cloud`): tās ir reālas atkārtotas brīvpiekļuves, rate/concurrency-limited. Mēs tos klasificējam `recurring-uncapped` un** nekad tos neapkopojiet** — reizināšana `RPM × 24/7 × 30d` radītu fantāzijas griestus (inflāciju, kuru mēs noraidām). Tie ir uzskaitīti, lai jūs zinātu, ka tie pastāv.
+- **Bezmaksas piekļuve, taču nav publicēta pilnvaru ierobežojuma** (`glm-cn`, `tencent`, `baidu`, `kilo-gateway`, `opencode-zen`, `gemini`, `ollama-cloud`, `nvidia`): tie ir rate/concurrency-limited. Mēs tos klasificējam `recurring-uncapped` un** nekad tos neapkopojiet** — reizinot `RPM × 24/7 × 30d` tiktu radīti fantāzijas griesti (inflācija, kuru mēs noraidām). NVIDIA's API ir paredzēts tikai izmēģinājuma lietošanai; skatīt tās ToS brīdinājumu zemāk.
 - **Depozīta atbloķēšanas palielinājums:** vienreizējs neliels papildinājums, kas neatgriezeniski palielina bezmaksas kvotu (OpenRouter: $10 → 1000 req/day ≈ +24M/mo). Tiek ziņots kā atsevišķs skaitlis, kas netiek rādīts vienmērīgā virsrakstā.
 - **Atbilstības noteiktas kvotas** (`eligibilityGate: "regional-identity"`): reāla atkārtota kvota, kas tiek atvērta tikai pēc reģionam piesaistītas identitātes pārbaudes (šodien kontinentālās Ķīnas reālā vārda pārbaude). Ieskaitīts ar vienu un to pašu pūles dedupe kārtulu atsevišķā attēlā (`gatedRecurringTokens`), nekad neieskaitīts vienmērīgā virsrakstā. Režīms (`freeType`) ir nemainīgs, tāpēc maršrutēšana nav mainīta.
 - **Pierādījumu nodarbības.** Noteikums: skaitlis katalogā norāda tā avotu `// evidence:` komentārā blakus ierakstam — `public-page` (nodrošinātāja lapa, ko var lasīt ikviens), `api-public` (neautentificēts nodrošinātāja galapunkts, piemēram, NaraRouter publisko plānu galapunkts vietnē router.bynara.id) vai `console-verified <date> por <who>` (skaitlis ir redzams tikai tad, kad publiskajā lapā ir norādīts, kurš ieraksta un komentāra iekšpusē ir konti un vāciņš). pastāv). Stāvoklis šodien: pieci bloki, kas atkārtoti auditēti 2026-09-02, to nes (`gemini`, `groq`, `mistral`, `ollama-cloud`, `nara`); ieraksti, kas veikti pirms 2026-09-02 atkārtotās revīzijas, pārmanto agrākos pētījumus, līdz tie tiek aizskarti; jebkura** jauns vai mainīts** numurs bez pierādījumu komentāra ir kļūda. Mūsdienās tikai `mistral` ir konsoles verificēts.
@@ -240,75 +240,75 @@ Vairums šajā jomā minēto „bezmaksas žetonu mēnesī” skaitļu ir katram
 
 ---
 
-## Bezmaksas līmenis katram pakalpojumu sniedzējam (Bytez/Nous pārbaudīts 2026-10-15; atkārtoti pārbaudītās rindas 2026-09-02; pārējie 2026-06-17)
+## Bezmaksas līmenis katram pakalpojumu sniedzējam (Bytez/Nous pārbaudīts 2026.10.15.; atkārtoti pārbaudītas rindas 2026.09.02.; citas 2026.06.17.)
 
-> Ģenerēts no katra modeļa kataloga (`open-sse/config/freeModelCatalog.ts`), ar deduplikāciju pēc pūla. Kārtots pēc regulāri pieejamo tokenu skaita mēnesī. `uncapped*` = pastāvīgi bez maksas, taču bez publicēta tokenu ierobežojuma (ierobežots pēc ātruma/maksimālās vienlaicības) — reāla piekļuve, **netiek ieskaitīts galvenajā kopsummā**. `—` = tikai kredīti / bez atslēgas / tokenu daudzumu nevar noteikt.
+> Atjaunots no katra modeļa kataloga (`open-sse/config/freeModelCatalog.ts`), noņemts no kopas. Kārtots pēc periodiskas vienmērīgas tokens/mo. `uncapped*` = pastāvīgi brīvas, bet nav publicētas pilnvaras vāciņa (rate/concurrency-limited) — reālas piekļuves,** nē** apkopots virsrakstā. `—` = tikai kredīts / bez atslēgas / nav nosakāms ar marķieri.
 
-| Pakalpojumu sniedzējs | Bezmaksas veids       | Stabili tokeni/mēn. | Pirmā mēneša kredīts | Lietošanas noteikumi | Modeļi |
-| --------------------- | --------------------- | ------------------- | -------------------- | -------------------- | ------ |
-| `mistral`             | atkārtots             | ~1.00B              | —                    | piesardzīgi          | 5      |
-| `nara`                | atkārtots             | ~210M               | —                    | piesardzīgi          | 8      |
-| `llm7`                | atkārtots             | ~150M               | —                    | piesardzīgi          | 4      |
-| `xkiro`               | atkārtots             | ~150M               | —                    | piesardzīgi          | 39     |
-| `longcat`             | vienreizējs           | —                   | 10M                  | piesardzīgi          | 1      |
-| `cerebras`            | vienreizējs           | —                   | $5 kredīts           | piesardzīgi          | 2      |
-| `cloudflare-ai`       | atkārtots             | ~30M                | —                    | piesardzīgi          | 9      |
-| `groq`                | atkārtots             | ~30M                | —                    | piesardzīgi          | 5      |
-| `api-airforce`        | atkārtots             | ~24M                | —                    | piesardzīgi          | 7      |
-| `bluesminds`          | atkārtots             | ~7M                 | —                    | neskaidri            | 22     |
-| `sambanova`           | atkārtots             | ~6M                 | —                    | piesardzīgi          | 5      |
-| `arcee-ai`            | atkārtots             | ~5M                 | —                    | piesardzīgi          | 1      |
-| `bazaarlink`          | atkārtots             | ~4M                 | —                    | piesardzīgi          | 32     |
-| `openrouter`          | atkārtots             | ~1M                 | —                    | piesardzīgi          | 1      |
-| `cohere`              | atkārtots             | ~800K               | —                    | piesardzīgi          | 6      |
-| `huggingchat`         | atkārtots             | ~500K               | —                    | piesardzīgi          | 4      |
-| `morph`               | atkārtots             | ~400K               | —                    | labi                 | 2      |
-| `huggingface`         | atkārtots             | ~200K               | —                    | piesardzīgi          | 6      |
-| `kiro`                | atkārtots             | ~25K                | —                    | izvairīties          | 12     |
-| `glm-cn`              | neierobežots          | neierobežots\*      | ~20M                 | labi                 | 4      |
-| `baidu`               | neierobežots          | neierobežots\*      | —                    | piesardzīgi          | 1      |
-| `gemini`              | neierobežots          | neierobežots\*      | —                    | piesardzīgi          | 4      |
-| `kilo-gateway`        | neierobežots          | neierobežots\*      | —                    | piesardzīgi          | 7      |
-| `ollama-cloud`        | neierobežots          | neierobežots\*      | —                    | neskaidri            | 8      |
-| `opencode-zen`        | neierobežots          | neierobežots\*      | —                    | piesardzīgi          | 10     |
-| `tencent`             | neierobežots          | neierobežots\*      | —                    | piesardzīgi          | 1      |
-| `vertex`              | reģistrēšanās kredīts | —                   | ~300M                | piesardzīgi          | 10     |
-| `agentrouter`         | reģistrēšanās kredīts | —                   | ~200M                | piesardzīgi          | 4      |
-| `predibase`           | reģistrēšanās kredīts | —                   | ~25M                 | piesardzīgi          | 1      |
-| `doubao`              | reģistrēšanās kredīts | —                   | ~15M                 | neskaidri            | 1      |
-| `ai21`                | reģistrēšanās kredīts | —                   | ~10M                 | izvairīties          | 2      |
-| `deepseek`            | reģistrēšanās kredīts | —                   | ~5M                  | labi                 | 2      |
-| `hyperbolic`          | reģistrēšanās kredīts | —                   | ~5M                  | labi                 | 8      |
-| `nscale`              | reģistrēšanās kredīts | —                   | ~5M                  | piesardzīgi          | 6      |
-| `bytez`               | kredīts (atk.)        | —                   | nezināms             | neskaidri            | 1      |
-| `deepinfra`           | reģistrēšanās kredīts | —                   | ~1M                  | piesardzīgi          | 22     |
-| `fireworks`           | reģistrēšanās kredīts | —                   | ~1M                  | izvairīties          | 10     |
-| `nebius`              | reģistrēšanās kredīts | —                   | ~1M                  | piesardzīgi          | 1      |
-| `qoder`               | reģistrēšanās kredīts | —                   | ~1M                  | piesardzīgi          | 14     |
-| `scaleway`            | reģistrēšanās kredīts | —                   | ~1M                  | labi                 | 6      |
-| `novita`              | reģistrēšanās kredīts | —                   | ~500K                | piesardzīgi          | 1      |
-| `agy`                 | bez atslēgas          | —                   | —                    | izvairīties          | 16     |
-| `baichuan`            | bez atslēgas          | —                   | —                    | neskaidri            | 1      |
-| `blackbox`            | bez atslēgas          | —                   | —                    | izvairīties          | 6      |
-| `coze`                | bez atslēgas          | —                   | —                    | izvairīties          | 1      |
-| `duckduckgo-web`      | bez atslēgas          | —                   | —                    | izvairīties          | 6      |
-| `freemodel-dev`       | bez atslēgas          | —                   | —                    | nezināmi             | 4      |
-| `friendliai`          | bez atslēgas          | —                   | —                    | izvairīties          | 2      |
-| `iflytek`             | bez atslēgas          | —                   | —                    | izvairīties          | 1      |
-| `inference-net`       | bez atslēgas          | —                   | —                    | piesardzīgi          | 3      |
-| `liquid`              | bez atslēgas          | —                   | —                    | nezināmi             | 1      |
-| `monsterapi`          | bez atslēgas          | —                   | —                    | neskaidri            | 1      |
-| `muse-spark-web`      | bez atslēgas          | —                   | —                    | izvairīties          | 3      |
-| `nlpcloud`            | bez atslēgas          | —                   | —                    | izvairīties          | 1      |
-| `nvidia`              | neierobežots          | neierobežots\*      | —                    | piesardzīgi          | 2      |
-| `pollinations`        | bez atslēgas          | —                   | —                    | piesardzīgi          | 31     |
-| `publicai`            | bez atslēgas          | —                   | —                    | piesardzīgi          | 3      |
-| `reka`                | bez atslēgas          | —                   | —                    | piesardzīgi          | 2      |
-| `sensenova`           | bez atslēgas          | —                   | —                    | piesardzīgi          | 1      |
-| `sparkdesk`           | bez atslēgas          | —                   | —                    | piesardzība          | 1      |
-| `stepfun`             | bez atslēgas          | —                   | —                    | labi                 | 1      |
-| `t3-web`              | bez atslēgas          | —                   | —                    | izvairīties          | 23     |
-| `uncloseai`           | bez atslēgas          | —                   | —                    | piesardzība          | 3      |
+| Pakalpojumu sniedzējs | Brīvais tips          | Stabils tokens/mo | Kredīts pirmajā mēnesī | ToS            | Modeļi |
+| --------------------- | --------------------- | ----------------- | ---------------------- | -------------- | ------ |
+| `mistral`             | atkārtojas            | ~ 1.00B           | —                      | piesardzību    | 5      |
+| `nara`                | atkārtojas            | ~ 210M            | —                      | piesardzību    | 8      |
+| `llm7`                | atkārtojas            | ~ 150M            | —                      | piesardzību    | 4      |
+| `xkiro`               | atkārtojas            | ~ 150M            | —                      | piesardzību    | 39     |
+| `longcat`             | vienreizējs           | —                 | 10 miljoni             | piesardzību    | 1      |
+| `cerebras`            | vienreizējs           | —                 | 5 ASV dolāru kredīts   | piesardzību    | 2      |
+| `cloudflare-ai`       | atkārtojas            | ~ 30M             | —                      | piesardzību    | 9      |
+| `groq`                | atkārtojas            | ~ 30M             | —                      | piesardzību    | 5      |
+| `api-airforce`        | atkārtojas            | ~ 24M             | —                      | piesardzību    | 7      |
+| `bluesminds`          | atkārtojas            | ~ 7M              | —                      | neviennozīmīgi | 22     |
+| `sambanova`           | atkārtojas            | ~ 6M              | —                      | piesardzību    | 5      |
+| `arcee-ai`            | atkārtojas            | ~ 5M              | —                      | piesardzību    | 1      |
+| `bazaarlink`          | atkārtojas            | ~ 4M              | —                      | piesardzību    | 32     |
+| `openrouter`          | atkārtojas            | ~ 1M              | —                      | piesardzību    | 1      |
+| `cohere`              | atkārtojas            | ~ 800K            | —                      | piesardzību    | 6      |
+| `huggingchat`         | atkārtojas            | ~ 500K            | —                      | piesardzību    | 4      |
+| `morph`               | atkārtojas            | ~ 400K            | —                      | labi           | 2      |
+| `huggingface`         | atkārtojas            | ~ 200K            | —                      | piesardzību    | 6      |
+| `kiro`                | atkārtojas            | ~ 25K             | —                      | izvairīties    | 12     |
+| `glm-cn`              | bez vāciņa            | bez vāciņa\*      | ~ 20M                  | labi           | 4      |
+| `baidu`               | bez vāciņa            | bez vāciņa\*      | —                      | piesardzību    | 1      |
+| `gemini`              | bez vāciņa            | bez vāciņa\*      | —                      | piesardzību    | 4      |
+| `kilo-gateway`        | bez vāciņa            | bez vāciņa\*      | —                      | piesardzību    | 7      |
+| `ollama-cloud`        | bez vāciņa            | bez vāciņa\*      | —                      | neviennozīmīgi | 8      |
+| `opencode-zen`        | bez vāciņa            | bez vāciņa\*      | —                      | piesardzību    | 10     |
+| `tencent`             | bez vāciņa            | bez vāciņa\*      | —                      | piesardzību    | 1      |
+| `vertex`              | reģistrācijas kredīts | —                 | ~ 300M                 | piesardzību    | 10     |
+| `agentrouter`         | reģistrācijas kredīts | —                 | ~ 200M                 | piesardzību    | 4      |
+| `predibase`           | reģistrācijas kredīts | —                 | ~ 25M                  | piesardzību    | 1      |
+| `doubao`              | reģistrācijas kredīts | —                 | ~ 15M                  | neviennozīmīgi | 1      |
+| `ai21`                | reģistrācijas kredīts | —                 | ~ 10M                  | izvairīties    | 2      |
+| `deepseek`            | reģistrācijas kredīts | —                 | ~ 5M                   | labi           | 2      |
+| `hyperbolic`          | reģistrācijas kredīts | —                 | ~ 5M                   | labi           | 8      |
+| `nscale`              | reģistrācijas kredīts | —                 | ~ 5M                   | piesardzību    | 6      |
+| `bytez`               | kredīts (rek.)        | —                 | nezināms               | neviennozīmīgi | 1      |
+| `deepinfra`           | reģistrācijas kredīts | —                 | ~ 1M                   | piesardzību    | 22     |
+| `fireworks`           | reģistrācijas kredīts | —                 | ~ 1M                   | izvairīties    | 10     |
+| `nebius`              | reģistrācijas kredīts | —                 | ~ 1M                   | piesardzību    | 1      |
+| `qoder`               | reģistrācijas kredīts | —                 | ~ 1M                   | piesardzību    | 14     |
+| `scaleway`            | reģistrācijas kredīts | —                 | ~ 1M                   | labi           | 6      |
+| `novita`              | reģistrācijas kredīts | —                 | ~ 500K                 | piesardzību    | 1      |
+| `agy`                 | bez atslēgas          | —                 | —                      | izvairīties    | 16     |
+| `baichuan`            | bez atslēgas          | —                 | —                      | neviennozīmīgi | 1      |
+| `blackbox`            | bez atslēgas          | —                 | —                      | izvairīties    | 6      |
+| `coze`                | bez atslēgas          | —                 | —                      | izvairīties    | 1      |
+| `duckduckgo-web`      | bez atslēgas          | —                 | —                      | izvairīties    | 6      |
+| `freemodel-dev`       | bez atslēgas          | —                 | —                      | nezināms       | 4      |
+| `friendliai`          | bez atslēgas          | —                 | —                      | izvairīties    | 2      |
+| `iflytek`             | bez atslēgas          | —                 | —                      | izvairīties    | 1      |
+| `inference-net`       | bez atslēgas          | —                 | —                      | piesardzību    | 3      |
+| `liquid`              | bez atslēgas          | —                 | —                      | nezināms       | 1      |
+| `monsterapi`          | bez atslēgas          | —                 | —                      | neviennozīmīgi | 1      |
+| `muse-spark-web`      | bez atslēgas          | —                 | —                      | izvairīties    | 3      |
+| `nlpcloud`            | bez atslēgas          | —                 | —                      | izvairīties    | 1      |
+| `nvidia`              | bez vāciņa            | bez vāciņa\*      | —                      | piesardzību    | 3      |
+| `pollinations`        | bez atslēgas          | —                 | —                      | piesardzību    | 31     |
+| `publicai`            | bez atslēgas          | —                 | —                      | piesardzību    | 3      |
+| `reka`                | bez atslēgas          | —                 | —                      | piesardzību    | 2      |
+| `sensenova`           | bez atslēgas          | —                 | —                      | piesardzību    | 1      |
+| `sparkdesk`           | bez atslēgas          | —                 | —                      | piesardzību    | 1      |
+| `stepfun`             | bez atslēgas          | —                 | —                      | labi           | 1      |
+| `t3-web`              | bez atslēgas          | —                 | —                      | izvairīties    | 23     |
+| `uncloseai`           | bez atslēgas          | —                 | —                      | piesardzību    | 3      |
 
 ---
 

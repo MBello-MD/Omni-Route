@@ -111,10 +111,10 @@ tarkoituksella.
 ## Metodologia ja varoitukset
 
 - Numerot ovat** ylärajan arvioita** kunkin palveluntarjoajan dokumentoiduista free-tier-rajoista alkaen** 17.6.2026** , kerätty verkkotutkimuksella. Ilmaiset tasot muuttuvat jatkuvasti — tarkista ennen kuin luotat hahmoon.
-- **Mitä merkintä oikeastaan takaa.** Mikään merkintä ei anna rivikohtaista luottamusluokitusta, ja API ei palvele mitään. — käsittelee jokaista yllä olevaa lukua arviona samasta, ilmoittamattomasta laadusta. Kaksi tosiasiaa eroavat toisistaan, koska ne on kuratoitu käsin pikemminkin kuin pääteltynä: 44 merkinnässä on itsenäisesti dokumentoitu kova pysäytys (39 niistä xKiro rivejä, joilla kaikilla on yksi päiväraha) ja 21 merkinnässä on nopea koulutusilmoitus. `hardStopGuaranteed` asetetaan vain, kun palveluntarjoajan omissa ehdoissa sanotaan, että ilmaisen päästömäärän ylittäminen hylkää pyynnön sen sijaan, että alkaa hiljaa laskuttaa sinua, kun lähde on kommentissa merkinnän vieressä; se ei ole koskaan oletuksena `true`, ja merkintä, jota kukaan ei ole vahvistanut, pysyy määrittämättä. Joten puuttuva hard-stop-lippu tarkoittaa "ei perustettu", ei "tietää laskuttaa sinua".**STRICT -tila** (opt-in `freeAccessPolicy=strict` reitityssuoja) luottaa vain merkintöihin, joissa on lippu; kaikki muut vapaat tasot jätetään pois `no-hard-stop` :na (katso `open-sse/services/autoCombo/strictZeroCostFilter.ts`). Kun vartija suodattaa poolin, käyttäjälle näkyvä loki raportoi sekä poissulkemismäärän että sen `no-hard-stop` osuuden.
+- **Mitä merkintä oikeastaan takaa.** Mikään merkintä ei anna rivikohtaista luottamusluokitusta, ja API ei palvele mitään. — käsittelee jokaista yllä olevaa lukua arviona samasta, ilmoittamattomasta laadusta. Kaksi tosiasiaa eroavat toisistaan, koska ne on kuratoitu käsin eikä päätelty: 44 merkinnässä on itsenäisesti dokumentoitu kova rajoitus (39 niistä xKiro rivejä, jotka kaikki jakavat yhden päivärahan) ja 22 merkinnässä on nopea koulutusilmoitus. `hardStopGuaranteed` asetetaan vain, kun palveluntarjoajan omissa ehdoissa sanotaan, että ilmaisen päästömäärän ylittäminen hylkää pyynnön sen sijaan, että alkaa hiljaa laskuttaa sinua, kun lähde on kommentissa merkinnän vieressä; se ei ole koskaan oletuksena `true`, ja merkintä, jota kukaan ei ole vahvistanut, pysyy määrittämättä. Joten puuttuva hard-stop-lippu tarkoittaa "ei perustettu", ei "tietää laskuttaa sinua".**STRICT -tila** (opt-in `freeAccessPolicy=strict` reitityssuoja) luottaa vain merkintöihin, joissa on lippu; kaikki muut vapaat tasot jätetään pois `no-hard-stop` :na (katso `open-sse/services/autoCombo/strictZeroCostFilter.ts`). Kun vartija suodattaa poolin, käyttäjälle näkyvä loki raportoi sekä poissulkemismäärän että sen `no-hard-stop` osuuden.
 - `estMonthlyFreeTokens` = vain toistuvat kuukausimerkit.** Kertakirjautumishyvitykset eivät toistu** ja lasketaan 0:ksi. Lopetetut tasot ovat myös 0.
 - Päivittäinen token cap → `monthly = daily × 30`. Vain RPD dokumentoi → `RPD × ~800 output tokens × 30`. Vain RPM/TPM (ei päivittäistä ylärajaa) →** korkkiton** (katso alla).
-- **Pysyvästi ilmainen, mutta ei julkaistua tunnussuojaa** (`glm-cn`, `tencent`, `baidu`, `kilo-gateway`, `opencode-zen`, `gemini`, `ollama-cloud`): nämä ovat todellisia toistuvia vapaa pääsyjä, rate/concurrency-limited. Luokittelemme ne `recurring-uncapped` ja** älä koskaan laske niitä yhteen** — kertominen `RPM × 24/7 × 30d` tuottaisi fantasiakaton (inflaatio, jonka hylkäämme). Ne on listattu, jotta tiedät niiden olemassaolon.
+- **Vapaa pääsy, mutta ei julkaistua tunnuskattoa** (`glm-cn`, `tencent`, `baidu`, `kilo-gateway`, `opencode-zen`, `gemini`, `ollama-cloud`, `nvidia`): nämä ovat rate/concurrency-limited. Luokittelemme ne `recurring-uncapped` ja** älä koskaan laske niitä yhteen** — kertominen `RPM × 24/7 × 30d` tuottaisi fantasiakaton (inflaatio, jonka hylkäämme). NVIDIA:n API on vain kokeilukäyttöön; katso sen ToS varoitus alla.
 - **Talletuksen avaustehostus:** kertaluonteinen pieni lisäys, joka nostaa pysyvästi ilmaista kiintiötä (OpenRouter: $10 → 1000 req/day ≈ +24M/mo). Raportoitu erillisenä lukuna, pidetty poissa tasaisesta otsikosta.
 - **Kelpoisuusrajoitukset** (`eligibilityGate: "regional-identity"`): todellinen toistuva kiintiö, joka avautuu vasta alueelle sidotun henkilöllisyyden tarkistuksen jälkeen (Manner-Kiinan oikean nimen vahvistus nykyään). Lasketaan samalla pool-dedupe-säännöllä erilliseksi luvuksi (`gatedRecurringTokens`), ei koskaan tasaiseen otsikkoon. Järjestelmä (`freeType`) on muuttumaton, joten reititys on muuttumaton.
 - **Todistusluokat.** Sääntö: luettelossa oleva numero lainaa lähteensä `// evidence:` -kommentissa merkinnän vieressä — `public-page` (palveluntarjoajan sivu, jota kuka tahansa voi lukea), `api-public` (palveluntarjoajan todentamaton päätepiste, esim. NaraRouter:n julkisten suunnitelmien päätepiste osoitteessa router.bynara.id) tai `console-verified <date> por <who>` (luku on näkyvissä vain, kun julkinen sivu on näkyvissä, kun se näki kommentin sisällä cons ja cap olemassa). Tila tänään: 2026-09-02 uudelleen auditoidut viisi lohkoa kantavat sen (`gemini`, `groq`, `mistral`, `ollama-cloud`, `nara`); 2026-09-02 uudelleentarkastusta edeltävät merkinnät perivät aikaisemman tutkimuksen, kunnes niitä kosketetaan; mikä tahansa** uusi tai muutettu** numero ilman todisteita on virhe. Nykyään vain `mistral` on konsolivarmennettu.
@@ -239,75 +239,75 @@ Useimmat tämän alan ”ilmaista tokenia kuukaudessa” -luvut ovat mallikohtai
 
 ---
 
-## Palvelukohtainen maksuton taso (Bytez/Nous tarkistettu 2026-10-15; rivit tarkistettu uudelleen 2026-09-02; muut 2026-06-17)
+## Palveluntarjoajakohtainen vapaa taso (Bytez/Nous tarkistettu 2026-10-15; uudelleen auditoitu rivit 2026-09-02; muut 2026-06-17)
 
-> Luotu uudelleen mallikohtaisesta luettelosta (`open-sse/config/freeModelCatalog.ts`), poolikohtaiset päällekkäisyydet poistettu. Järjestetty toistuvien vakiotason tokenien mukaan kuukaudessa. `uncapped*` = pysyvästi maksuton, mutta julkaistua tokenirajaa ei ole (rajoitettu nopeuden/samanaikaisten pyyntöjen perusteella) — todellinen käyttöoikeus, **ei** laskettu otsikon kokonaismäärään. `—` = vain hyvitykseen perustuva / ilman avainta / tokenimäärää ei voida määrittää.
+> Regeneroitu mallikohtaisesta luettelosta (`open-sse/config/freeModelCatalog.ts`), pool-deuped. Lajiteltu toistuvien tasaisten tokens/mo. `uncapped*` = pysyvästi vapaa, mutta ei julkaistu token cap (rate/concurrency-limited) — todellinen pääsy, mukaan,** ei** tiivistettynä otsikkoon. `—` = vain luotto / avaimeton / ei tunniste-kvantifioitavissa.
 
-| Palveluntarjoaja | Maksuttomuuden tyyppi  | Tasainen token-määrä/kk | Ensimmäisen kuukauden hyvitys | Käyttöehdot | Mallit |
-| ---------------- | ---------------------- | ----------------------- | ----------------------------- | ----------- | ------ |
-| `mistral`        | toistuva               | ~1.00B                  | —                             | varoitus    | 5      |
-| `nara`           | toistuva               | ~210M                   | —                             | varoitus    | 8      |
-| `llm7`           | toistuva               | ~150M                   | —                             | varoitus    | 4      |
-| `xkiro`          | toistuva               | ~150M                   | —                             | varoitus    | 39     |
-| `longcat`        | kertaluonteinen        | —                       | 10M                           | varoitus    | 1      |
-| `cerebras`       | kertaluonteinen        | —                       | 5 $:n hyvitys                 | varoitus    | 2      |
-| `cloudflare-ai`  | toistuva               | ~30M                    | —                             | varoitus    | 9      |
-| `groq`           | toistuva               | ~30M                    | —                             | varoitus    | 5      |
-| `api-airforce`   | toistuva               | ~24M                    | —                             | varoitus    | 7      |
-| `bluesminds`     | toistuva               | ~7M                     | —                             | epäselvä    | 22     |
-| `sambanova`      | toistuva               | ~6M                     | —                             | varoitus    | 5      |
-| `arcee-ai`       | toistuva               | ~5M                     | —                             | varoitus    | 1      |
-| `bazaarlink`     | toistuva               | ~4M                     | —                             | varoitus    | 32     |
-| `openrouter`     | toistuva               | ~1M                     | —                             | varoitus    | 1      |
-| `cohere`         | toistuva               | ~800K                   | —                             | varoitus    | 6      |
-| `huggingchat`    | toistuva               | ~500K                   | —                             | varoitus    | 4      |
-| `morph`          | toistuva               | ~400K                   | —                             | OK          | 2      |
-| `huggingface`    | toistuva               | ~200K                   | —                             | varoitus    | 6      |
-| `kiro`           | toistuva               | ~25K                    | —                             | vältä       | 12     |
-| `glm-cn`         | rajoittamaton          | rajoittamaton\*         | ~20M                          | OK          | 4      |
-| `baidu`          | rajoittamaton          | rajoittamaton\*         | —                             | varoitus    | 1      |
-| `gemini`         | rajoittamaton          | rajoittamaton\*         | —                             | varoitus    | 4      |
-| `kilo-gateway`   | rajoittamaton          | rajoittamaton\*         | —                             | varoitus    | 7      |
-| `ollama-cloud`   | rajoittamaton          | rajoittamaton\*         | —                             | epäselvä    | 8      |
-| `opencode-zen`   | rajoittamaton          | rajoittamaton\*         | —                             | varoitus    | 10     |
-| `tencent`        | rajoittamaton          | rajoittamaton\*         | —                             | varoitus    | 1      |
-| `vertex`         | rekisteröitymishyvitys | —                       | ~300M                         | varoitus    | 10     |
-| `agentrouter`    | rekisteröitymishyvitys | —                       | ~200M                         | varoitus    | 4      |
-| `predibase`      | rekisteröitymishyvitys | —                       | ~25M                          | varoitus    | 1      |
-| `doubao`         | rekisteröitymishyvitys | —                       | ~15M                          | epäselvä    | 1      |
-| `ai21`           | rekisteröitymishyvitys | —                       | ~10M                          | vältä       | 2      |
-| `deepseek`       | rekisteröitymishyvitys | —                       | ~5M                           | OK          | 2      |
-| `hyperbolic`     | rekisteröitymishyvitys | —                       | ~5M                           | OK          | 8      |
-| `nscale`         | rekisteröitymishyvitys | —                       | ~5M                           | varoitus    | 6      |
-| `bytez`          | hyvitys (toist.)       | —                       | tuntematon                    | epäselvä    | 1      |
-| `deepinfra`      | rekisteröitymishyvitys | —                       | ~1M                           | varoitus    | 22     |
-| `fireworks`      | rekisteröitymishyvitys | —                       | ~1M                           | vältä       | 10     |
-| `nebius`         | rekisteröitymishyvitys | —                       | ~1M                           | varoitus    | 1      |
-| `qoder`          | rekisteröitymishyvitys | —                       | ~1M                           | varoitus    | 14     |
-| `scaleway`       | rekisteröitymishyvitys | —                       | ~1M                           | OK          | 6      |
-| `novita`         | rekisteröitymishyvitys | —                       | ~500K                         | varoitus    | 1      |
-| `agy`            | ilman avainta          | —                       | —                             | vältä       | 16     |
-| `baichuan`       | ilman avainta          | —                       | —                             | epäselvä    | 1      |
-| `blackbox`       | ilman avainta          | —                       | —                             | vältä       | 6      |
-| `coze`           | ilman avainta          | —                       | —                             | vältä       | 1      |
-| `duckduckgo-web` | ilman avainta          | —                       | —                             | vältä       | 6      |
-| `freemodel-dev`  | ilman avainta          | —                       | —                             | tuntematon  | 4      |
-| `friendliai`     | ilman avainta          | —                       | —                             | vältä       | 2      |
-| `iflytek`        | ilman avainta          | —                       | —                             | vältä       | 1      |
-| `inference-net`  | ilman avainta          | —                       | —                             | varoitus    | 3      |
-| `liquid`         | ilman avainta          | —                       | —                             | tuntematon  | 1      |
-| `monsterapi`     | ilman avainta          | —                       | —                             | epäselvä    | 1      |
-| `muse-spark-web` | ilman avainta          | —                       | —                             | vältä       | 3      |
-| `nlpcloud`       | ilman avainta          | —                       | —                             | vältä       | 1      |
-| `nvidia`         | rajoittamaton          | rajoittamaton\*         | —                             | varoitus    | 2      |
-| `pollinations`   | ilman avainta          | —                       | —                             | varoitus    | 31     |
-| `publicai`       | ilman avainta          | —                       | —                             | varoitus    | 3      |
-| `reka`           | ilman avainta          | —                       | —                             | varoitus    | 2      |
-| `sensenova`      | ilman avainta          | —                       | —                             | varoitus    | 1      |
-| `sparkdesk`      | keyless                | —                       | —                             | varoitus    | 1      |
-| `stepfun`        | keyless                | —                       | —                             | ok          | 1      |
-| `t3-web`         | keyless                | —                       | —                             | vältä       | 23     |
-| `uncloseai`      | keyless                | —                       | —                             | varoitus    | 3      |
+| Palveluntarjoaja | Vapaa tyyppi       | Tasainen tokens/mo | Ensimmäisen kuukauden luotto | ToS           | Mallit |
+| ---------------- | ------------------ | ------------------ | ---------------------------- | ------------- | ------ |
+| `mistral`        | toistuva           | ~ 1.00B            | —                            | varovaisuutta | 5      |
+| `nara`           | toistuva           | ~ 210M             | —                            | varovaisuutta | 8      |
+| `llm7`           | toistuva           | ~ 150M             | —                            | varovaisuutta | 4      |
+| `xkiro`          | toistuva           | ~ 150M             | —                            | varovaisuutta | 39     |
+| `longcat`        | kertaluonteinen    | —                  | 10 milj                      | varovaisuutta | 1      |
+| `cerebras`       | kertaluonteinen    | —                  | 5 dollaria luottoa           | varovaisuutta | 2      |
+| `cloudflare-ai`  | toistuva           | ~ 30M              | —                            | varovaisuutta | 9      |
+| `groq`           | toistuva           | ~ 30M              | —                            | varovaisuutta | 5      |
+| `api-airforce`   | toistuva           | ~ 24M              | —                            | varovaisuutta | 7      |
+| `bluesminds`     | toistuva           | ~ 7M               | —                            | epäselvä      | 22     |
+| `sambanova`      | toistuva           | ~ 6M               | —                            | varovaisuutta | 5      |
+| `arcee-ai`       | toistuva           | ~ 5M               | —                            | varovaisuutta | 1      |
+| `bazaarlink`     | toistuva           | ~ 4M               | —                            | varovaisuutta | 32     |
+| `openrouter`     | toistuva           | ~ 1M               | —                            | varovaisuutta | 1      |
+| `cohere`         | toistuva           | ~ 800K             | —                            | varovaisuutta | 6      |
+| `huggingchat`    | toistuva           | ~ 500K             | —                            | varovaisuutta | 4      |
+| `morph`          | toistuva           | ~ 400K             | —                            | okei          | 2      |
+| `huggingface`    | toistuva           | ~ 200K             | —                            | varovaisuutta | 6      |
+| `kiro`           | toistuva           | ~ 25K              | —                            | välttää       | 12     |
+| `glm-cn`         | korkkiton          | päällystämätön\*   | ~ 20M                        | okei          | 4      |
+| `baidu`          | korkkiton          | päällystämätön\*   | —                            | varovaisuutta | 1      |
+| `gemini`         | korkkiton          | päällystämätön\*   | —                            | varovaisuutta | 4      |
+| `kilo-gateway`   | korkkiton          | päällystämätön\*   | —                            | varovaisuutta | 7      |
+| `ollama-cloud`   | korkkiton          | päällystämätön\*   | —                            | epäselvä      | 8      |
+| `opencode-zen`   | korkkiton          | päällystämätön\*   | —                            | varovaisuutta | 10     |
+| `tencent`        | korkkiton          | päällystämätön\*   | —                            | varovaisuutta | 1      |
+| `vertex`         | kirjautumishyvitys | —                  | ~ 300M                       | varovaisuutta | 10     |
+| `agentrouter`    | kirjautumishyvitys | —                  | ~ 200M                       | varovaisuutta | 4      |
+| `predibase`      | kirjautumishyvitys | —                  | ~ 25M                        | varovaisuutta | 1      |
+| `doubao`         | kirjautumishyvitys | —                  | ~ 15M                        | epäselvä      | 1      |
+| `ai21`           | kirjautumishyvitys | —                  | ~ 10M                        | välttää       | 2      |
+| `deepseek`       | kirjautumishyvitys | —                  | ~ 5M                         | okei          | 2      |
+| `hyperbolic`     | kirjautumishyvitys | —                  | ~ 5M                         | okei          | 8      |
+| `nscale`         | kirjautumishyvitys | —                  | ~ 5M                         | varovaisuutta | 6      |
+| `bytez`          | luotto (kirjaus)   | —                  | tuntematon                   | epäselvä      | 1      |
+| `deepinfra`      | kirjautumishyvitys | —                  | ~ 1M                         | varovaisuutta | 22     |
+| `fireworks`      | kirjautumishyvitys | —                  | ~ 1M                         | välttää       | 10     |
+| `nebius`         | kirjautumishyvitys | —                  | ~ 1M                         | varovaisuutta | 1      |
+| `qoder`          | kirjautumishyvitys | —                  | ~ 1M                         | varovaisuutta | 14     |
+| `scaleway`       | kirjautumishyvitys | —                  | ~ 1M                         | okei          | 6      |
+| `novita`         | kirjautumishyvitys | —                  | ~ 500K                       | varovaisuutta | 1      |
+| `agy`            | avaimeton          | —                  | —                            | välttää       | 16     |
+| `baichuan`       | avaimeton          | —                  | —                            | epäselvä      | 1      |
+| `blackbox`       | avaimeton          | —                  | —                            | välttää       | 6      |
+| `coze`           | avaimeton          | —                  | —                            | välttää       | 1      |
+| `duckduckgo-web` | avaimeton          | —                  | —                            | välttää       | 6      |
+| `freemodel-dev`  | avaimeton          | —                  | —                            | tuntematon    | 4      |
+| `friendliai`     | avaimeton          | —                  | —                            | välttää       | 2      |
+| `iflytek`        | avaimeton          | —                  | —                            | välttää       | 1      |
+| `inference-net`  | avaimeton          | —                  | —                            | varovaisuutta | 3      |
+| `liquid`         | avaimeton          | —                  | —                            | tuntematon    | 1      |
+| `monsterapi`     | avaimeton          | —                  | —                            | epäselvä      | 1      |
+| `muse-spark-web` | avaimeton          | —                  | —                            | välttää       | 3      |
+| `nlpcloud`       | avaimeton          | —                  | —                            | välttää       | 1      |
+| `nvidia`         | korkkiton          | päällystämätön\*   | —                            | varovaisuutta | 3      |
+| `pollinations`   | avaimeton          | —                  | —                            | varovaisuutta | 31     |
+| `publicai`       | avaimeton          | —                  | —                            | varovaisuutta | 3      |
+| `reka`           | avaimeton          | —                  | —                            | varovaisuutta | 2      |
+| `sensenova`      | avaimeton          | —                  | —                            | varovaisuutta | 1      |
+| `sparkdesk`      | avaimeton          | —                  | —                            | varovaisuutta | 1      |
+| `stepfun`        | avaimeton          | —                  | —                            | okei          | 1      |
+| `t3-web`         | avaimeton          | —                  | —                            | välttää       | 23     |
+| `uncloseai`      | avaimeton          | —                  | —                            | varovaisuutta | 3      |
 
 ---
 

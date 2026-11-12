@@ -112,11 +112,11 @@ szétválasztást szándékosan tartjuk fenn.
 
 ## Módszertan és figyelmeztetések
 
-- A számok vannak** felső határértékek** az egyes szolgáltatók dokumentált szabadszintű limitjéből** 2026-06-17** , webkutatás gyűjtötte össze. Az ingyenes szintek folyamatosan változnak, mielőtt egy figurára hagyatkozna — ellenőrizze újra.
-- **Mit garantál egy bejegyzés valójában.** Egyik bejegyzés sem tartalmaz soronkénti megbízhatósági besorolást, a API pedig egyiket sem szolgálja ki. A — minden fenti adatot ugyanolyan, meg nem határozott minőségű becslésként kezel. Két tény különbözik, mert kézzel gyűjtötték össze, nem pedig kikövetkeztetésből: 44 bejegyzés tartalmaz egy önállóan dokumentált kemény stopot (ebből 39 a xKiro sorok, amelyek mindegyike egy napidíjon osztozik), 21 bejegyzés pedig azonnali képzési nyilatkozatot tartalmaz. `hardStopGuaranteed` csak akkor van beállítva, ha a szolgáltató saját feltételei szerint az ingyenes juttatás túllépése visszautasítja a kérést, nem pedig csendben elkezdi a számlázást, a forrás megjegyzésben a bejegyzés mellett; soha nem alapértelmezett a `true`, és a senki által nem ellenőrzött bejegyzés beállítva marad. Tehát a hiányzó „hard-stop” jelző azt jelenti, hogy „nincs beállítva”, nem „tudható, hogy számlázzon”.**STRICT mód** (az opt-in `freeAccessPolicy=strict` routing guard) csak a zászlót hordozó bejegyzésekben bízik meg; minden második szabad réteg ki van zárva `no-hard-stop` ként (lásd `open-sse/services/autoCombo/strictZeroCostFilter.ts`). Amikor az őr szűr egy készletet, a kezelő által látható napló a kizárások számát és `no-hard-stop` megosztását is jelenti.
+- A számok vannak** felső határértékek** az egyes szolgáltatók dokumentált szabadszintű limitjéből** 2026-06-17** , webkutatás gyűjtötte össze. Az ingyenes szintek folyamatosan változnak, mielőtt egy figurára hagyatkozna — újra.
+- **Mit garantál egy bejegyzés valójában.** Egyik bejegyzés sem tartalmaz soronkénti megbízhatósági besorolást, a API pedig egyiket sem szolgálja ki. A — minden fenti adatot ugyanolyan, meg nem határozott minőségű becslésként kezel. Két tény különbözik, mert kézzel gyűjtötték össze, nem pedig kikövetkeztetésből: 44 bejegyzés tartalmaz egy önállóan dokumentált kemény stopot (ebből 39 a xKiro sorok, amelyek mindegyike egy napidíjon osztozik), 22 bejegyzés pedig azonnali képzési nyilatkozatot tartalmaz. `hardStopGuaranteed` csak akkor van beállítva, ha a szolgáltató saját feltételei szerint az ingyenes juttatás túllépése visszautasítja a kérést, nem pedig csendben elkezdi a számlázást, a forrás megjegyzésben a bejegyzés mellett; soha nem alapértelmezett a `true`, és a senki által nem ellenőrzött bejegyzés beállítva marad. Tehát a hiányzó „hard-stop” jelző azt jelenti, hogy „nincs beállítva”, nem „tudható, hogy számlázzon”.**STRICT mód** (az opt-in `freeAccessPolicy=strict` routing guard) csak a zászlót hordozó bejegyzésekben bízik meg; minden más szabad réteg ki van zárva `no-hard-stop` ként (lásd `open-sse/services/autoCombo/strictZeroCostFilter.ts`). Amikor az őr szűr egy készletet, a kezelő által látható napló a kizárások számát és `no-hard-stop` megosztását is jelenti.
 - Csak `estMonthlyFreeTokens` = ismétlődő havi tokenek.** Az egyszeri regisztrációs jóváírások nem ismétlődnek** és 0-nak számít. A megszűnt szintek is 0.
 - Napi token cap → `monthly = daily × 30`. Csak RPD dokumentálta → `RPD × ~800 output tokens × 30`. Csak RPM/TPM (nincs napi felső határ) →** fedetlen** (lásd alább).
-- **Véglegesen ingyenes, de nincs közzétett token cap** (`glm-cn`, `tencent`, `baidu`, `kilo-gateway`, `opencode-zen`, `gemini`, `ollama-cloud`): ezek valódi visszatérő szabad hozzáférések, rate/concurrency-limited. Osztjuk őket `recurring-uncapped` ill.** soha ne összegezze őket** — `RPM × 24/7 × 30d` szorzata egy fantáziaplafont (az általunk elutasított inflációt) eredményezne. Fel vannak sorolva, hogy tudja, hogy léteznek.
+- **Ingyenes hozzáférés, de nincs közzétett token cap** (`glm-cn`, `tencent`, `baidu`, `kilo-gateway`, `opencode-zen`, `gemini`, `ollama-cloud`, `nvidia`): ezek a rate/concurrency-limited. Osztjuk őket `recurring-uncapped` ill.** soha ne összegezze őket** — `RPM × 24/7 × 30d` szorzata egy fantázia plafont (az általunk elutasított inflációt) eredményezne. NVIDIA's API csak próbahasználat; lásd alább a ToS figyelmeztetést.
 - **A befizetés feloldásának növelése:** egyszeri kis feltöltés, amely tartósan emeli az ingyenes kvótát (OpenRouter: $10 → 1000 req/day ≈ +24M/mo). Külön figuraként jelentették, kihagyva az állandó címsorból.
 - **Jogosultságtól függő kvóták** (`eligibilityGate: "regional-identity"`): valódi visszatérő kvóta, amely csak egy régióhoz kötött személyazonosság-ellenőrzés után nyílik meg (ma szárazföld-Kína valós névellenőrzés). Ugyanazzal a pool-dedupe szabállyal külön számba (`gatedRecurringTokens`) számítva, soha nem az állandó címsorba. A rezsim (`freeType`) változatlan, így az útválasztás változatlan.
 - **Bizonyítási osztályok.** A szabály: egy szám a katalógusban `// evidence:` megjegyzésben hivatkozik a forrására a — bejegyzés mellett `public-page` (bárki elolvashatja a szolgáltató oldalát), `api-public` (a szolgáltató nem hitelesített végpontja, pl. NaraRouter nyilvános terveinek végpontja a router.bynara.id címen), vagy `console-verified <date> por <who>` (az ábra csak akkor látható, ha a publikus oldalon szerepel, hogy a fiók cons, cap és a megjegyzésben szerepel létezik). A mai állapot: a 2026-09-02-én újraauditált öt blokk viszi (`gemini`, `groq`, `mistral`, `ollama-cloud`, `nara`); a 2026-09-02 újraellenőrzést megelőző bejegyzések érintésig öröklik a korábbi kutatást; bármilyen** új vagy megváltozott** szám bizonyíték megjegyzés nélkül hiba. Manapság csak `mistral` -t konzol ellenőrzi.
@@ -241,75 +241,75 @@ Az ezen a területen szereplő legtöbb „havi ingyenes token” érték modell
 
 ---
 
-## Szolgáltatónkénti ingyenes csomag (Bytez/Nous ellenőrizve: 2026-10-15; újraellenőrzött sorok: 2026-09-02; egyébként: 2026-06-17)
+## Szolgáltatónkénti ingyenes szint (Bytez/Nous ellenőrzése 2026. 10. 15.; sorok újraellenőrzése 2026. 09. 2026.; többi 2026. 06. 17.)
 
-> A modellenkénti katalógusból (`open-sse/config/freeModelCatalog.ts`) újragenerálva, a poolok alapján duplikációmentesítve. Az ismétlődő, állandó token/hó mennyisége szerint rendezve. Az `uncapped*` = véglegesen ingyenes, de közzétett tokenkorlát nélküli (sebesség-/párhuzamosság-korlátozott) — valódi hozzáférés, **nem szerepelnek az összesített főértékben**. A `—` = csak kredittel használható / kulcs nélküli / tokenmennyiségként nem számszerűsíthető.
+> Regenerálva a modellenkénti katalógusból (`open-sse/config/freeModelCatalog.ts`), pool-dedupped. Rendezés az ismétlődő állandó tokens/mo. `uncapped*` = állandóan ingyenes, de nincs közzétett token cap (rate/concurrency-limited) — valós hozzáférés szerint,** nem** a címbe foglalta össze. `—` = csak hitel / kulcs nélküli / nem számszerűsíthető token.
 
-| Szolgáltató      | Ingyenes típus         | Stabil token/hó | Első havi jóváírás | Felhasználási feltételek | Modellek |
-| ---------------- | ---------------------- | --------------- | ------------------ | ------------------------ | -------- |
-| `mistral`        | ismétlődő              | ~1.00B          | —                  | óvatosság                | 5        |
-| `nara`           | ismétlődő              | ~210M           | —                  | óvatosság                | 8        |
-| `llm7`           | ismétlődő              | ~150M           | —                  | óvatosság                | 4        |
-| `xkiro`          | ismétlődő              | ~150M           | —                  | óvatosság                | 39       |
-| `longcat`        | egyszeri               | —               | 10M                | óvatosság                | 1        |
-| `cerebras`       | egyszeri               | —               | $5 jóváírás        | óvatosság                | 2        |
-| `cloudflare-ai`  | ismétlődő              | ~30M            | —                  | óvatosság                | 9        |
-| `groq`           | ismétlődő              | ~30M            | —                  | óvatosság                | 5        |
-| `api-airforce`   | ismétlődő              | ~24M            | —                  | óvatosság                | 7        |
-| `bluesminds`     | ismétlődő              | ~7M             | —                  | nem egyértelmű           | 22       |
-| `sambanova`      | ismétlődő              | ~6M             | —                  | óvatosság                | 5        |
-| `arcee-ai`       | ismétlődő              | ~5M             | —                  | óvatosság                | 1        |
-| `bazaarlink`     | ismétlődő              | ~4M             | —                  | óvatosság                | 32       |
-| `openrouter`     | ismétlődő              | ~1M             | —                  | óvatosság                | 1        |
-| `cohere`         | ismétlődő              | ~800K           | —                  | óvatosság                | 6        |
-| `huggingchat`    | ismétlődő              | ~500K           | —                  | óvatosság                | 4        |
-| `morph`          | ismétlődő              | ~400K           | —                  | rendben                  | 2        |
-| `huggingface`    | ismétlődő              | ~200K           | —                  | óvatosság                | 6        |
-| `kiro`           | ismétlődő              | ~25K            | —                  | kerülendő                | 12       |
-| `glm-cn`         | korlátlan              | uncapped\*      | ~20M               | rendben                  | 4        |
-| `baidu`          | korlátlan              | uncapped\*      | —                  | óvatosság                | 1        |
-| `gemini`         | korlátlan              | uncapped\*      | —                  | óvatosság                | 4        |
-| `kilo-gateway`   | korlátlan              | uncapped\*      | —                  | óvatosság                | 7        |
-| `ollama-cloud`   | korlátlan              | uncapped\*      | —                  | nem egyértelmű           | 8        |
-| `opencode-zen`   | korlátlan              | uncapped\*      | —                  | óvatosság                | 10       |
-| `tencent`        | korlátlan              | uncapped\*      | —                  | óvatosság                | 1        |
-| `vertex`         | regisztrációs jóváírás | —               | ~300M              | óvatosság                | 10       |
-| `agentrouter`    | regisztrációs jóváírás | —               | ~200M              | óvatosság                | 4        |
-| `predibase`      | regisztrációs jóváírás | —               | ~25M               | óvatosság                | 1        |
-| `doubao`         | regisztrációs jóváírás | —               | ~15M               | nem egyértelmű           | 1        |
-| `ai21`           | regisztrációs jóváírás | —               | ~10M               | kerülendő                | 2        |
-| `deepseek`       | regisztrációs jóváírás | —               | ~5M                | rendben                  | 2        |
-| `hyperbolic`     | regisztrációs jóváírás | —               | ~5M                | rendben                  | 8        |
-| `nscale`         | regisztrációs jóváírás | —               | ~5M                | óvatosság                | 6        |
-| `bytez`          | jóváírás (ism.)        | —               | ismeretlen         | nem egyértelmű           | 1        |
-| `deepinfra`      | regisztrációs jóváírás | —               | ~1M                | óvatosság                | 22       |
-| `fireworks`      | regisztrációs jóváírás | —               | ~1M                | kerülendő                | 10       |
-| `nebius`         | regisztrációs jóváírás | —               | ~1M                | óvatosság                | 1        |
-| `qoder`          | regisztrációs jóváírás | —               | ~1M                | óvatosság                | 14       |
-| `scaleway`       | regisztrációs jóváírás | —               | ~1M                | rendben                  | 6        |
-| `novita`         | regisztrációs jóváírás | —               | ~500K              | óvatosság                | 1        |
-| `agy`            | kulcs nélküli          | —               | —                  | kerülendő                | 16       |
-| `baichuan`       | kulcs nélküli          | —               | —                  | nem egyértelmű           | 1        |
-| `blackbox`       | kulcs nélküli          | —               | —                  | kerülendő                | 6        |
-| `coze`           | kulcs nélküli          | —               | —                  | kerülendő                | 1        |
-| `duckduckgo-web` | kulcs nélküli          | —               | —                  | kerülendő                | 6        |
-| `freemodel-dev`  | kulcs nélküli          | —               | —                  | ismeretlen               | 4        |
-| `friendliai`     | kulcs nélküli          | —               | —                  | kerülendő                | 2        |
-| `iflytek`        | kulcs nélküli          | —               | —                  | kerülendő                | 1        |
-| `inference-net`  | kulcs nélküli          | —               | —                  | óvatosság                | 3        |
-| `liquid`         | kulcs nélküli          | —               | —                  | ismeretlen               | 1        |
-| `monsterapi`     | kulcs nélküli          | —               | —                  | nem egyértelmű           | 1        |
-| `muse-spark-web` | kulcs nélküli          | —               | —                  | kerülendő                | 3        |
-| `nlpcloud`       | kulcs nélküli          | —               | —                  | kerülendő                | 1        |
-| `nvidia`         | korlátlan              | uncapped\*      | —                  | óvatosság                | 2        |
-| `pollinations`   | kulcs nélküli          | —               | —                  | óvatosság                | 31       |
-| `publicai`       | kulcs nélküli          | —               | —                  | óvatosság                | 3        |
-| `reka`           | kulcs nélküli          | —               | —                  | óvatosság                | 2        |
-| `sensenova`      | kulcs nélküli          | —               | —                  | óvatosság                | 1        |
-| `sparkdesk`      | kulcs nélküli          | —               | —                  | óvatosság                | 1        |
-| `stepfun`        | kulcs nélküli          | —               | —                  | rendben                  | 1        |
-| `t3-web`         | kulcs nélküli          | —               | —                  | kerülendő                | 23       |
-| `uncloseai`      | kulcs nélküli          | —               | —                  | óvatosság                | 3        |
+| Szolgáltató      | Szabad típus           | Állandó tokens/mo | Első havi hitel | ToS        | Modellek |
+| ---------------- | ---------------------- | ----------------- | --------------- | ---------- | -------- |
+| `mistral`        | visszatérő             | ~ 1.00B           | —               | Vigyázat   | 5        |
+| `nara`           | visszatérő             | ~ 210M            | —               | Vigyázat   | 8        |
+| `llm7`           | visszatérő             | ~ 150M            | —               | Vigyázat   | 4        |
+| `xkiro`          | visszatérő             | ~ 150M            | —               | Vigyázat   | 39       |
+| `longcat`        | egykori                | —                 | 10M             | Vigyázat   | 1        |
+| `cerebras`       | egykori                | —                 | 5 dollár hitel  | Vigyázat   | 2        |
+| `cloudflare-ai`  | visszatérő             | ~ 30M             | —               | Vigyázat   | 9        |
+| `groq`           | visszatérő             | ~ 30M             | —               | Vigyázat   | 5        |
+| `api-airforce`   | visszatérő             | ~ 24M             | —               | Vigyázat   | 7        |
+| `bluesminds`     | visszatérő             | ~ 7M              | —               | kétértelmű | 22       |
+| `sambanova`      | visszatérő             | ~ 6M              | —               | Vigyázat   | 5        |
+| `arcee-ai`       | visszatérő             | ~ 5M              | —               | Vigyázat   | 1        |
+| `bazaarlink`     | visszatérő             | ~ 4M              | —               | Vigyázat   | 32       |
+| `openrouter`     | visszatérő             | ~ 1M              | —               | Vigyázat   | 1        |
+| `cohere`         | visszatérő             | ~ 800K            | —               | Vigyázat   | 6        |
+| `huggingchat`    | visszatérő             | ~ 500K            | —               | Vigyázat   | 4        |
+| `morph`          | visszatérő             | ~ 400K            | —               | Rendben    | 2        |
+| `huggingface`    | visszatérő             | ~ 200K            | —               | Vigyázat   | 6        |
+| `kiro`           | visszatérő             | ~ 25K             | —               | elkerül    | 12       |
+| `glm-cn`         | fedetlen               | fedetlen\*        | ~ 20M           | Rendben    | 4        |
+| `baidu`          | fedetlen               | fedetlen\*        | —               | Vigyázat   | 1        |
+| `gemini`         | fedetlen               | fedetlen\*        | —               | Vigyázat   | 4        |
+| `kilo-gateway`   | fedetlen               | fedetlen\*        | —               | Vigyázat   | 7        |
+| `ollama-cloud`   | fedetlen               | fedetlen\*        | —               | kétértelmű | 8        |
+| `opencode-zen`   | fedetlen               | fedetlen\*        | —               | Vigyázat   | 10       |
+| `tencent`        | fedetlen               | fedetlen\*        | —               | Vigyázat   | 1        |
+| `vertex`         | regisztrációs jóváírás | —                 | ~ 300M          | Vigyázat   | 10       |
+| `agentrouter`    | regisztrációs jóváírás | —                 | ~ 200M          | Vigyázat   | 4        |
+| `predibase`      | regisztrációs jóváírás | —                 | ~ 25M           | Vigyázat   | 1        |
+| `doubao`         | regisztrációs jóváírás | —                 | ~ 15M           | kétértelmű | 1        |
+| `ai21`           | regisztrációs jóváírás | —                 | ~ 10M           | elkerül    | 2        |
+| `deepseek`       | regisztrációs jóváírás | —                 | ~ 5M            | Rendben    | 2        |
+| `hyperbolic`     | regisztrációs jóváírás | —                 | ~ 5M            | Rendben    | 8        |
+| `nscale`         | regisztrációs jóváírás | —                 | ~ 5M            | Vigyázat   | 6        |
+| `bytez`          | hitel (rec.)           | —                 | ismeretlen      | kétértelmű | 1        |
+| `deepinfra`      | regisztrációs jóváírás | —                 | ~ 1M            | Vigyázat   | 22       |
+| `fireworks`      | regisztrációs jóváírás | —                 | ~ 1M            | elkerül    | 10       |
+| `nebius`         | regisztrációs jóváírás | —                 | ~ 1M            | Vigyázat   | 1        |
+| `qoder`          | regisztrációs jóváírás | —                 | ~ 1M            | Vigyázat   | 14       |
+| `scaleway`       | regisztrációs jóváírás | —                 | ~ 1M            | Rendben    | 6        |
+| `novita`         | regisztrációs jóváírás | —                 | ~ 500K          | Vigyázat   | 1        |
+| `agy`            | kulcs nélküli          | —                 | —               | elkerül    | 16       |
+| `baichuan`       | kulcs nélküli          | —                 | —               | kétértelmű | 1        |
+| `blackbox`       | kulcs nélküli          | —                 | —               | elkerül    | 6        |
+| `coze`           | kulcs nélküli          | —                 | —               | elkerül    | 1        |
+| `duckduckgo-web` | kulcs nélküli          | —                 | —               | elkerül    | 6        |
+| `freemodel-dev`  | kulcs nélküli          | —                 | —               | ismeretlen | 4        |
+| `friendliai`     | kulcs nélküli          | —                 | —               | elkerül    | 2        |
+| `iflytek`        | kulcs nélküli          | —                 | —               | elkerül    | 1        |
+| `inference-net`  | kulcs nélküli          | —                 | —               | Vigyázat   | 3        |
+| `liquid`         | kulcs nélküli          | —                 | —               | ismeretlen | 1        |
+| `monsterapi`     | kulcs nélküli          | —                 | —               | kétértelmű | 1        |
+| `muse-spark-web` | kulcs nélküli          | —                 | —               | elkerül    | 3        |
+| `nlpcloud`       | kulcs nélküli          | —                 | —               | elkerül    | 1        |
+| `nvidia`         | fedetlen               | fedetlen\*        | —               | Vigyázat   | 3        |
+| `pollinations`   | kulcs nélküli          | —                 | —               | Vigyázat   | 31       |
+| `publicai`       | kulcs nélküli          | —                 | —               | Vigyázat   | 3        |
+| `reka`           | kulcs nélküli          | —                 | —               | Vigyázat   | 2        |
+| `sensenova`      | kulcs nélküli          | —                 | —               | Vigyázat   | 1        |
+| `sparkdesk`      | kulcs nélküli          | —                 | —               | Vigyázat   | 1        |
+| `stepfun`        | kulcs nélküli          | —                 | —               | Rendben    | 1        |
+| `t3-web`         | kulcs nélküli          | —                 | —               | elkerül    | 23       |
+| `uncloseai`      | kulcs nélküli          | —                 | —               | Vigyázat   | 3        |
 
 ---
 

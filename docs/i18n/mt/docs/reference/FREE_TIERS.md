@@ -99,13 +99,13 @@ apposta.
 ## Metodoloġija u twissijiet
 
 - In-numri huma** upper-bound stimi** mil-limiti dokumentati ta' kull fornitur ta' saff ħieles minn** 2026-06-17** , miġbura minn riċerka fuq il-web. Il-livelli b'xejn jinbidlu kontinwament — jerġgħu jivverifikaw qabel ma sserraħ fuq figura.
-- **Għal xiex dħul tabilħaqq.** L-ebda dħul ma jġorr klassifikazzjoni ta' kunfidenza għal kull ringiela, u ż- API ma sservi xejn — tittratta kull figura hawn fuq bħala stima tal-istess kwalità mhux iddikjarata. Żewġ fatti huma differenti, minħabba li huma kkurati bl-idejn aktar milli dedotti: 44 daħla jġorru hard stop dokumentat b'mod indipendenti (39 minnhom ir-ringieli xKiro, li kollha jaqsmu konċessjoni waħda ta 'kuljum), u 21 daħla jġorru żvelar ta' taħriġ fil-pront. `hardStopGuaranteed` huwa ssettjat biss meta t-termini tal-fornitur stess jgħidu li l-qbiż tal-allowance b'xejn jirrifjuta t-talba aktar milli siekta jibda jħallak, bis-sors f'kumment ħdejn id-dħul; qatt ma hija default għal `true`, u dħul li ħadd ma vverifika ma jibqax issettjat. Allura bandiera hard-stop nieqsa tfisser "mhux stabbilit", mhux "magħruf li jkollok kont".** mod STRICT** (l-opt-in `freeAccessPolicy=strict` routing guard) jafda biss entrati li jġorru l-bandiera; kull saff ħieles ieħor huwa eskluż bħala `no-hard-stop` (ara `open-sse/services/autoCombo/strictZeroCostFilter.ts`). Meta l-gwardja tiffiltra pool, ir-reġistru viżibbli mill-operatur jirrapporta kemm l-għadd tal-esklużjoni kif ukoll is-sehem `no-hard-stop` tiegħu.
+- **Għal xiex dħul tabilħaqq.** L-ebda dħul ma jġorr klassifikazzjoni ta' kunfidenza għal kull ringiela, u ż- API ma sservi xejn — tittratta kull figura hawn fuq bħala stima tal-istess kwalità mhux iddikjarata. Żewġ fatti huma differenti, minħabba li huma kkurati bl-idejn aktar milli dedotti: 44 daħla jġorru hard stop dokumentat b'mod indipendenti (39 minnhom ir-ringieli xKiro, li kollha jaqsmu konċessjoni waħda ta 'kuljum), u 22 daħla jġorru żvelar ta' taħriġ fil-pront. `hardStopGuaranteed` huwa ssettjat biss meta t-termini tal-fornitur stess jgħidu li l-qbiż tal-allowance b'xejn jirrifjuta t-talba aktar milli siekta jibda jħallak, bis-sors f'kumment ħdejn id-dħul; qatt ma hija default għal `true`, u dħul li ħadd ma vverifika ma jibqax issettjat. Allura bandiera hard-stop nieqsa tfisser "mhux stabbilit", mhux "magħruf li jkollok kont".** mod STRICT** (l-opt-in `freeAccessPolicy=strict` routing guard) jafda biss entrati li jġorru l-bandiera; kull saff ħieles ieħor huwa eskluż bħala `no-hard-stop` (ara `open-sse/services/autoCombo/strictZeroCostFilter.ts`). Meta l-gwardja tiffiltra pool, ir-reġistru viżibbli mill-operatur jirrapporta kemm l-għadd tal-esklużjoni kif ukoll is-sehem `no-hard-stop` tiegħu.
 - `estMonthlyFreeTokens` = tokens rikorrenti kull xahar biss.** Krediti ta' reġistrazzjoni ta' darba ma jerġgħux iseħħu** u jgħodd bħala 0. Il-livelli maqtugħin huma wkoll 0.
 - Daily token cap → `monthly = daily × 30`. RPD biss iddokumentat → `RPD × ~800 output tokens × 30`. Biss RPM/TPM (l-ebda limitu ta’ kuljum) →** bla limitu** (ara hawn taħt).
-- **B'xejn b'mod permanenti, iżda l-ebda token cap ippubblikat** (`glm-cn`, `tencent`, `baidu`, `kilo-gateway`, `opencode-zen`, `gemini`, `ollama-cloud`): dawn huma aċċess liberu reali rikorrenti, rate/concurrency-limited. Aħna nikklassifikawhom `recurring-uncapped` u** qatt somma minnhom** — multiplikazzjoni `RPM × 24/7 × 30d` tipproduċi limitu fantasija (l-inflazzjoni aħna nirrifjutaw). Huma elenkati sabiex tkun taf li jeżistu.
+- **Aċċess b'xejn, iżda l-ebda token cap ippubblikat** (`glm-cn`, `tencent`, `baidu`, `kilo-gateway`, `opencode-zen`, `gemini`, `ollama-cloud`, `nvidia`): dawn rate/concurrency-limited. Aħna nikklassifikawhom `recurring-uncapped` u** qatt somma minnhom** — multiplikazzjoni `RPM × 24/7 × 30d` tipproduċi limitu fantasija (l-inflazzjoni aħna nirrifjutaw). NVIDIA's API huwa prova-użu biss; ara t-twissija tagħha ToS hawn taħt.
 - **Spinta għall-ftuħ tad-depożitu:** top-up żgħir ta’ darba li jgħolli b’mod permanenti kwota b’xejn (OpenRouter: $10 → 1000 req/day ≈ +24M/mo). Irrappurtat bħala ċifra separata, miżmuma barra mit-titlu kostanti.
 - **Kwoti ta' eliġibbiltà** (`eligibilityGate: "regional-identity"`): kwota reali rikorrenti li tiftaħ biss wara verifika tal-identità marbuta mar-reġjun (verifika tal-isem reali taċ-Ċina kontinentali llum). Magħduda bl-istess regola pool-dedupe f'figura separata (`gatedRecurringTokens`), qatt fil-titlu kostanti. Ir-reġim (`freeType`) mhux mibdul, għalhekk ir-rotot ma nbidilx.
-- **Klassijiet ta' evidenza.** Ir-regola: numru fil-katalgu jiċċita s-sors tiegħu f’kumment `// evidence:` ħdejn l-entrata — `public-page` (paġna tal-fornitur li kulħadd jista’ jaqra), `api-public` (endpoint mhux awtentikat tal-fornitur, eż. endpoint tal-pjanijiet pubbliċi ta’ NaraRouter fuq router.bynara.id), jew `console-verified <date> por <who>` (iċ-ċifra tkun viżibbli biss f’dak il-kont u l-paġna pubblika; limitu jeżisti). L-istat illum: il-ħames blokki verifikati mill-ġdid fl-2026-09-02 jġorruh (`gemini`, `groq`, `mistral`, `ollama-cloud`, `nara`); l-entrati li jkunu qabel il-verifika mill-ġdid tal-2026-09-02 jirtu r-riċerka preċedenti sakemm jintmessu; kwalunkwe** ġodda jew mibdula** numru mingħajr kumment ta 'evidenza huwa bug. Illum `mistral` biss huwa verifikat bil-console.
+- **Klassijiet ta' evidenza.** Ir-regola: numru fil-katalgu jiċċita s-sors tiegħu f’kumment `// evidence:` ħdejn l-entrata — `public-page` (paġna tal-fornitur li kulħadd jista’ jaqra), `api-public` (endpoint mhux awtentikat tal-fornitur, eż. endpoint tal-pjanijiet pubbliċi ta’ NaraRouter fuq router.bynara.id), jew `console-verified <date> por <who>` (iċ-ċifra tkun viżibbli biss f’dik il-kont u l-paġna pubblika; limitu jeżisti). L-istat illum: il-ħames blokki verifikati mill-ġdid fl-2026-09-02 jġorruh (`gemini`, `groq`, `mistral`, `ollama-cloud`, `nara`); l-entrati li jkunu qabel il-verifika mill-ġdid tal-2026-09-02 jirtu r-riċerka preċedenti sakemm jintmessu; kwalunkwe** ġdid jew mibdul** numru mingħajr kumment ta 'evidenza huwa bug. Illum `mistral` biss huwa verifikat bil-console.
 
 ---
 
@@ -227,75 +227,75 @@ Il-biċċa l-kbira taċ-ċifri ta' "tokens b'xejn fix-xahar" f'dan il-qasam huma
 
 ---
 
-## Saff b’xejn għal kull fornitur (Bytez/Nous ivverifikati fil-2026-10-15; ir-ringieli awditjati mill-ġdid fil-2026-09-02; oħrajn fil-2026-06-17)
+## Saff ħieles għal kull fornitur (Bytez/Nous ċċekkjat 2026-10-15; ringieli verifikati mill-ġdid 2026-09-02; oħrajn 2026-06-17)
 
-> Ġġenerat mill-ġdid mill-katalgu għal kull mudell (`open-sse/config/freeModelCatalog.ts`), b’duplikati tal-pools imneħħija. Issortjat skont it-tokens rikorrenti stabbli/xahar. `uncapped*` = b’xejn b’mod permanenti iżda mingħajr limitu ta’ tokens ippubblikat (limitat mir-rata/il-konkorrenza) — aċċess reali, **mhux inkluż fit-total ewlieni**. `—` = kreditu biss / mingħajr ċavetta / ma jistax jiġi kkwantifikat f’tokens.
+> Riġenerat mill-katalgu għal kull mudell (`open-sse/config/freeModelCatalog.ts`), dedupat minn pool. Magħżula skond tokens/mo. stabbli rikorrenti `uncapped*` = b'mod permanenti ħieles iżda l-ebda token cap ippubblikat (rate/concurrency-limited) — aċċess reali,** le** miġbura fit-titlu. `—` = kreditu biss / bla ċavetta / mhux kwantifikabbli b'token.
 
-| Fornitur         | Tip ta’ b’xejn             | Tokens stabbli/xahar | Kreditu tal-ewwel xahar | ToS          | Mudelli |
-| ---------------- | -------------------------- | -------------------- | ----------------------- | ------------ | ------- |
-| `mistral`        | rikorrenti                 | ~1.00B               | —                       | kawtela      | 5       |
-| `nara`           | rikorrenti                 | ~210M                | —                       | kawtela      | 8       |
-| `llm7`           | rikorrenti                 | ~150M                | —                       | kawtela      | 4       |
-| `xkiro`          | rikorrenti                 | ~150M                | —                       | kawtela      | 39      |
-| `longcat`        | darba waħda                | —                    | 10M                     | kawtela      | 1       |
-| `cerebras`       | darba waħda                | —                    | kreditu ta’ $5          | kawtela      | 2       |
-| `cloudflare-ai`  | rikorrenti                 | ~30M                 | —                       | kawtela      | 9       |
-| `groq`           | rikorrenti                 | ~30M                 | —                       | kawtela      | 5       |
-| `api-airforce`   | rikorrenti                 | ~24M                 | —                       | kawtela      | 7       |
-| `bluesminds`     | rikorrenti                 | ~7M                  | —                       | ambigwu      | 22      |
-| `sambanova`      | rikorrenti                 | ~6M                  | —                       | kawtela      | 5       |
-| `arcee-ai`       | rikorrenti                 | ~5M                  | —                       | kawtela      | 1       |
-| `bazaarlink`     | rikorrenti                 | ~4M                  | —                       | kawtela      | 32      |
-| `openrouter`     | rikorrenti                 | ~1M                  | —                       | kawtela      | 1       |
-| `cohere`         | rikorrenti                 | ~800K                | —                       | kawtela      | 6       |
-| `huggingchat`    | rikorrenti                 | ~500K                | —                       | kawtela      | 4       |
-| `morph`          | rikorrenti                 | ~400K                | —                       | ok           | 2       |
-| `huggingface`    | rikorrenti                 | ~200K                | —                       | kawtela      | 6       |
-| `kiro`           | rikorrenti                 | ~25K                 | —                       | evita        | 12      |
-| `glm-cn`         | bla limitu                 | bla limitu\*         | ~20M                    | ok           | 4       |
-| `baidu`          | bla limitu                 | bla limitu\*         | —                       | kawtela      | 1       |
-| `gemini`         | bla limitu                 | bla limitu\*         | —                       | kawtela      | 4       |
-| `kilo-gateway`   | bla limitu                 | bla limitu\*         | —                       | kawtela      | 7       |
-| `ollama-cloud`   | bla limitu                 | bla limitu\*         | —                       | ambigwu      | 8       |
-| `opencode-zen`   | bla limitu                 | bla limitu\*         | —                       | kawtela      | 10      |
-| `tencent`        | bla limitu                 | bla limitu\*         | —                       | kawtela      | 1       |
-| `vertex`         | kreditu mar-reġistrazzjoni | —                    | ~300M                   | kawtela      | 10      |
-| `agentrouter`    | kreditu mar-reġistrazzjoni | —                    | ~200M                   | kawtela      | 4       |
-| `predibase`      | kreditu mar-reġistrazzjoni | —                    | ~25M                    | kawtela      | 1       |
-| `doubao`         | kreditu mar-reġistrazzjoni | —                    | ~15M                    | ambigwu      | 1       |
-| `ai21`           | kreditu mar-reġistrazzjoni | —                    | ~10M                    | evita        | 2       |
-| `deepseek`       | kreditu mar-reġistrazzjoni | —                    | ~5M                     | ok           | 2       |
-| `hyperbolic`     | kreditu mar-reġistrazzjoni | —                    | ~5M                     | ok           | 8       |
-| `nscale`         | kreditu mar-reġistrazzjoni | —                    | ~5M                     | kawtela      | 6       |
-| `bytez`          | kreditu (rik.)             | —                    | mhux magħruf            | ambigwu      | 1       |
-| `deepinfra`      | kreditu mar-reġistrazzjoni | —                    | ~1M                     | kawtela      | 22      |
-| `fireworks`      | kreditu mar-reġistrazzjoni | —                    | ~1M                     | evita        | 10      |
-| `nebius`         | kreditu mar-reġistrazzjoni | —                    | ~1M                     | kawtela      | 1       |
-| `qoder`          | kreditu mar-reġistrazzjoni | —                    | ~1M                     | kawtela      | 14      |
-| `scaleway`       | kreditu mar-reġistrazzjoni | —                    | ~1M                     | ok           | 6       |
-| `novita`         | kreditu mar-reġistrazzjoni | —                    | ~500K                   | kawtela      | 1       |
-| `agy`            | mingħajr ċavetta           | —                    | —                       | evita        | 16      |
-| `baichuan`       | mingħajr ċavetta           | —                    | —                       | ambigwu      | 1       |
-| `blackbox`       | mingħajr ċavetta           | —                    | —                       | evita        | 6       |
-| `coze`           | mingħajr ċavetta           | —                    | —                       | evita        | 1       |
-| `duckduckgo-web` | mingħajr ċavetta           | —                    | —                       | evita        | 6       |
-| `freemodel-dev`  | mingħajr ċavetta           | —                    | —                       | mhux magħruf | 4       |
-| `friendliai`     | mingħajr ċavetta           | —                    | —                       | evita        | 2       |
-| `iflytek`        | mingħajr ċavetta           | —                    | —                       | evita        | 1       |
-| `inference-net`  | mingħajr ċavetta           | —                    | —                       | kawtela      | 3       |
-| `liquid`         | mingħajr ċavetta           | —                    | —                       | mhux magħruf | 1       |
-| `monsterapi`     | mingħajr ċavetta           | —                    | —                       | ambigwu      | 1       |
-| `muse-spark-web` | mingħajr ċavetta           | —                    | —                       | evita        | 3       |
-| `nlpcloud`       | mingħajr ċavetta           | —                    | —                       | evita        | 1       |
-| `nvidia`         | bla limitu                 | bla limitu\*         | —                       | kawtela      | 2       |
-| `pollinations`   | mingħajr ċavetta           | —                    | —                       | kawtela      | 31      |
-| `publicai`       | mingħajr ċavetta           | —                    | —                       | kawtela      | 3       |
-| `reka`           | mingħajr ċavetta           | —                    | —                       | kawtela      | 2       |
-| `sensenova`      | mingħajr ċavetta           | —                    | —                       | kawtela      | 1       |
-| `sparkdesk`      | keyless                    | —                    | —                       | attenzjoni   | 1       |
-| `stepfun`        | keyless                    | —                    | —                       | sewwa        | 1       |
-| `t3-web`         | keyless                    | —                    | —                       | evita        | 23      |
-| `uncloseai`      | keyless                    | —                    | —                       | attenzjoni   | 3       |
+| Fornitur         | Tip liberu                 | Steady tokens/mo | Kreditu tal-ewwel xahar | ToS          | Mudelli |
+| ---------------- | -------------------------- | ---------------- | ----------------------- | ------------ | ------- |
+| `mistral`        | rikorrenti                 | ~ 1.00B          | —                       | kawtela      | 5       |
+| `nara`           | rikorrenti                 | ~ 210M           | —                       | kawtela      | 8       |
+| `llm7`           | rikorrenti                 | ~ 150M           | —                       | kawtela      | 4       |
+| `xkiro`          | rikorrenti                 | ~ 150M           | —                       | kawtela      | 39      |
+| `longcat`        | ta' darba                  | —                | 10M                     | kawtela      | 1       |
+| `cerebras`       | ta' darba                  | —                | Kreditu ta' $5          | kawtela      | 2       |
+| `cloudflare-ai`  | rikorrenti                 | ~ 30M            | —                       | kawtela      | 9       |
+| `groq`           | rikorrenti                 | ~ 30M            | —                       | kawtela      | 5       |
+| `api-airforce`   | rikorrenti                 | ~ 24M            | —                       | kawtela      | 7       |
+| `bluesminds`     | rikorrenti                 | ~ 7M             | —                       | ambigwa      | 22      |
+| `sambanova`      | rikorrenti                 | ~ 6M             | —                       | kawtela      | 5       |
+| `arcee-ai`       | rikorrenti                 | ~ 5M             | —                       | kawtela      | 1       |
+| `bazaarlink`     | rikorrenti                 | ~ 4M             | —                       | kawtela      | 32      |
+| `openrouter`     | rikorrenti                 | ~ 1M             | —                       | kawtela      | 1       |
+| `cohere`         | rikorrenti                 | ~ 800K           | —                       | kawtela      | 6       |
+| `huggingchat`    | rikorrenti                 | ~ 500K           | —                       | kawtela      | 4       |
+| `morph`          | rikorrenti                 | ~ 400K           | —                       | ok           | 2       |
+| `huggingface`    | rikorrenti                 | ~ 200K           | —                       | kawtela      | 6       |
+| `kiro`           | rikorrenti                 | ~ 25K            | —                       | evita        | 12      |
+| `glm-cn`         | bla limitu                 | bla limitu\*     | ~ 20M                   | ok           | 4       |
+| `baidu`          | bla limitu                 | bla limitu\*     | —                       | kawtela      | 1       |
+| `gemini`         | bla limitu                 | bla limitu\*     | —                       | kawtela      | 4       |
+| `kilo-gateway`   | bla limitu                 | bla limitu\*     | —                       | kawtela      | 7       |
+| `ollama-cloud`   | bla limitu                 | bla limitu\*     | —                       | ambigwa      | 8       |
+| `opencode-zen`   | bla limitu                 | bla limitu\*     | —                       | kawtela      | 10      |
+| `tencent`        | bla limitu                 | bla limitu\*     | —                       | kawtela      | 1       |
+| `vertex`         | kreditu ta' reġistrazzjoni | —                | ~ 300M                  | kawtela      | 10      |
+| `agentrouter`    | kreditu ta' reġistrazzjoni | —                | ~ 200M                  | kawtela      | 4       |
+| `predibase`      | kreditu ta' reġistrazzjoni | —                | ~ 25M                   | kawtela      | 1       |
+| `doubao`         | kreditu ta' reġistrazzjoni | —                | ~ 15M                   | ambigwa      | 1       |
+| `ai21`           | kreditu ta' reġistrazzjoni | —                | ~ 10M                   | evita        | 2       |
+| `deepseek`       | kreditu ta' reġistrazzjoni | —                | ~ 5M                    | ok           | 2       |
+| `hyperbolic`     | kreditu ta' reġistrazzjoni | —                | ~ 5M                    | ok           | 8       |
+| `nscale`         | kreditu ta' reġistrazzjoni | —                | ~ 5M                    | kawtela      | 6       |
+| `bytez`          | kreditu (rec.)             | —                | mhux magħruf            | ambigwa      | 1       |
+| `deepinfra`      | kreditu ta' reġistrazzjoni | —                | ~ 1M                    | kawtela      | 22      |
+| `fireworks`      | kreditu ta' reġistrazzjoni | —                | ~ 1M                    | evita        | 10      |
+| `nebius`         | kreditu ta' reġistrazzjoni | —                | ~ 1M                    | kawtela      | 1       |
+| `qoder`          | kreditu ta' reġistrazzjoni | —                | ~ 1M                    | kawtela      | 14      |
+| `scaleway`       | kreditu ta' reġistrazzjoni | —                | ~ 1M                    | ok           | 6       |
+| `novita`         | kreditu ta' reġistrazzjoni | —                | ~ 500K                  | kawtela      | 1       |
+| `agy`            | bla ċavetta                | —                | —                       | evita        | 16      |
+| `baichuan`       | bla ċavetta                | —                | —                       | ambigwa      | 1       |
+| `blackbox`       | bla ċavetta                | —                | —                       | evita        | 6       |
+| `coze`           | bla ċavetta                | —                | —                       | evita        | 1       |
+| `duckduckgo-web` | bla ċavetta                | —                | —                       | evita        | 6       |
+| `freemodel-dev`  | bla ċavetta                | —                | —                       | mhux magħruf | 4       |
+| `friendliai`     | bla ċavetta                | —                | —                       | evita        | 2       |
+| `iflytek`        | bla ċavetta                | —                | —                       | evita        | 1       |
+| `inference-net`  | bla ċavetta                | —                | —                       | kawtela      | 3       |
+| `liquid`         | bla ċavetta                | —                | —                       | mhux magħruf | 1       |
+| `monsterapi`     | bla ċavetta                | —                | —                       | ambigwa      | 1       |
+| `muse-spark-web` | bla ċavetta                | —                | —                       | evita        | 3       |
+| `nlpcloud`       | bla ċavetta                | —                | —                       | evita        | 1       |
+| `nvidia`         | bla limitu                 | bla limitu\*     | —                       | kawtela      | 3       |
+| `pollinations`   | bla ċavetta                | —                | —                       | kawtela      | 31      |
+| `publicai`       | bla ċavetta                | —                | —                       | kawtela      | 3       |
+| `reka`           | bla ċavetta                | —                | —                       | kawtela      | 2       |
+| `sensenova`      | bla ċavetta                | —                | —                       | kawtela      | 1       |
+| `sparkdesk`      | bla ċavetta                | —                | —                       | kawtela      | 1       |
+| `stepfun`        | bla ċavetta                | —                | —                       | ok           | 1       |
+| `t3-web`         | bla ċavetta                | —                | —                       | evita        | 23      |
+| `uncloseai`      | bla ċavetta                | —                | —                       | kawtela      | 3       |
 
 ---
 

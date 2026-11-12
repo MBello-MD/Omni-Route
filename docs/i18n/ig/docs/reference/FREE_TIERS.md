@@ -99,13 +99,13 @@ n'ebumnuche.
 ## Usoro & caveats
 
 - Ọnụọgụgụ dị** atụmatụ dị elu** site n'aka onye na-eweta ọrụ ọ bụla edepụtara oke oke n'efu ka nke** 2026-06-17** , gbakọtara site na nyocha weebụ. Tiers efu na-agbanwe mgbe niile — re-veryify tupu ịdabere na ọnụ ọgụgụ.
-- **Kedu ihe ntinye na-akwụ ụgwọ maka ya.** Ọ dịghị ntinye na-ebu ọkwa ntụkwasị obi n'otu n'otu, na API na-eje ozi ọ dịghị — na-emeso ọnụ ọgụgụ ọ bụla dị n'elu dị ka atụmatụ nke otu àgwà na-akọwaghị. Eziokwu abụọ dị iche, n'ihi na a na-eji aka chịkọta ha kama ịkọwapụta ya: Ndenye 44 na-ebu nkwụsị siri ike edepụtaghị onwe ya (39 n'ime ha ahịrị xKiro, nke niile na-eketa otu ego kwa ụbọchị), na ntinye 21 na-ebu nkwupụta ọzụzụ ngwa ngwa. a na-ahazi `hardStopGuaranteed` naanị mgbe usoro nke onye na-eweta ya kwuru na ịfefe ikike n'efu jụrụ arịrịọ ahụ kama iji nwayọ malite ịgba gị ụgwọ, yana isi iyi dị na nkwupụta n'akụkụ ntinye; a naghị edobe ya na `true`, na ntinye onweghị onye kwadoro na ọ ga-edobeghi ya. Ya mere ọkọlọtọ nkwụsi ike na-efu efu pụtara "Edobebeghị", ọ bụghị "amaghi na ọ ga-akwụ gị ụgwọ".** ọnọdụ STRICT** (onye na-eche nche `freeAccessPolicy=strict` na-apụ apụ) na-atụkwasị obi naanị ndenye na-ebu ọkọlọtọ; ewepụrụ ọkwa ọ bụla n'efu ka `no-hard-stop` (lee `open-sse/services/autoCombo/strictZeroCostFilter.ts`). Mgbe onye nche na-enyocha ọdọ mmiri, ndekọ onye ọrụ na-ahụ anya na-akọ ma ọnụọgụ mwepu yana oke `no-hard-stop` ya.
+- **Kedu ihe ntinye na-akwụ ụgwọ maka ya.** Ọ dịghị ntinye na-ebu ọkwa ntụkwasị obi n'otu n'otu, na API na-eje ozi ọ dịghị — na-emeso ọnụ ọgụgụ ọ bụla dị n'elu dị ka atụmatụ nke otu àgwà na-akọwaghị. Eziokwu abụọ dị iche, n'ihi na a na-eji aka chịkọta ha kama ịkọpụta ya: Ndenye 44 na-ebu nkwụsị siri ike edepụtaghị onwe ya (39 n'ime ha ahịrị xKiro, nke niile na-eketa otu ego kwa ụbọchị), na ntinye 22 na-ebu nkwupụta ọzụzụ ngwa ngwa. a na-ahazi `hardStopGuaranteed` naanị mgbe usoro nke onye na-eweta ya kwuru na ịfefe ikike n'efu jụrụ arịrịọ ahụ kama iji nwayọ malite ịgba gị ụgwọ, yana isi iyi dị na nkwupụta n'akụkụ ntinye; a naghị edobe ya na `true`, na ntinye onweghị onye kwadoro na ọ ga-edobeghi ya. Ya mere ọkọlọtọ nkwụsi ike na-efu efu pụtara "Edobebeghị", ọ bụghị "amaghi na ọ ga-akwụ gị ụgwọ".** ọnọdụ STRICT** (onye na-eche nche `freeAccessPolicy=strict` na-apụ apụ) na-atụkwasị obi naanị ndenye na-ebu ọkọlọtọ; ewepụrụ ọkwa ọ bụla n'efu ka `no-hard-stop` (lee `open-sse/services/autoCombo/strictZeroCostFilter.ts`). Mgbe onye nche na-enyocha ọdọ mmiri, ndekọ onye ọrụ na-ahụ anya na-akọ ma ọnụọgụ mwepu yana oke `no-hard-stop` ya.
 - `estMonthlyFreeTokens` = na-emegharị kwa ọnwa naanị.** Erite uru na ndebanye aha otu oge anaghị agaghachi** wee gụọ dị ka 0. Tiers kwụsịrị bụkwa 0.
 - Kwa ụbọchị akara ngosi → `monthly = daily × 30`. Naanị RPD edepụtara → `RPD × ~800 output tokens × 30`. Naanị RPM/TPM (enweghị okpu kwa ụbọchị) →** enweghị mkpuchi** (hụ okpuru).
-- **Nnwere onwe na-adịgide adịgide, mana enweghị okpu akara ebipụtara** (`glm-cn`, `tencent`, `baidu`, `kilo-gateway`, `opencode-zen`, `gemini`, `ollama-cloud`): ndị a bụ ezigbo ohere n'efu ugboro ugboro, rate/concurrency-limited. Anyị na-ekewa ha `recurring-uncapped` na** anaghị achịkọta ha** — na-amụba `RPM × 24/7 × 30d` ga-emepụta uko ụlọ fantasy (ọnụahịa anyị jụrụ). Edepụtara ha ka ị mara na ha dị.
+- **Nweta efu, mana enweghị okpu akara ebipụtara** (`glm-cn`, `tencent`, `baidu`, `kilo-gateway`, `opencode-zen`, `gemini`, `ollama-cloud`, `nvidia`): ndị a bụ rate/concurrency-limited. Anyị na-ekewa ha `recurring-uncapped` na** anaghị achịkọta ha** — na-amụba `RPM × 24/7 × 30d` ga-emepụta uko ụlọ fantasy (ọnụahịa anyị jụrụ). NVIDIA's API bụ nnwale-eji naanị; lee ya ToS caveat n'okpuru.
 - **Nkwalite mkpọghe nkwụnye ego:** obere nkwalite otu oge nke na-ebuli oke n'efu kpamkpam (OpenRouter: $10 → 1000 req/day ≈ +24M/mo). Kpọpụtara dị ka ọnụ ọgụgụ dị iche, echekwaghị ya n'isi akụkọ na-aga n'ihu.
 - **Oke ntozu-nwere oke** (`eligibilityGate: "regional-identity"`): ezigbo oke na-emepe emepe naanị mgbe nyochachara njirimara mpaghara (nnwale aha ezigbo aha nke ala-China taa). Agụnyere ya na otu iwu ọdọ mmiri-dedupe n'ime ọnụ ọgụgụ dị iche (`gatedRecurringTokens`), ọ dịghị mgbe ọ bụla n'ime isiokwu na-aga n'ihu. Ọchịchị (`freeType`) adịghị agbanwe agbanwe, ya mere ntụgharị agbanweghị.
-- **Klas akaebe.** Iwu: ọnụ ọgụgụ dị na katalọgụ ahụ na-ezo aka na isi mmalite ya na nkọwa `// evidence:` n'akụkụ ntinye — `public-page` (peeji nke onye na-enye onye ọ bụla nwere ike ịgụ), `api-public` (ebe njedebe na-akwadoghị nke onye na-eweta ya, dịka njedebe ọha nke NaraRouter na router.bynara.id), ma ọ bụ `console-verified <date> por <who>` (ọnụọgụ a na-ahụ anya naanị n'ime njikwa akaụntụ; ihe ndekọ ahụ na-edekọ onye hụrụ ya na mgbe ahụ). Steeti taa: a na-enyochagharị ihe mgbochi ise ahụ na 2026-09-02 na-ebu ya (`gemini`, `groq`, `mistral`, `ollama-cloud`, `nara`); ndenye nke tupu 2026-09-02 re-audit ketara nyocha mbụ ruo mgbe emetụ ha aka; nke ọ bụla** ọhụrụ ma ọ bụ gbanwee** ọnụọgụgụ na-enweghị nkọwa akaebe bụ ahụhụ. Taa ọ bụ naanị `mistral` ka ejiri nkwenye kwadoro.
+- **Klas akaebe.** Iwu: ọnụ ọgụgụ dị na katalọgụ ahụ na-ezo aka na isi mmalite ya na nkọwa `// evidence:` na-esote ntinye — `public-page` (peeji nke onye na-enye onye ọ bụla nwere ike ịgụ), `api-public` (ebe njedebe na-akwadoghị nke onye na-eweta ya, dịka njedebe ọha nke NaraRouter na router.bynara.id), ma ọ bụ `console-verified <date> por <who>` (ọnụọgụ a na-ahụ anya naanị n'ime ihe njikwa akaụntụ; nkọwa nkọwa na-edekọ ndị hụrụ ya na mgbe ahụ). Steeti taa: a na-enyochagharị ihe mgbochi ise ahụ na 2026-09-02 na-ebu ya (`gemini`, `groq`, `mistral`, `ollama-cloud`, `nara`); ndenye nke tupu 2026-09-02 re-audit ketara nyocha mbụ ruo mgbe emetụ ha aka; nke ọ bụla** ọhụrụ ma ọ bụ gbanwee** ọnụọgụgụ na-enweghị nkọwa akaebe bụ ahụhụ. Taa ọ bụ naanị `mistral` ka ejiri nkwenye kwadoro.
 
 ---
 
@@ -227,75 +227,75 @@ n'ebumnuche.
 
 ---
 
-## Ọkwa n’efu kwa onye na-eweta ọrụ (Bytez/Nous enyochara na 2026-10-15; ahịrị ndị e nyochara ọzọ na 2026-09-02; ndị ọzọ na 2026-06-17)
+## Onye na-eweta ọkwa n'efu (Bytez/Nous nyochara 2026-10-15; ahịrị ndị emegharịrị 2026-09-02; ndị ọzọ 2026-06-17)
 
-> E megharịrị ya site na katalọgụ kwa-model (`open-sse/config/freeModelCatalog.ts`), tinyekwa ọdọ mmiri ndị na-emegharị onwe ha ọnụ. A haziri ya site na tokens/mo na-aga n’ihu mgbe niile. `uncapped*` = n’efu ruo mgbe ebighị ebi mana enweghị oke token e bipụtara (oke ọsọ/ọnụọgụ njikọ na-achịkwa ya) — ohere iji ya n’ezie, **agụnyeghị ya na ngụkọta isiokwu**. `—` = kredit naanị / enweghị igodo / enweghị ike ịkọwa ya n’ụdị token.
+> Emegharịrị site na katalọgụ kwa ụdị (`open-sse/config/freeModelCatalog.ts`), ọdọ mmiri ewepụrụ. Haziri site na tokens/mo. `uncapped*` = na-aga n'ihu na-adịgide adịgide mana enweghị okpu akara ebipụtara (rate/concurrency-limited) — ezigbo ohere,** ọ bụghị** chịkọtara n'ime isiokwu. `—` = kredit-naanị / keyless / ọ bụghị akara-quantifiable.
 
-| Onye na-enye ọrụ | Ụdị efu                | Tokens kwụsie ike/ọnwa | Kredit ọnwa mbụ | Usoro Ọrụ     | Ụdị |
-| ---------------- | ---------------------- | ---------------------- | --------------- | ------------- | --- |
-| `mistral`        | ugboro ugboro          | ~1.00B                 | —               | kpachara anya | 5   |
-| `nara`           | ugboro ugboro          | ~210M                  | —               | kpachara anya | 8   |
-| `llm7`           | ugboro ugboro          | ~150M                  | —               | kpachara anya | 4   |
-| `xkiro`          | ugboro ugboro          | ~150M                  | —               | kpachara anya | 39  |
-| `longcat`        | otu ugboro             | —                      | 10M             | kpachara anya | 1   |
-| `cerebras`       | otu ugboro             | —                      | $5 kredit       | kpachara anya | 2   |
-| `cloudflare-ai`  | ugboro ugboro          | ~30M                   | —               | kpachara anya | 9   |
-| `groq`           | ugboro ugboro          | ~30M                   | —               | kpachara anya | 5   |
-| `api-airforce`   | ugboro ugboro          | ~24M                   | —               | kpachara anya | 7   |
-| `bluesminds`     | ugboro ugboro          | ~7M                    | —               | edoghị anya   | 22  |
-| `sambanova`      | ugboro ugboro          | ~6M                    | —               | kpachara anya | 5   |
-| `arcee-ai`       | ugboro ugboro          | ~5M                    | —               | kpachara anya | 1   |
-| `bazaarlink`     | ugboro ugboro          | ~4M                    | —               | kpachara anya | 32  |
-| `openrouter`     | ugboro ugboro          | ~1M                    | —               | kpachara anya | 1   |
-| `cohere`         | ugboro ugboro          | ~800K                  | —               | kpachara anya | 6   |
-| `huggingchat`    | ugboro ugboro          | ~500K                  | —               | kpachara anya | 4   |
-| `morph`          | ugboro ugboro          | ~400K                  | —               | ọ dị mma      | 2   |
-| `huggingface`    | ugboro ugboro          | ~200K                  | —               | kpachara anya | 6   |
-| `kiro`           | ugboro ugboro          | ~25K                   | —               | zere          | 12  |
-| `glm-cn`         | enweghị oke            | enweghị oke\*          | ~20M            | ọ dị mma      | 4   |
-| `baidu`          | enweghị oke            | enweghị oke\*          | —               | kpachara anya | 1   |
-| `gemini`         | enweghị oke            | enweghị oke\*          | —               | kpachara anya | 4   |
-| `kilo-gateway`   | enweghị oke            | enweghị oke\*          | —               | kpachara anya | 7   |
-| `ollama-cloud`   | enweghị oke            | enweghị oke\*          | —               | edoghị anya   | 8   |
-| `opencode-zen`   | enweghị oke            | enweghị oke\*          | —               | kpachara anya | 10  |
-| `tencent`        | enweghị oke            | enweghị oke\*          | —               | kpachara anya | 1   |
-| `vertex`         | kredit ndebanye        | —                      | ~300M           | kpachara anya | 10  |
-| `agentrouter`    | kredit ndebanye        | —                      | ~200M           | kpachara anya | 4   |
-| `predibase`      | kredit ndebanye        | —                      | ~25M            | kpachara anya | 1   |
-| `doubao`         | kredit ndebanye        | —                      | ~15M            | edoghị anya   | 1   |
-| `ai21`           | kredit ndebanye        | —                      | ~10M            | zere          | 2   |
-| `deepseek`       | kredit ndebanye        | —                      | ~5M             | ọ dị mma      | 2   |
-| `hyperbolic`     | kredit ndebanye        | —                      | ~5M             | ọ dị mma      | 8   |
-| `nscale`         | kredit ndebanye        | —                      | ~5M             | kpachara anya | 6   |
-| `bytez`          | kredit (ugboro ugboro) | —                      | amaghị          | edoghị anya   | 1   |
-| `deepinfra`      | kredit ndebanye        | —                      | ~1M             | kpachara anya | 22  |
-| `fireworks`      | kredit ndebanye        | —                      | ~1M             | zere          | 10  |
-| `nebius`         | kredit ndebanye        | —                      | ~1M             | kpachara anya | 1   |
-| `qoder`          | kredit ndebanye        | —                      | ~1M             | kpachara anya | 14  |
-| `scaleway`       | kredit ndebanye        | —                      | ~1M             | ọ dị mma      | 6   |
-| `novita`         | kredit ndebanye        | —                      | ~500K           | kpachara anya | 1   |
-| `agy`            | enweghị igodo          | —                      | —               | zere          | 16  |
-| `baichuan`       | enweghị igodo          | —                      | —               | edoghị anya   | 1   |
-| `blackbox`       | enweghị igodo          | —                      | —               | zere          | 6   |
-| `coze`           | enweghị igodo          | —                      | —               | zere          | 1   |
-| `duckduckgo-web` | enweghị igodo          | —                      | —               | zere          | 6   |
-| `freemodel-dev`  | enweghị igodo          | —                      | —               | amaghị        | 4   |
-| `friendliai`     | enweghị igodo          | —                      | —               | zere          | 2   |
-| `iflytek`        | enweghị igodo          | —                      | —               | zere          | 1   |
-| `inference-net`  | enweghị igodo          | —                      | —               | kpachara anya | 3   |
-| `liquid`         | enweghị igodo          | —                      | —               | amaghị        | 1   |
-| `monsterapi`     | enweghị igodo          | —                      | —               | edoghị anya   | 1   |
-| `muse-spark-web` | enweghị igodo          | —                      | —               | zere          | 3   |
-| `nlpcloud`       | enweghị igodo          | —                      | —               | zere          | 1   |
-| `nvidia`         | enweghị oke            | enweghị oke\*          | —               | kpachara anya | 2   |
-| `pollinations`   | enweghị igodo          | —                      | —               | kpachara anya | 31  |
-| `publicai`       | enweghị igodo          | —                      | —               | kpachara anya | 3   |
-| `reka`           | enweghị igodo          | —                      | —               | kpachara anya | 2   |
-| `sensenova`      | enweghị igodo          | —                      | —               | kpachara anya | 1   |
-| `sparkdesk`      | enweghị igodo          | —                      | —               | kpachara anya | 1   |
-| `stepfun`        | enweghị igodo          | —                      | —               | dị mma        | 1   |
-| `t3-web`         | enweghị igodo          | —                      | —               | zere          | 23  |
-| `uncloseai`      | enweghị igodo          | —                      | —               | kpachara anya | 3   |
+| Onye na-enye     | Ụdị efu         | tokens/mo kwụ ọtọ  | Kredit nke ọnwa mbụ | ToS                | Ụdị |
+| ---------------- | --------------- | ------------------ | ------------------- | ------------------ | --- |
+| `mistral`        | ugboro ugboro   | ~ 1.00B            | —                   | ịkpachara anya     | 5   |
+| `nara`           | ugboro ugboro   | ~ 210M             | —                   | ịkpachara anya     | 8   |
+| `llm7`           | ugboro ugboro   | ~ 150M             | —                   | ịkpachara anya     | 4   |
+| `xkiro`          | ugboro ugboro   | ~ 150M             | —                   | ịkpachara anya     | 39  |
+| `longcat`        | otu ugboro      | —                  | 10M                 | ịkpachara anya     | 1   |
+| `cerebras`       | otu ugboro      | —                  | $5 kredit           | ịkpachara anya     | 2   |
+| `cloudflare-ai`  | ugboro ugboro   | ~ 30M              | —                   | ịkpachara anya     | 9   |
+| `groq`           | ugboro ugboro   | ~ 30M              | —                   | ịkpachara anya     | 5   |
+| `api-airforce`   | ugboro ugboro   | ~ 24M              | —                   | ịkpachara anya     | 7   |
+| `bluesminds`     | ugboro ugboro   | ~ 7M               | —                   | ihe mgbagwoju anya | 22  |
+| `sambanova`      | ugboro ugboro   | ~ 6M               | —                   | ịkpachara anya     | 5   |
+| `arcee-ai`       | ugboro ugboro   | ~ 5M               | —                   | ịkpachara anya     | 1   |
+| `bazaarlink`     | ugboro ugboro   | ~ 4M               | —                   | ịkpachara anya     | 32  |
+| `openrouter`     | ugboro ugboro   | ~ 1M               | —                   | ịkpachara anya     | 1   |
+| `cohere`         | ugboro ugboro   | ~ 800k             | —                   | ịkpachara anya     | 6   |
+| `huggingchat`    | ugboro ugboro   | ~ 500K             | —                   | ịkpachara anya     | 4   |
+| `morph`          | ugboro ugboro   | ~ 400k             | —                   | Ọ dị mma           | 2   |
+| `huggingface`    | ugboro ugboro   | ~ 200K             | —                   | ịkpachara anya     | 6   |
+| `kiro`           | ugboro ugboro   | ~ 25k              | —                   | zere               | 12  |
+| `glm-cn`         | enweghị mkpuchi | enweghị mkpuchi \* | ~ 20M               | Ọ dị mma           | 4   |
+| `baidu`          | enweghị mkpuchi | enweghị mkpuchi \* | —                   | ịkpachara anya     | 1   |
+| `gemini`         | enweghị mkpuchi | enweghị mkpuchi \* | —                   | ịkpachara anya     | 4   |
+| `kilo-gateway`   | enweghị mkpuchi | enweghị mkpuchi \* | —                   | ịkpachara anya     | 7   |
+| `ollama-cloud`   | enweghị mkpuchi | enweghị mkpuchi \* | —                   | ihe mgbagwoju anya | 8   |
+| `opencode-zen`   | enweghị mkpuchi | enweghị mkpuchi \* | —                   | ịkpachara anya     | 10  |
+| `tencent`        | enweghị mkpuchi | enweghị mkpuchi \* | —                   | ịkpachara anya     | 1   |
+| `vertex`         | kredit ndebanye | —                  | ~ 300M              | ịkpachara anya     | 10  |
+| `agentrouter`    | kredit ndebanye | —                  | ~ 200M              | ịkpachara anya     | 4   |
+| `predibase`      | kredit ndebanye | —                  | ~ 25M               | ịkpachara anya     | 1   |
+| `doubao`         | kredit ndebanye | —                  | ~ 15M               | ihe mgbagwoju anya | 1   |
+| `ai21`           | kredit ndebanye | —                  | ~ 10M               | zere               | 2   |
+| `deepseek`       | kredit ndebanye | —                  | ~ 5M                | Ọ dị mma           | 2   |
+| `hyperbolic`     | kredit ndebanye | —                  | ~ 5M                | Ọ dị mma           | 8   |
+| `nscale`         | kredit ndebanye | —                  | ~ 5M                | ịkpachara anya     | 6   |
+| `bytez`          | kredit (ndekọ)  | —                  | amaghị              | ihe mgbagwoju anya | 1   |
+| `deepinfra`      | kredit ndebanye | —                  | ~ 1M                | ịkpachara anya     | 22  |
+| `fireworks`      | kredit ndebanye | —                  | ~ 1M                | zere               | 10  |
+| `nebius`         | kredit ndebanye | —                  | ~ 1M                | ịkpachara anya     | 1   |
+| `qoder`          | kredit ndebanye | —                  | ~ 1M                | ịkpachara anya     | 14  |
+| `scaleway`       | kredit ndebanye | —                  | ~ 1M                | Ọ dị mma           | 6   |
+| `novita`         | kredit ndebanye | —                  | ~ 500K              | ịkpachara anya     | 1   |
+| `agy`            | enweghị igodo   | —                  | —                   | zere               | 16  |
+| `baichuan`       | enweghị igodo   | —                  | —                   | ihe mgbagwoju anya | 1   |
+| `blackbox`       | enweghị igodo   | —                  | —                   | zere               | 6   |
+| `coze`           | enweghị igodo   | —                  | —                   | zere               | 1   |
+| `duckduckgo-web` | enweghị igodo   | —                  | —                   | zere               | 6   |
+| `freemodel-dev`  | enweghị igodo   | —                  | —                   | amaghị             | 4   |
+| `friendliai`     | enweghị igodo   | —                  | —                   | zere               | 2   |
+| `iflytek`        | enweghị igodo   | —                  | —                   | zere               | 1   |
+| `inference-net`  | enweghị igodo   | —                  | —                   | ịkpachara anya     | 3   |
+| `liquid`         | enweghị igodo   | —                  | —                   | amaghị             | 1   |
+| `monsterapi`     | enweghị igodo   | —                  | —                   | ihe mgbagwoju anya | 1   |
+| `muse-spark-web` | enweghị igodo   | —                  | —                   | zere               | 3   |
+| `nlpcloud`       | enweghị igodo   | —                  | —                   | zere               | 1   |
+| `nvidia`         | enweghị mkpuchi | enweghị mkpuchi \* | —                   | ịkpachara anya     | 3   |
+| `pollinations`   | enweghị igodo   | —                  | —                   | ịkpachara anya     | 31  |
+| `publicai`       | enweghị igodo   | —                  | —                   | ịkpachara anya     | 3   |
+| `reka`           | enweghị igodo   | —                  | —                   | ịkpachara anya     | 2   |
+| `sensenova`      | enweghị igodo   | —                  | —                   | ịkpachara anya     | 1   |
+| `sparkdesk`      | enweghị igodo   | —                  | —                   | ịkpachara anya     | 1   |
+| `stepfun`        | enweghị igodo   | —                  | —                   | Ọ dị mma           | 1   |
+| `t3-web`         | enweghị igodo   | —                  | —                   | zere               | 23  |
+| `uncloseai`      | enweghị igodo   | —                  | —                   | ịkpachara anya     | 3   |
 
 ---
 

@@ -112,10 +112,10 @@ todėl šis atskyrimas išlaikomas sąmoningai.
 ## Metodika ir įspėjimai
 
 - Skaičiai yra** viršutinės ribos įverčiai** nuo kiekvieno teikėjo dokumentais patvirtintų laisvos pakopos limitų** 2026-06-17** , surinkta atlikus žiniatinklio tyrimą. Nemokamos pakopos nuolat keičiasi, prieš pasikliaudami figūra, patikrinkite — naujo.
-- **Ką iš tikrųjų garantuoja įrašas.** Nė vienas įrašas neapima kiekvienos eilutės patikimumo įvertinimo, o API neaptarnauja jokio — kiekvieną aukščiau pateiktą skaičių traktuoja kaip tos pačios nenurodytos kokybės įvertinimą. Du faktai skiriasi, nes jie surenkami ranka, o ne daromos išvados: 44 įrašai turi nepriklausomai dokumentuotą griežtą sustabdymą (39 iš jų xKiro eilutės, kurios visos dalijasi viena dienpinigiais), o 21 įraše pateikiamas greitas mokymas. `hardStopGuaranteed` nustatomas tik tada, kai paties teikėjo sąlygose teigiama, kad viršijus nemokamą pašalpą prašymas atsisakoma, o ne tyliai pradedama išrašyti sąskaitas, o šaltinis yra komentare šalia įrašo; pagal nutylėjimą niekada nenustatytas `true`, o įrašas, kurio niekas nepatvirtino, lieka nenustatytas. Taigi trūkstama „hard-stop“ vėliavėlė reiškia „neįsteigta“, o ne „žinoma, kad jums atsiskaitys“.**STRICT režimas** (pasirenkama `freeAccessPolicy=strict` maršruto parinkimo apsauga) pasitiki tik įrašais, kuriuose yra vėliavėlė; kiekviena kita nemokama pakopa neįtraukiama kaip `no-hard-stop` (žr. `open-sse/services/autoCombo/strictZeroCostFilter.ts`). Kai apsauga filtruoja telkinį, operatoriaus matomas žurnalas praneša ir išskyrimų skaičių, ir jo `no-hard-stop` dalį.
+- **Ką iš tikrųjų garantuoja įrašas.** Nė vienas įrašas neapima kiekvienos eilutės patikimumo įvertinimo, o API neaptarnauja jokio — kiekvieną aukščiau pateiktą skaičių traktuoja kaip tos pačios nenurodytos kokybės įvertinimą. Du faktai skiriasi, nes jie yra surenkami ranka, o ne numanomi: 44 įrašuose yra nepriklausomai dokumentuotas griežtas sustabdymas (39 iš jų xKiro eilutės, kurios visos dalijasi viena dienpinigiais), o 22 įrašuose pateikiamas greitas mokymas. `hardStopGuaranteed` nustatomas tik tada, kai paties teikėjo sąlygose teigiama, kad viršijus nemokamą pašalpą prašymas atsisakoma, o ne tyliai pradedama išrašyti sąskaitas, o šaltinis yra komentare šalia įrašo; pagal nutylėjimą niekada nenustatytas `true`, o įrašas, kurio niekas nepatvirtino, lieka nenustatytas. Taigi trūkstama „hard-stop“ vėliavėlė reiškia „neįsteigta“, o ne „žinoma, kad jums atsiskaitys“.**STRICT režimas** (pasirenkama `freeAccessPolicy=strict` maršruto parinkimo apsauga) pasitiki tik įrašais, kuriuose yra vėliavėlė; kiekviena kita nemokama pakopa neįtraukiama kaip `no-hard-stop` (žr. `open-sse/services/autoCombo/strictZeroCostFilter.ts`). Kai apsauga filtruoja telkinį, operatoriaus matomas žurnalas praneša ir išskyrimų skaičių, ir jo `no-hard-stop` dalį.
 - Tik `estMonthlyFreeTokens` = pasikartojantys mėnesiniai žetonai.** Vienkartiniai registracijos kreditai nepasikartoja** ir skaičiuoti kaip 0. Nutrauktos pakopos taip pat yra 0.
 - Dienos žetonų dangtelis → `monthly = daily × 30`. Tik RPD dokumentuotas → `RPD × ~800 output tokens × 30`. Tik RPM/TPM (be dienos ribos) →** neuždengtas** (žr. žemiau).
-- **Visada nemokama, bet nepaskelbta žetonų ribos** (`glm-cn`, `tencent`, `baidu`, `kilo-gateway`, `opencode-zen`, `gemini`, `ollama-cloud`): tai tikra pasikartojanti nemokama prieiga, rate/concurrency-limited. Mes juos klasifikuojame `recurring-uncapped` ir** niekada jų nesuminkite** — padauginus `RPM × 24/7 × 30d` gautume fantazijos lubas (infliaciją, kurią atmetame). Jie yra išvardyti, kad žinotumėte, kad jie egzistuoja.
+- **Nemokama prieiga, bet nepaskelbta žetonų riba** (`glm-cn`, `tencent`, `baidu`, `kilo-gateway`, `opencode-zen`, `gemini`, `ollama-cloud`, `nvidia`): tai yra rate/concurrency-limited. Mes juos klasifikuojame `recurring-uncapped` ir** niekada jų nesuminkite** — padauginus `RPM × 24/7 × 30d` gautume fantazijos lubas (infliaciją, kurią atmetame). NVIDIA's API skirtas tik bandomajam naudojimui; žr. jo ToS įspėjimą žemiau.
 - **Indėlio atrakinimo padidinimas:** vienkartinis nedidelis papildymas, visam laikui padidinantis nemokamą kvotą (OpenRouter: $10 → 1000 req/day ≈ +24M/mo). Pranešama kaip atskira figūra, neįtraukta į nuolatinę antraštę.
 - **Tinkamumo kvotos** (`eligibilityGate: "regional-identity"`): tikra pasikartojanti kvota, kuri atidaroma tik atlikus tapatybės patikrinimą pagal regioną (šiandien tikrinama žemyninė Kinija). Skaičiuojama taikant tą pačią „pool-dedupe“ taisyklę į atskirą figūrą (`gatedRecurringTokens`), niekada neįtraukiama į nuolatinę antraštę. Režimas (`freeType`) nesikeičia, todėl maršrutas nesikeičia.
 - **Įrodymų klasės.** Taisyklė: skaičius kataloge nurodo šaltinį `// evidence:` komentare šalia įrašo — `public-page` (tiekėjo puslapis, kurį gali perskaityti bet kas), `api-public` (neautentifikuotas teikėjo galutinis taškas, pvz., NaraRouter viešųjų planų galutinis taškas adresu router.bynara.id) arba `console-verified <date> por <who>` (skaičius matomas tik tada, kai komentaro puslapyje rašoma, kas yra komentaras ir dangtelis). egzistuoja). Būsena šiandien: 2026-09-02 pakartotinai audituoti penki blokai jį neša (`gemini`, `groq`, `mistral`, `ollama-cloud`, `nara`); įrašai, padaryti prieš 2026-09-02 pakartotinį auditą, paveldi ankstesnius tyrimus, kol jie nebus paliečiami; bet koks** naujas arba pakeistas** numeris be įrodymų komentaro yra klaida. Šiandien tik `mistral` yra patikrinta konsolėje.
@@ -240,75 +240,75 @@ Dauguma šioje srityje nurodomų „nemokamų žetonų per mėnesį“ skaičių
 
 ---
 
-## Nemokamas lygis pagal teikėją (Bytez/Nous patikrinta 2026-10-15; iš naujo patikrintos eilutės 2026-09-02; kiti – 2026-06-17)
+## Teikėjo nemokama pakopa (Bytez/Nous patikrinta 2026-10-15; pakartotinai tikrintos eilutės 2026-09-02; kitos 2026-06-17)
 
-> Sugeneruota iš kiekvieno modelio katalogo (`open-sse/config/freeModelCatalog.ts`), pašalinus pasikartojančius įrašus iš telkinio. Surikiuota pagal pasikartojantį pastovų žetonų skaičių per mėn. `uncapped*` = visam laikui nemokama, tačiau nėra paskelbto žetonų limito (ribojamas dažnis / lygiagretumas) — reali prieiga, **neįtraukta į antraštėje nurodytą sumą**. `—` = tik kreditai / be rakto / žetonų kiekio neįmanoma apskaičiuoti.
+> Atnaujinta iš kiekvieno modelio katalogo (`open-sse/config/freeModelCatalog.ts`), priderinta prie baseino. Rūšiuojama pagal pasikartojančius nuolatinius tokens/mo. `uncapped*` = visam laikui nemokamas, bet nepaskelbtas prieigos raktų ribos (rate/concurrency-limited) — realios prieigos,** ne** apibendrinamas antraštėje. `—` = tik kreditas / be rakto / kiekybiškai neįvertinamas žetonų.
 
-| Teikėjas         | Nemokamos prieigos tipas | Pastovūs žetonai/mėn. | Pirmojo mėnesio kreditas | Naudojimo sąlygos | Modeliai |
-| ---------------- | ------------------------ | --------------------- | ------------------------ | ----------------- | -------- |
-| `mistral`        | pasikartojanti           | ~1.00B                | —                        | atsargiai         | 5        |
-| `nara`           | pasikartojanti           | ~210M                 | —                        | atsargiai         | 8        |
-| `llm7`           | pasikartojanti           | ~150M                 | —                        | atsargiai         | 4        |
-| `xkiro`          | pasikartojanti           | ~150M                 | —                        | atsargiai         | 39       |
-| `longcat`        | vienkartinė              | —                     | 10M                      | atsargiai         | 1        |
-| `cerebras`       | vienkartinė              | —                     | $5 kreditas              | atsargiai         | 2        |
-| `cloudflare-ai`  | pasikartojanti           | ~30M                  | —                        | atsargiai         | 9        |
-| `groq`           | pasikartojanti           | ~30M                  | —                        | atsargiai         | 5        |
-| `api-airforce`   | pasikartojanti           | ~24M                  | —                        | atsargiai         | 7        |
-| `bluesminds`     | pasikartojanti           | ~7M                   | —                        | dviprasmiška      | 22       |
-| `sambanova`      | pasikartojanti           | ~6M                   | —                        | atsargiai         | 5        |
-| `arcee-ai`       | pasikartojanti           | ~5M                   | —                        | atsargiai         | 1        |
-| `bazaarlink`     | pasikartojanti           | ~4M                   | —                        | atsargiai         | 32       |
-| `openrouter`     | pasikartojanti           | ~1M                   | —                        | atsargiai         | 1        |
-| `cohere`         | pasikartojanti           | ~800K                 | —                        | atsargiai         | 6        |
-| `huggingchat`    | pasikartojanti           | ~500K                 | —                        | atsargiai         | 4        |
-| `morph`          | pasikartojanti           | ~400K                 | —                        | gerai             | 2        |
-| `huggingface`    | pasikartojanti           | ~200K                 | —                        | atsargiai         | 6        |
-| `kiro`           | pasikartojanti           | ~25K                  | —                        | vengti            | 12       |
-| `glm-cn`         | neribota                 | neribota\*            | ~20M                     | gerai             | 4        |
-| `baidu`          | neribota                 | neribota\*            | —                        | atsargiai         | 1        |
-| `gemini`         | neribota                 | neribota\*            | —                        | atsargiai         | 4        |
-| `kilo-gateway`   | neribota                 | neribota\*            | —                        | atsargiai         | 7        |
-| `ollama-cloud`   | neribota                 | neribota\*            | —                        | dviprasmiška      | 8        |
-| `opencode-zen`   | neribota                 | neribota\*            | —                        | atsargiai         | 10       |
-| `tencent`        | neribota                 | neribota\*            | —                        | atsargiai         | 1        |
-| `vertex`         | registracijos kreditas   | —                     | ~300M                    | atsargiai         | 10       |
-| `agentrouter`    | registracijos kreditas   | —                     | ~200M                    | atsargiai         | 4        |
-| `predibase`      | registracijos kreditas   | —                     | ~25M                     | atsargiai         | 1        |
-| `doubao`         | registracijos kreditas   | —                     | ~15M                     | dviprasmiška      | 1        |
-| `ai21`           | registracijos kreditas   | —                     | ~10M                     | vengti            | 2        |
-| `deepseek`       | registracijos kreditas   | —                     | ~5M                      | gerai             | 2        |
-| `hyperbolic`     | registracijos kreditas   | —                     | ~5M                      | gerai             | 8        |
-| `nscale`         | registracijos kreditas   | —                     | ~5M                      | atsargiai         | 6        |
-| `bytez`          | kreditas (pasikart.)     | —                     | nežinoma                 | dviprasmiška      | 1        |
-| `deepinfra`      | registracijos kreditas   | —                     | ~1M                      | atsargiai         | 22       |
-| `fireworks`      | registracijos kreditas   | —                     | ~1M                      | vengti            | 10       |
-| `nebius`         | registracijos kreditas   | —                     | ~1M                      | atsargiai         | 1        |
-| `qoder`          | registracijos kreditas   | —                     | ~1M                      | atsargiai         | 14       |
-| `scaleway`       | registracijos kreditas   | —                     | ~1M                      | gerai             | 6        |
-| `novita`         | registracijos kreditas   | —                     | ~500K                    | atsargiai         | 1        |
-| `agy`            | be rakto                 | —                     | —                        | vengti            | 16       |
-| `baichuan`       | be rakto                 | —                     | —                        | dviprasmiška      | 1        |
-| `blackbox`       | be rakto                 | —                     | —                        | vengti            | 6        |
-| `coze`           | be rakto                 | —                     | —                        | vengti            | 1        |
-| `duckduckgo-web` | be rakto                 | —                     | —                        | vengti            | 6        |
-| `freemodel-dev`  | be rakto                 | —                     | —                        | nežinoma          | 4        |
-| `friendliai`     | be rakto                 | —                     | —                        | vengti            | 2        |
-| `iflytek`        | be rakto                 | —                     | —                        | vengti            | 1        |
-| `inference-net`  | be rakto                 | —                     | —                        | atsargiai         | 3        |
-| `liquid`         | be rakto                 | —                     | —                        | nežinoma          | 1        |
-| `monsterapi`     | be rakto                 | —                     | —                        | dviprasmiška      | 1        |
-| `muse-spark-web` | be rakto                 | —                     | —                        | vengti            | 3        |
-| `nlpcloud`       | be rakto                 | —                     | —                        | vengti            | 1        |
-| `nvidia`         | neribota                 | neribota\*            | —                        | atsargiai         | 2        |
-| `pollinations`   | be rakto                 | —                     | —                        | atsargiai         | 31       |
-| `publicai`       | be rakto                 | —                     | —                        | atsargiai         | 3        |
-| `reka`           | be rakto                 | —                     | —                        | atsargiai         | 2        |
-| `sensenova`      | be rakto                 | —                     | —                        | atsargiai         | 1        |
-| `sparkdesk`      | keyless                  | —                     | —                        | atsargiai         | 1        |
-| `stepfun`        | keyless                  | —                     | —                        | gerai             | 1        |
-| `t3-web`         | keyless                  | —                     | —                        | vengti            | 23       |
-| `uncloseai`      | keyless                  | —                     | —                        | atsargiai         | 3        |
+| Teikėjas         | Laisvas tipas          | Pastovus tokens/mo | Pirmo mėnesio kreditas | ToS           | Modeliai |
+| ---------------- | ---------------------- | ------------------ | ---------------------- | ------------- | -------- |
+| `mistral`        | pasikartojantis        | ~ 1.00B            | —                      | atsargiai     | 5        |
+| `nara`           | pasikartojantis        | ~ 210M             | —                      | atsargiai     | 8        |
+| `llm7`           | pasikartojantis        | ~ 150M             | —                      | atsargiai     | 4        |
+| `xkiro`          | pasikartojantis        | ~ 150M             | —                      | atsargiai     | 39       |
+| `longcat`        | vienkartinis           | —                  | 10 mln                 | atsargiai     | 1        |
+| `cerebras`       | vienkartinis           | —                  | 5 USD kreditas         | atsargiai     | 2        |
+| `cloudflare-ai`  | pasikartojantis        | ~ 30M              | —                      | atsargiai     | 9        |
+| `groq`           | pasikartojantis        | ~ 30M              | —                      | atsargiai     | 5        |
+| `api-airforce`   | pasikartojantis        | ~ 24M              | —                      | atsargiai     | 7        |
+| `bluesminds`     | pasikartojantis        | ~ 7M               | —                      | dviprasmiškas | 22       |
+| `sambanova`      | pasikartojantis        | ~ 6M               | —                      | atsargiai     | 5        |
+| `arcee-ai`       | pasikartojantis        | ~ 5M               | —                      | atsargiai     | 1        |
+| `bazaarlink`     | pasikartojantis        | ~ 4M               | —                      | atsargiai     | 32       |
+| `openrouter`     | pasikartojantis        | ~ 1M               | —                      | atsargiai     | 1        |
+| `cohere`         | pasikartojantis        | ~ 800K             | —                      | atsargiai     | 6        |
+| `huggingchat`    | pasikartojantis        | ~ 500K             | —                      | atsargiai     | 4        |
+| `morph`          | pasikartojantis        | ~ 400K             | —                      | gerai         | 2        |
+| `huggingface`    | pasikartojantis        | ~ 200K             | —                      | atsargiai     | 6        |
+| `kiro`           | pasikartojantis        | ~ 25K              | —                      | vengti        | 12       |
+| `glm-cn`         | neuždengtas            | neuždengtas\*      | ~ 20M                  | gerai         | 4        |
+| `baidu`          | neuždengtas            | neuždengtas\*      | —                      | atsargiai     | 1        |
+| `gemini`         | neuždengtas            | neuždengtas\*      | —                      | atsargiai     | 4        |
+| `kilo-gateway`   | neuždengtas            | neuždengtas\*      | —                      | atsargiai     | 7        |
+| `ollama-cloud`   | neuždengtas            | neuždengtas\*      | —                      | dviprasmiškas | 8        |
+| `opencode-zen`   | neuždengtas            | neuždengtas\*      | —                      | atsargiai     | 10       |
+| `tencent`        | neuždengtas            | neuždengtas\*      | —                      | atsargiai     | 1        |
+| `vertex`         | registracijos kreditas | —                  | ~ 300M                 | atsargiai     | 10       |
+| `agentrouter`    | registracijos kreditas | —                  | ~ 200M                 | atsargiai     | 4        |
+| `predibase`      | registracijos kreditas | —                  | ~ 25M                  | atsargiai     | 1        |
+| `doubao`         | registracijos kreditas | —                  | ~ 15M                  | dviprasmiškas | 1        |
+| `ai21`           | registracijos kreditas | —                  | ~ 10M                  | vengti        | 2        |
+| `deepseek`       | registracijos kreditas | —                  | ~ 5M                   | gerai         | 2        |
+| `hyperbolic`     | registracijos kreditas | —                  | ~ 5M                   | gerai         | 8        |
+| `nscale`         | registracijos kreditas | —                  | ~ 5M                   | atsargiai     | 6        |
+| `bytez`          | kreditas (įskaitant)   | —                  | nežinomas              | dviprasmiškas | 1        |
+| `deepinfra`      | registracijos kreditas | —                  | ~ 1M                   | atsargiai     | 22       |
+| `fireworks`      | registracijos kreditas | —                  | ~ 1M                   | vengti        | 10       |
+| `nebius`         | registracijos kreditas | —                  | ~ 1M                   | atsargiai     | 1        |
+| `qoder`          | registracijos kreditas | —                  | ~ 1M                   | atsargiai     | 14       |
+| `scaleway`       | registracijos kreditas | —                  | ~ 1M                   | gerai         | 6        |
+| `novita`         | registracijos kreditas | —                  | ~ 500K                 | atsargiai     | 1        |
+| `agy`            | be rakto               | —                  | —                      | vengti        | 16       |
+| `baichuan`       | be rakto               | —                  | —                      | dviprasmiškas | 1        |
+| `blackbox`       | be rakto               | —                  | —                      | vengti        | 6        |
+| `coze`           | be rakto               | —                  | —                      | vengti        | 1        |
+| `duckduckgo-web` | be rakto               | —                  | —                      | vengti        | 6        |
+| `freemodel-dev`  | be rakto               | —                  | —                      | nežinomas     | 4        |
+| `friendliai`     | be rakto               | —                  | —                      | vengti        | 2        |
+| `iflytek`        | be rakto               | —                  | —                      | vengti        | 1        |
+| `inference-net`  | be rakto               | —                  | —                      | atsargiai     | 3        |
+| `liquid`         | be rakto               | —                  | —                      | nežinomas     | 1        |
+| `monsterapi`     | be rakto               | —                  | —                      | dviprasmiškas | 1        |
+| `muse-spark-web` | be rakto               | —                  | —                      | vengti        | 3        |
+| `nlpcloud`       | be rakto               | —                  | —                      | vengti        | 1        |
+| `nvidia`         | neuždengtas            | neuždengtas\*      | —                      | atsargiai     | 3        |
+| `pollinations`   | be rakto               | —                  | —                      | atsargiai     | 31       |
+| `publicai`       | be rakto               | —                  | —                      | atsargiai     | 3        |
+| `reka`           | be rakto               | —                  | —                      | atsargiai     | 2        |
+| `sensenova`      | be rakto               | —                  | —                      | atsargiai     | 1        |
+| `sparkdesk`      | be rakto               | —                  | —                      | atsargiai     | 1        |
+| `stepfun`        | be rakto               | —                  | —                      | gerai         | 1        |
+| `t3-web`         | be rakto               | —                  | —                      | vengti        | 23       |
+| `uncloseai`      | be rakto               | —                  | —                      | atsargiai     | 3        |
 
 ---
 
